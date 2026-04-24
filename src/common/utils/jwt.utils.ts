@@ -1,4 +1,4 @@
-import jwt, { JwtPayload, SignOptions } from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { randomUUID } from "crypto";
 import { StringValue } from "ms";
 const generateToken = (

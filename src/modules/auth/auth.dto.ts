@@ -1,5 +1,5 @@
 import z from "zod";
-import { signupSchema } from "./auth.validation";
+import { loginSchema, signupSchema } from "./auth.validation";
 
 // export interface SignupDTO {
 //   email: string;
@@ -11,10 +11,11 @@ import { signupSchema } from "./auth.validation";
 
 export type SignupDTO = z.infer<typeof signupSchema>;
 
-export interface LoginDTO {
-  email: string;
-  password: string;
-}
+// export interface LoginDTO {
+//   email: string;
+//   password: string;
+// }
+export type LoginDTO = z.infer<typeof loginSchema>;
 
 export interface VerifyAccountDTO {
   otp: string;

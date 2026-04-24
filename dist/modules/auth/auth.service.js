@@ -78,7 +78,7 @@ class AuthService {
         if (!matchPassword || !userExist)
             throw new common_1.BadRequestException("invalid credentials");
         const payloadData = {
-            userId: userExist._id.toString("base64"),
+            userId: userExist._id.toString(),
         };
         return (0, jwt_utils_1.generateTokens)(payloadData);
     }

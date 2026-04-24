@@ -6,7 +6,7 @@ import {
 } from "express";
 import authService from "./auth.service";
 import { isvalid } from "../../middleware";
-import { signupSchema } from "./auth.validation";
+import { loginSchema, signupSchema } from "./auth.validation";
 
 const router = Router();
 
@@ -57,6 +57,7 @@ router.patch(
 
 router.post(
   "/login",
+  isvalid(loginSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     const tokens = await authService.login(req.body);
     return res.status(200).json({

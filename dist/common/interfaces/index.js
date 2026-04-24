@@ -16,3 +16,5 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./user.interface"), exports);
 __exportStar(require("./request.interface"), exports);
+__exportStar(require("./jwtPayload.interface"), exports);
+__exportStar(require("./post.interface"), exports);

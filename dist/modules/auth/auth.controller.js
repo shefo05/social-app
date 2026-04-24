@@ -36,7 +36,7 @@ router.patch("/reset-password", async (req, res, next) => {
         success: true,
     });
 });
-router.post("/login", async (req, res, next) => {
+router.post("/login", (0, middleware_1.isvalid)(auth_validation_1.loginSchema), async (req, res, next) => {
     const tokens = await auth_service_1.default.login(req.body);
     return res.status(200).json({
         message: "user loggedin successfully",

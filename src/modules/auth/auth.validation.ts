@@ -9,6 +9,9 @@ export const signupSchema = z.object({
   phoneNumber: GF.phoneNumber,
 });
 
+export const loginSchema = z.object({
+  email: GF.email,
+  password: GF.password,
+});
 
-export const signinSchema = {};
 export const forgetPasswordSchema = {};
