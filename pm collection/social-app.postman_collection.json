@@ -8,149 +8,923 @@
   },
   "item": [
     {
-      "name": "signup",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"userName\":\"ali\",\n    \"email\":\"a@g.com\",\n    \"password\":\"1234@Ali\",\n    \"phoneNumber\":\"01234567890\",\n    \"salary\":\"123\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+      "name": "auth",
+      "item": [
+        {
+          "name": "verify account",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"a3@g.com\",\n    \"otp\":\"879608\"\n    \n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/verify-account",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "verify-account"
+              ]
             }
-          }
+          },
+          "response": []
         },
-        "url": {
-          "raw": "http://localhost:3000/auth/signup",
-          "protocol": "http",
-          "host": [
-            "localhost"
+        {
+          "name": "signup",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"userName\":\"ali\",\n    \"email\":\"a3@g.com\",\n    \"password\":\"1234@Ali\",\n    \"phoneNumber\":\"01234567890\",\n    \"salary\":\"123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/signup",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "send OTP",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"a@g.com\"    \n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/send-otp",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "send-otp"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "reset password",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"otp\":\"374387\",\n    \"newPassword\":\"Ali@12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/reset-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();",
+                  "pm.environment.set(\"token\", response.data.accessToken);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
           ],
-          "port": "3000",
-          "path": [
-            "auth",
-            "signup"
-          ]
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"a3@g.com\",\n    \"password\":\"1234@Ali\"\n    \n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
+      ]
     },
     {
-      "name": "verify account",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"email\":\"a@g.com\",\n    \"otp\":\"573859\"\n    \n}",
-          "options": {
-            "raw": {
-              "language": "json"
+      "name": "post",
+      "item": [
+        {
+          "name": "create post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\":\"new post\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/post",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "post"
+              ]
             }
-          }
+          },
+          "response": []
         },
-        "url": {
-          "raw": "http://localhost:3000/auth/verify-account",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "3000",
-          "path": [
-            "auth",
-            "verify-account"
-          ]
+        {
+          "name": "react to post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\":\"69ee6b2fc9f258e693275cae\",\n    \"reaction\":\"1\"\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/post/add-reaction",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "post",
+                "add-reaction"
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
+      ]
     },
     {
-      "name": "send OTP",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"email\":\"a@g.com\"    \n}",
-          "options": {
-            "raw": {
-              "language": "json"
+      "name": "comment",
+      "item": [
+        {
+          "name": "create comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\":\"1.1.2.1.3\",\n    \"attachment\":\"url\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/post/69ee6b06c9f258e693275cad/comment/69f21d466f128dd43e87bfa9",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "post",
+                "69ee6b06c9f258e693275cad",
+                "comment",
+                "69f21d466f128dd43e87bfa9"
+              ]
             }
-          }
+          },
+          "response": [
+            {
+              "name": "create comment fail",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"content\":\"update\",\n    \"attachment\":\"url\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/comment/69ee6b06c9f258e693275cad/69f12e4d0b13aebd532d5599",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "comment",
+                    "69ee6b06c9f258e693275cad",
+                    "69f12e4d0b13aebd532d5599"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "51"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"33-pFzmBaxwBiQ/yJg7vsejbV0nzUc\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 28 Apr 2026 22:05:42 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"comment not available\",\n    \"success\": false\n}"
+            },
+            {
+              "name": "create comment",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"content\":\"1.1\",\n    \"attachment\":\"url\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/comment/69f3ded2934aa0e45cfe9cb5",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "comment",
+                    "69f3ded2934aa0e45cfe9cb5"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"a-bAsFyilMr4Ra1hIU5PyoyFRunpI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 30 Apr 2026 23:49:22 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "create comment",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"content\":\"1.1\",\n    \"attachment\":\"url\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/post/69ee6b2fc9f258e693275cae/comment/69f3ded2934aa0e45cfe9cb5",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "post",
+                    "69ee6b2fc9f258e693275cae",
+                    "comment",
+                    "69f3ded2934aa0e45cfe9cb5"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"a-bAsFyilMr4Ra1hIU5PyoyFRunpI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 30 Apr 2026 23:50:04 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": null
+            }
+          ]
         },
-        "url": {
-          "raw": "http://localhost:3000/auth/send-otp",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "3000",
-          "path": [
-            "auth",
-            "send-otp"
+        {
+          "name": "react to comment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\":\"69f21d466f128dd43e87bfa9\",\n    \"reaction\":\"0\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/comment/add-reaction",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "comment",
+                "add-reaction"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "react to comment",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"id\":\"69f21d346f128dd43e87bfa7\",\n    \"reaction\":\"0\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/comment/add-reaction",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "comment",
+                    "add-reaction"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"a-bAsFyilMr4Ra1hIU5PyoyFRunpI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 30 Apr 2026 12:47:53 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "react to comment fail",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"id\":\"19f21d346f128dd43e87bfa7\",\n    \"reaction\":\"0\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/comment/add-reaction",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "comment",
+                    "add-reaction"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "44"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"2c-EaI/d32QFYi498zTdQkpOLWF4l4\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 30 Apr 2026 13:01:22 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"post not found\",\n    \"success\": false\n}"
+            }
+          ]
+        },
+        {
+          "name": "get all comments",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\":\"69f21d346f128dd43e87bfa7\",\n    \"reaction\":\"0\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/comment/69ee6b06c9f258e693275cad",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "comment",
+                "69ee6b06c9f258e693275cad"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "all comments",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"id\":\"69f21d346f128dd43e87bfa7\",\n    \"reaction\":\"0\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/comment/69ee6b06c9f258e693275cad",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "comment",
+                    "69ee6b06c9f258e693275cad"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "782"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"30e-niBCo2XBAabVwOSz8ufp1vDyeM4\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 30 Apr 2026 13:02:15 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": {\n        \"comments\": [\n            {\n                \"_id\": \"69f21d346f128dd43e87bfa7\",\n                \"userId\": \"69ea32fe571062f277edf995\",\n                \"postId\": \"69ee6b06c9f258e693275cad\",\n                \"mentions\": [],\n                \"content\": \"1\",\n                \"attachment\": \"url\",\n                \"createdAt\": \"2026-04-29T15:01:08.908Z\",\n                \"updatedAt\": \"2026-04-30T13:00:52.150Z\",\n                \"__v\": 0,\n                \"reactionsCount\": 0\n            },\n            {\n                \"_id\": \"69f21d3c6f128dd43e87bfa8\",\n                \"userId\": \"69ea32fe571062f277edf995\",\n                \"postId\": \"69ee6b06c9f258e693275cad\",\n                \"mentions\": [],\n                \"attachment\": \"url\",\n                \"createdAt\": \"2026-04-29T15:01:16.693Z\",\n                \"updatedAt\": \"2026-04-29T15:01:16.693Z\",\n                \"__v\": 0,\n                \"reactionsCount\": 0\n            },\n            {\n                \"_id\": \"69f21d466f128dd43e87bfa9\",\n                \"userId\": \"69ea32fe571062f277edf995\",\n                \"postId\": \"69ee6b06c9f258e693275cad\",\n                \"mentions\": [],\n                \"content\": \"1\",\n                \"createdAt\": \"2026-04-29T15:01:26.081Z\",\n                \"updatedAt\": \"2026-04-29T15:01:26.081Z\",\n                \"__v\": 0,\n                \"reactionsCount\": 0\n            }\n        ]\n    }\n}"
+            },
+            {
+              "name": "all replies",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"id\":\"69f21d346f128dd43e87bfa7\",\n    \"reaction\":\"0\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/comment/69ee6b06c9f258e693275cad/69f21d346f128dd43e87bfa7",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "comment",
+                    "69ee6b06c9f258e693275cad",
+                    "69f21d346f128dd43e87bfa7"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "935"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"3a7-6SRSvH9oOv1g4QYVENqQa7xsqsI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 30 Apr 2026 13:03:10 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"data\": {\n        \"comments\": [\n            {\n                \"_id\": \"69f21d7a6f128dd43e87bfab\",\n                \"userId\": \"69ea32fe571062f277edf995\",\n                \"postId\": \"69ee6b06c9f258e693275cad\",\n                \"parentId\": \"69f21d346f128dd43e87bfa7\",\n                \"mentions\": [],\n                \"content\": \"1.1\",\n                \"attachment\": \"url\",\n                \"createdAt\": \"2026-04-29T15:02:18.626Z\",\n                \"updatedAt\": \"2026-04-29T15:02:18.626Z\",\n                \"__v\": 0,\n                \"reactionsCount\": 0\n            },\n            {\n                \"_id\": \"69f21de519ae6071115e4bbe\",\n                \"userId\": \"69ea32fe571062f277edf995\",\n                \"postId\": \"69ee6b06c9f258e693275cad\",\n                \"parentId\": \"69f21d346f128dd43e87bfa7\",\n                \"mentions\": [],\n                \"content\": \"1.2\",\n                \"attachment\": \"url\",\n                \"createdAt\": \"2026-04-29T15:04:05.010Z\",\n                \"updatedAt\": \"2026-04-29T15:04:05.010Z\",\n                \"__v\": 0,\n                \"reactionsCount\": 0\n            },\n            {\n                \"_id\": \"69f21e2900e2e90cc00fce30\",\n                \"userId\": \"69ea32fe571062f277edf995\",\n                \"postId\": \"69ee6b06c9f258e693275cad\",\n                \"parentId\": \"69f21d346f128dd43e87bfa7\",\n                \"mentions\": [],\n                \"content\": \"1.3\",\n                \"attachment\": \"url\",\n                \"createdAt\": \"2026-04-29T15:05:13.803Z\",\n                \"updatedAt\": \"2026-04-29T15:05:13.803Z\",\n                \"__v\": 0,\n                \"reactionsCount\": 0\n            }\n        ]\n    }\n}"
+            },
+            {
+              "name": "all comments fail",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"id\":\"69f21d346f128dd43e87bfa7\",\n    \"reaction\":\"0\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/comment/69ee6b06c9f258e693275caa",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "comment",
+                    "69ee6b06c9f258e693275caa"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "47"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"2f-8z1VsHkP8W/cVOivxcpkR2Pxbnw\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 30 Apr 2026 13:03:31 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"no comments exist\",\n    \"success\": false\n}"
+            }
+          ]
+        },
+        {
+          "name": "delete comment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/comment/69f21d466f128dd43e87bfa9",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "comment",
+                "69f21d466f128dd43e87bfa9"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "delete comment",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/comment/69f3ea5b934aa0e45cfe9cb6",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "comment",
+                    "69f3ea5b934aa0e45cfe9cb6"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"a-bAsFyilMr4Ra1hIU5PyoyFRunpI\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 01 May 2026 19:56:38 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "unauthorized to delete comment",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "authorization",
+                    "value": "{{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/comment/69f21d466f128dd43e87bfa9",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "comment",
+                    "69f21d466f128dd43e87bfa9"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "75"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"4b-bNUP8E6Ksep/pRAIKhfF2ROjfXQ\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Fri, 01 May 2026 22:38:32 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"you are not authorized to delete this comment\",\n    \"success\": false\n}"
+            }
           ]
         }
-      },
-      "response": []
-    },
-    {
-      "name": "reset password",
-      "request": {
-        "method": "PATCH",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"email\":\"a@g.com\",\n    \"otp\":\"374387\",\n    \"newPassword\":\"Ali@12345\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:3000/auth/reset-password",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "3000",
-          "path": [
-            "auth",
-            "reset-password"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "login",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"email\":\"a@g.com\",\n    \"password\":\"Ali@12345\"\n    \n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:3000/auth/login",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "3000",
-          "path": [
-            "auth",
-            "login"
-          ]
-        }
-      },
-      "response": []
+      ]
     }
   ]
 }

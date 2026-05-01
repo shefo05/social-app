@@ -1,3 +1,4 @@
+import { UserDocument } from "../types";
 import { IUser } from "./user.interface";
 
 // export interface Request{
@@ -6,6 +7,6 @@ import { IUser } from "./user.interface";
 
 declare module "express-serve-static-core" {
   interface Request {
-    user: IUser;
+    user: UserDocument;
   }
 }

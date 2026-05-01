@@ -16,6 +16,8 @@ function bootstrap() {
     (0, redis_connect_1.redisConnect)();
     app.use(express_1.default.json());
     app.use("/auth", modules_1.authRouter);
+    app.use("/post", modules_1.postRouter);
+    app.use('/comment', modules_1.commentRouter);
     app.use((err, req, res, next) => {
         return res.status(err.cause || 500).json({
             message: err.message,

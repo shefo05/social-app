@@ -9,6 +9,10 @@ import {
 export abstract class AbstractRepository<T> {
   constructor(private _model: Model<T>) {}
 
+  get model() {
+    return this._model;
+  }
+
   public async create(item: Partial<T>) {
     const doc = new this._model(item);
     return doc.save();
@@ -40,6 +44,6 @@ export abstract class AbstractRepository<T> {
   }
 
   public async deleteOne(filter: QueryFilter<T>) {
-    this._model.deleteOne(filter);
+    return this._model.deleteOne(filter);
   }
 }

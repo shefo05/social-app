@@ -15,22 +15,22 @@ router.post("/signup", (0, middleware_1.isvalid)(auth_validation_1.signupSchema)
         success: true,
     });
 });
-router.post("/verify-account", async (req, res, next) => {
+router.post("/verify-account", (0, middleware_1.isvalid)(auth_validation_1.verifyAccountSchema), async (req, res, next) => {
     await auth_service_1.default.verifyAccount(req.body);
     return res.status(200).json({
         message: "user verified successfully",
         success: true,
     });
 });
-router.post("/send-otp", async (req, res, next) => {
+router.post("/send-otp", (0, middleware_1.isvalid)(auth_validation_1.sendOtpSchema), async (req, res, next) => {
     await auth_service_1.default.sendOTP(req.body);
     return res.status(200).json({
         message: "OTP sent successfully",
         success: true,
     });
 });
-router.patch("/reset-password", async (req, res, next) => {
-    await auth_service_1.default.resetPassword(req.body);
+router.patch("/reset-password", (0, middleware_1.isvalid)(auth_validation_1.resetPasswordSchema), middleware_1.isAuthenticated, async (req, res, next) => {
+    await auth_service_1.default.resetPassword(req.body, req.user);
     return res.status(200).json({
         message: "password updated successfully",
         success: true,

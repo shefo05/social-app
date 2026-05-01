@@ -6,6 +6,9 @@ class AbstractRepository {
     constructor(_model) {
         this._model = _model;
     }
+    get model() {
+        return this._model;
+    }
     async create(item) {
         const doc = new this._model(item);
         return doc.save();
@@ -21,7 +24,7 @@ class AbstractRepository {
         return this._model.findOneAndUpdate(filter, update, options);
     }
     async deleteOne(filter) {
-        this._model.deleteOne(filter);
+        return this._model.deleteOne(filter);
     }
 }
 exports.AbstractRepository = AbstractRepository;

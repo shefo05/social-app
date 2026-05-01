@@ -1,0 +1,83 @@
+import { Types } from "mongoose";
+import { CreateCommentDTO } from "./comment.dto";
+import { PostRepository } from "../../DB/models/post/post.repository";
+import { IPost, NotFoundException, UnauthorizedException } from "../../common";
+import { CommentRepository } from "../../DB/models/comment/comment.repository";
+
+export class CommentService {
+  constructor(
+    private readonly _postRepo: PostRepository,
+    private readonly _commentRepo: CommentRepository,
+  ) {}
+
+  async create(
+    createCommentDTO: CreateCommentDTO,
+    params: any,
+    userId: Types.ObjectId,
+  ) {
+    if (params.postId) {
+      const postExist = await this._postRepo.getOne({ _id: params.postId });
+      if (!postExist) throw new NotFoundException("post not available");
+    }
+    // const postExist = await this._postRepo.getOne({ _id: params.postId });
+    // if (!postExist) throw new NotFoundException("post not available");
+
+    let parentCommentExist = undefined;
+    if (params.parentId) {
+      parentCommentExist = await this._commentRepo.getOne({
+        _id: params.parentId,
+      });
+      if (!parentCommentExist)
+        throw new NotFoundException("comment not available");
+    }
+
+    let postId = params.postId || parentCommentExist?.postId;
+    const createdComment = await this._commentRepo.create({
+      ...createCommentDTO,
+      ...params,
+      userId,
+      postId,
+    });
+
+    this._postRepo.updateOne({ _id: postId }, { $inc: { commentsCount: 1 } });
+    return createdComment;
+  }
+
+  // async addReaction(addReactionDTO:AddR)
+  async getAll(params: any) {
+    const comments = await this._commentRepo.getAll({
+      postId: params.postId,
+      parentId: params.parentId,
+    });
+    if (comments.length == 0) throw new NotFoundException("no comments exist");
+    return comments;
+  }
+
+  async delete(id: Types.ObjectId, userId: Types.ObjectId) {
+    const commentExist = await this._commentRepo.getOne(
+      { _id: id },
+      {},
+      { populate: [{ path: "postId" }] },
+    );
+    if (!commentExist) throw new NotFoundException("comment is not available");
+
+    const commentAuthor = commentExist.userId.toString();
+
+    const postAuthor = (commentExist.postId as IPost[])[0]?.userId.toString();
+    // const postExist = await this._postRepo.getOne({ _id: commentExist.postId });
+    // const postAuthor = postExist?.userId;
+
+    if (userId.toString() != commentAuthor && userId.toString() != postAuthor) {
+      throw new UnauthorizedException(
+        "you are not authorized to delete this comment",
+      );
+    }
+
+    await this._commentRepo.deleteOne({ _id: id });
+  }
+}
+
+export default new CommentService(
+  new PostRepository(),
+  new CommentRepository(),
+);

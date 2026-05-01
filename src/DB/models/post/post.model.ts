@@ -7,8 +7,21 @@ const schema = new Schema<IPost>(
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
-        },
-      content:String,
+    },
+    content: String,
+    attachments: [String],
+    reactionsCount: {
+      type: Number,
+      default: 0,
+    },
+    commentsCount: {
+      type: Number,
+      default: 0,
+    },
+    sharesCount: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,

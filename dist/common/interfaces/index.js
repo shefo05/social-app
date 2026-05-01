@@ -18,3 +18,5 @@ __exportStar(require("./user.interface"), exports);
 __exportStar(require("./request.interface"), exports);
 __exportStar(require("./jwtPayload.interface"), exports);
 __exportStar(require("./post.interface"), exports);
+__exportStar(require("./user-reaction.interface"), exports);
+__exportStar(require("./comment.interface"), exports);

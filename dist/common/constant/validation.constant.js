@@ -14,4 +14,8 @@ exports.generalFields = {
         .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/),
     userName: zod_1.default.string().min(2).max(20),
     phoneNumber: zod_1.default.string().regex(/^(\+201|01|00201)[0-2,5]{1}[0-9]{8}/),
+    content: zod_1.default.string().optional(),
+    attachments: zod_1.default.array(zod_1.default.string()).optional(),
+    otp: zod_1.default.string(),
+    id: zod_1.default.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
 };

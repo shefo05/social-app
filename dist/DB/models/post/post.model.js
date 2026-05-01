@@ -9,6 +9,19 @@ const schema = new mongoose_1.Schema({
         required: true,
     },
     content: String,
+    attachments: [String],
+    reactionsCount: {
+        type: Number,
+        default: 0,
+    },
+    commentsCount: {
+        type: Number,
+        default: 0,
+    },
+    sharesCount: {
+        type: Number,
+        default: 0,
+    },
 }, {
     timestamps: true,
 });

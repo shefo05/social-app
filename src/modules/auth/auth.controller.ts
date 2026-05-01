@@ -5,8 +5,14 @@ import {
   Router,
 } from "express";
 import authService from "./auth.service";
-import { isvalid } from "../../middleware";
-import { loginSchema, signupSchema } from "./auth.validation";
+import { isAuthenticated, isvalid } from "../../middleware";
+import {
+  loginSchema,
+  resetPasswordSchema,
+  sendOtpSchema,
+  signupSchema,
+  verifyAccountSchema,
+} from "./auth.validation";
 
 const router = Router();
 
@@ -24,6 +30,7 @@ router.post(
 
 router.post(
   "/verify-account",
+  isvalid(verifyAccountSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     await authService.verifyAccount(req.body);
     return res.status(200).json({
@@ -35,6 +42,7 @@ router.post(
 
 router.post(
   "/send-otp",
+  isvalid(sendOtpSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     await authService.sendOTP(req.body);
     return res.status(200).json({
@@ -46,8 +54,10 @@ router.post(
 
 router.patch(
   "/reset-password",
+  isvalid(resetPasswordSchema),
+  isAuthenticated,
   async (req: Request, res: Response, next: NextFunction) => {
-    await authService.resetPassword(req.body);
+    await authService.resetPassword(req.body, req.user);
     return res.status(200).json({
       message: "password updated successfully",
       success: true,

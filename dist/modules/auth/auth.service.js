@@ -6,8 +6,11 @@ const user_repository_1 = require("../../DB/models/user/user.repository");
 const redis_service_1 = require("../../DB/redis.service");
 class AuthService {
     _userRepo;
-    constructor() {
-        this._userRepo = new user_repository_1.UserRepository();
+    constructor(_userRepo) {
+        this._userRepo = _userRepo;
+    }
+    async checkUserExist(filter) {
+        return await this._userRepo.getOne(filter);
     }
     async signup(signupDTO) {
         let { email, password, phoneNumber } = signupDTO;
@@ -57,11 +60,11 @@ class AuthService {
         });
         await (0, redis_service_1.setIntoCache)(`${email}:otp`, otp, 3 * 60);
     }
-    async resetPassword(resetPasswordDTO) {
-        const { email, newPassword } = resetPasswordDTO;
-        const userExist = await this._userRepo.getOne({ email });
-        if (!userExist)
-            throw new common_1.NotFoundException("user not found");
+    async resetPassword(resetPasswordDTO, user) {
+        const { newPassword } = resetPasswordDTO;
+        const { email } = user;
+        // const userExist = await this._userRepo.getOne({ email });
+        // if (!userExist) throw new NotFoundException("user not found");
         const otp = await (0, redis_service_1.getFromCache)(`${email}:otp`);
         if (otp != resetPasswordDTO.otp)
             throw new common_1.BadRequestException("invalid OTP");
@@ -78,9 +81,9 @@ class AuthService {
         if (!matchPassword || !userExist)
             throw new common_1.BadRequestException("invalid credentials");
         const payloadData = {
-            userId: userExist._id.toString(),
+            sub: userExist._id.toString(),
         };
         return (0, jwt_utils_1.generateTokens)(payloadData);
     }
 }
-exports.default = new AuthService();
+exports.default = new AuthService(new user_repository_1.UserRepository());

@@ -6,6 +6,7 @@ import {
   encryption,
   generateOTP,
   hash,
+  IUser,
   NotFoundException,
   sendMail,
 } from "../../common";
@@ -23,11 +24,13 @@ import {
   SignupDTO,
   VerifyAccountDTO,
 } from "./auth.dto";
+import { QueryFilter, Types } from "mongoose";
 
 class AuthService {
-  private _userRepo: UserRepository;
-  constructor() {
-    this._userRepo = new UserRepository();
+  constructor(private _userRepo: UserRepository) {}
+
+  async checkUserExist(filter: QueryFilter<IUser>) {
+    return await this._userRepo.getOne(filter);
   }
 
   async signup(signupDTO: SignupDTO) {
@@ -92,11 +95,12 @@ class AuthService {
     await setIntoCache(`${email}:otp`, otp, 3 * 60);
   }
 
-  async resetPassword(resetPasswordDTO: ResetPasswordDTO) {
-    const { email, newPassword } = resetPasswordDTO;
-    const userExist = await this._userRepo.getOne({ email });
+  async resetPassword(resetPasswordDTO: ResetPasswordDTO, user: IUser) {
+    const { newPassword } = resetPasswordDTO;
+    const { email } = user;
+    // const userExist = await this._userRepo.getOne({ email });
 
-    if (!userExist) throw new NotFoundException("user not found");
+    // if (!userExist) throw new NotFoundException("user not found");
 
     const otp = await getFromCache(`${email}:otp`);
     if (otp != resetPasswordDTO.otp)
@@ -121,10 +125,10 @@ class AuthService {
       throw new BadRequestException("invalid credentials");
 
     const payloadData: JwtPayload = {
-      userId: userExist._id.toString(),
+      sub: userExist._id.toString(),
     };
     return generateTokens(payloadData);
   }
 }
 
-export default new AuthService();
+export default new AuthService(new UserRepository());

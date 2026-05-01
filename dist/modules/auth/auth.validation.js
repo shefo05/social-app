@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.forgetPasswordSchema = exports.loginSchema = exports.signupSchema = void 0;
+exports.forgetPasswordSchema = exports.resetPasswordSchema = exports.sendOtpSchema = exports.verifyAccountSchema = exports.loginSchema = exports.signupSchema = void 0;
 const zod_1 = __importDefault(require("zod"));
 const common_1 = require("../../common");
 exports.signupSchema = zod_1.default.object({
@@ -16,5 +16,16 @@ exports.signupSchema = zod_1.default.object({
 exports.loginSchema = zod_1.default.object({
     email: common_1.generalFields.email,
     password: common_1.generalFields.password,
+});
+exports.verifyAccountSchema = zod_1.default.object({
+    email: common_1.generalFields.email,
+    otp: common_1.generalFields.otp,
+});
+exports.sendOtpSchema = zod_1.default.object({
+    email: common_1.generalFields.email,
+});
+exports.resetPasswordSchema = zod_1.default.object({
+    otp: common_1.generalFields.otp,
+    newPassword: common_1.generalFields.password,
 });
 exports.forgetPasswordSchema = {};

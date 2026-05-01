@@ -13,5 +13,17 @@ export const loginSchema = z.object({
   email: GF.email,
   password: GF.password,
 });
+export const verifyAccountSchema = z.object({
+  email: GF.email,
+  otp: GF.otp,
+});
 
+export const sendOtpSchema = z.object({
+  email: GF.email,
+});
+
+export const resetPasswordSchema = z.object({
+  otp: GF.otp,
+  newPassword: GF.password,
+});
 export const forgetPasswordSchema = {};

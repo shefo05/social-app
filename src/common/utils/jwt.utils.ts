@@ -32,3 +32,11 @@ export function generateTokens(payload: JwtPayload) {
 
   return { accessToken, refreshToken };
 }
+
+export function verifyToken(
+  token: string,
+  secret = "vhfdsfgkfsutgrufdkcxzvjkvuirlficubzliuxvaspi",
+) {
+  const payload = jwt.verify(token, secret);
+  return payload;
+}
