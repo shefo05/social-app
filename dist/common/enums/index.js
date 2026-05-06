@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ON_MODEL = exports.SYS_REACTION = exports.SYS_PROVIDER = exports.SYS_GENDER = exports.SYS_ROLE = void 0;
+exports.SYS_USER_RELATION = exports.ON_MODEL = exports.SYS_REACTION = exports.SYS_PROVIDER = exports.SYS_GENDER = exports.SYS_ROLE = void 0;
 var SYS_ROLE;
 (function (SYS_ROLE) {
     SYS_ROLE[SYS_ROLE["user"] = 0] = "user";
@@ -32,3 +32,12 @@ var ON_MODEL;
     ON_MODEL["Reel"] = "Reel";
     ON_MODEL["Story"] = "Story";
 })(ON_MODEL || (exports.ON_MODEL = ON_MODEL = {}));
+var SYS_USER_RELATION;
+(function (SYS_USER_RELATION) {
+    SYS_USER_RELATION["son"] = "son";
+    SYS_USER_RELATION["sister"] = "sister";
+    SYS_USER_RELATION["nephew"] = "nephew";
+    SYS_USER_RELATION["brother"] = "brother";
+    SYS_USER_RELATION["father"] = "father";
+    SYS_USER_RELATION["mother"] = "mother";
+})(SYS_USER_RELATION || (exports.SYS_USER_RELATION = SYS_USER_RELATION = {}));

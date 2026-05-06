@@ -20,3 +20,4 @@ __exportStar(require("./crypto.utils"), exports);
 __exportStar(require("./otp.utils"), exports);
 __exportStar(require("./email.utils"), exports);
 __exportStar(require("./jwt.utils"), exports);
+__exportStar(require("./multer.utils"), exports);

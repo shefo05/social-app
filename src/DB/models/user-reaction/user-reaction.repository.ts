@@ -7,3 +7,5 @@ export class UserReactionRepository extends AbstractRepository<IUserReaction> {
     super(UserReaction);
   }
 }
+
+export const userReactionRepo = new UserReactionRepository();

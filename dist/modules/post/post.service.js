@@ -10,4 +10,4 @@ class PostSevice {
         return await this._postRepo.create({ ...createPostDTO, userId });
     }
 }
-exports.default = new PostSevice(new post_repository_1.PostRepository());
+exports.default = new PostSevice(post_repository_1.postRepo);

@@ -62,4 +62,4 @@ class CommentService {
     }
 }
 exports.CommentService = CommentService;
-exports.default = new CommentService(new post_repository_1.PostRepository(), new comment_repository_1.CommentRepository());
+exports.default = new CommentService(post_repository_1.postRepo, comment_repository_1.commentRepo);

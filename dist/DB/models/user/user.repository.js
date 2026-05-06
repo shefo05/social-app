@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserRepository = void 0;
+exports.userRepo = exports.UserRepository = void 0;
 const abstract_repository_1 = require("../../abstract.repository");
 const user_model_1 = require("./user.model");
 class UserRepository extends abstract_repository_1.AbstractRepository {
@@ -9,3 +9,4 @@ class UserRepository extends abstract_repository_1.AbstractRepository {
     }
 }
 exports.UserRepository = UserRepository;
+exports.userRepo = new UserRepository();

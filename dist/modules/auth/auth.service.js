@@ -4,10 +4,15 @@ const common_1 = require("../../common");
 const jwt_utils_1 = require("../../common/utils/jwt.utils");
 const user_repository_1 = require("../../DB/models/user/user.repository");
 const redis_service_1 = require("../../DB/redis.service");
+const init_1 = require("../../common/cache/redis/init");
 class AuthService {
     _userRepo;
-    constructor(_userRepo) {
+    _mailProvider;
+    _cacheProvider;
+    constructor(_userRepo, _mailProvider, _cacheProvider) {
         this._userRepo = _userRepo;
+        this._mailProvider = _mailProvider;
+        this._cacheProvider = _cacheProvider;
     }
     async checkUserExist(filter) {
         return await this._userRepo.getOne(filter);
@@ -21,12 +26,14 @@ class AuthService {
         if (phoneNumber)
             signupDTO.phoneNumber = (0, common_1.encryption)(phoneNumber);
         const otp = (0, common_1.generateOTP)();
-        (0, common_1.sendMail)({
-            to: email,
-            subject: "confirm email",
-            html: `<p>your OTP to verify account is ${otp}</p>`,
-        });
-        await (0, redis_service_1.setIntoCache)(`${email}:otp`, otp, 3 * 60);
+        await this._mailProvider.send(email, "confirm email", `<p>your OTP to verify account is ${otp}</p>`);
+        // sendMail({
+        //   to: email,
+        //   subject: "confirm email",
+        //   html: `<p>your OTP to verify account is ${otp}</p>`,
+        // });
+        this._cacheProvider.set(`${email}:otp`, otp, 3 * 60);
+        // await setIntoCache(`${email}:otp`, otp, 3 * 60);
         await (0, redis_service_1.setIntoCache)(email, JSON.stringify(signupDTO), 3 * 24 * 60 * 60);
     }
     async verifyAccount(verifyAccoutDTO) {
@@ -53,11 +60,12 @@ class AuthService {
         if (otpExist)
             throw new common_1.BadRequestException("you already have a valid otp, wait 3 minutes");
         const otp = (0, common_1.generateOTP)();
-        (0, common_1.sendMail)({
-            to: email,
-            subject: "send otp",
-            html: `<p>your otp is ${otp}</p>`,
-        });
+        await this._mailProvider.send(email, "confirm email", `<p>your OTP to verify account is ${otp}</p>`);
+        // sendMail({
+        //   to: email,
+        //   subject: "send otp",
+        //   html: `<p>your otp is ${otp}</p>`,
+        // });
         await (0, redis_service_1.setIntoCache)(`${email}:otp`, otp, 3 * 60);
     }
     async resetPassword(resetPasswordDTO, user) {
@@ -86,4 +94,4 @@ class AuthService {
         return (0, jwt_utils_1.generateTokens)(payloadData);
     }
 }
-exports.default = new AuthService(new user_repository_1.UserRepository());
+exports.default = new AuthService(user_repository_1.userRepo, common_1.nodemailerProvider, init_1.redisCacheProvider);

@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
 import { CreateCommentDTO } from "./comment.dto";
-import { PostRepository } from "../../DB/models/post/post.repository";
+import { postRepo, PostRepository } from "../../DB/models/post/post.repository";
 import { IPost, NotFoundException, UnauthorizedException } from "../../common";
-import { CommentRepository } from "../../DB/models/comment/comment.repository";
+import { commentRepo, CommentRepository } from "../../DB/models/comment/comment.repository";
 
 export class CommentService {
   constructor(
@@ -78,6 +78,6 @@ export class CommentService {
 }
 
 export default new CommentService(
-  new PostRepository(),
-  new CommentRepository(),
+  postRepo,
+  commentRepo,
 );

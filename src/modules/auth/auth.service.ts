@@ -7,16 +7,11 @@ import {
   generateOTP,
   hash,
   IUser,
+  nodemailerProvider,
   NotFoundException,
-  sendMail,
 } from "../../common";
 import { generateTokens } from "../../common/utils/jwt.utils";
-import { UserRepository } from "../../DB/models/user/user.repository";
-import {
-  deleteFromCache,
-  getFromCache,
-  setIntoCache,
-} from "../../DB/redis.service";
+import { userRepo, UserRepository } from "../../DB/models/user/user.repository";
 import {
   LoginDTO,
   ResetPasswordDTO,
@@ -24,10 +19,17 @@ import {
   SignupDTO,
   VerifyAccountDTO,
 } from "./auth.dto";
-import { QueryFilter, Types } from "mongoose";
+import { QueryFilter } from "mongoose";
+import { IMailProvider } from "../../common/email/mail.interface";
+import { ICacheProvider } from "../../common/cache/cache.interface";
+import { redisCacheProvider } from "../../common/cache/redis/init";
 
 class AuthService {
-  constructor(private _userRepo: UserRepository) {}
+  constructor(
+    private _userRepo: UserRepository,
+    private _mailProvider: IMailProvider,
+    private _cacheProvider: ICacheProvider,
+  ) {}
 
   async checkUserExist(filter: QueryFilter<IUser>) {
     return await this._userRepo.getOne(filter);
@@ -44,23 +46,38 @@ class AuthService {
 
     const otp = generateOTP();
 
-    sendMail({
-      to: email,
-      subject: "confirm email",
-      html: `<p>your OTP to verify account is ${otp}</p>`,
-    });
+    await this._mailProvider.send(
+      email,
+      "confirm email",
+      `<p>your OTP to verify account is ${otp}</p>`,
+    );
+    // sendMail({
+    //   to: email,
+    //   subject: "confirm email",
+    //   html: `<p>your OTP to verify account is ${otp}</p>`,
+    // });
 
-    await setIntoCache(`${email}:otp`, otp, 3 * 60);
+    // await setIntoCache(`${email}:otp`, otp, 3 * 60);
+    await this._cacheProvider.set(`${email}:otp`, otp, 3 * 60);
 
-    await setIntoCache(email, JSON.stringify(signupDTO), 3 * 24 * 60 * 60);
+    // await setIntoCache(email, JSON.stringify(signupDTO), 3 * 24 * 60 * 60);
+    await this._cacheProvider.set(
+      email,
+      JSON.stringify(signupDTO),
+      3 * 24 * 60 * 60,
+    );
   }
 
   async verifyAccount(verifyAccoutDTO: VerifyAccountDTO) {
     const { email } = verifyAccoutDTO;
-    const userData = await getFromCache(email);
+    // const userData = await getFromCache(email);
+    const userData = await this._cacheProvider.get(email);
+
     if (!userData) throw new NotFoundException("user not found !");
 
-    const otp = await getFromCache(`${email}:otp`);
+    // const otp = await getFromCache(`${email}:otp`);
+    const otp = await this._cacheProvider.get(`${email}:otp`);
+
     if (!otp) throw new BadRequestException("expired otp!");
 
     if (otp != verifyAccoutDTO.otp)
@@ -68,31 +85,42 @@ class AuthService {
 
     await this._userRepo.create(JSON.parse(userData));
 
-    await deleteFromCache(`${email}:otp`);
-    await deleteFromCache(email);
+    // await deleteFromCache(`${email}:otp`);
+    await this._cacheProvider.delete(`${email}:otp`);
+
+    // await deleteFromCache(email);
+    await this._cacheProvider.delete(email);
   }
 
   async sendOTP(sendOtpDTO: SendOtpDTO) {
     const { email } = sendOtpDTO;
     const userExistDB = await this._userRepo.getOne({ email });
 
-    const userExistCache = await getFromCache(email);
+    // const userExistCache = await getFromCache(email);
+    const userExistCache = await this._cacheProvider.get(email);
 
     if (!userExistCache && !userExistDB)
       throw new NotFoundException("user not found");
 
-    const otpExist = await getFromCache(`${email}:otp`);
+    // const otpExist = await getFromCache(`${email}:otp`);
+    const otpExist = await this._cacheProvider.get(`${email}:otp`);
     if (otpExist)
       throw new BadRequestException(
         "you already have a valid otp, wait 3 minutes",
       );
     const otp = generateOTP();
-    sendMail({
-      to: email,
-      subject: "send otp",
-      html: `<p>your otp is ${otp}</p>`,
-    });
-    await setIntoCache(`${email}:otp`, otp, 3 * 60);
+    await this._mailProvider.send(
+      email,
+      "confirm email",
+      `<p>your OTP to verify account is ${otp}</p>`,
+    );
+    // sendMail({
+    //   to: email,
+    //   subject: "send otp",
+    //   html: `<p>your otp is ${otp}</p>`,
+    // });
+    // await setIntoCache(`${email}:otp`, otp, 3 * 60);
+    await this._cacheProvider.set(`${email}:otp`, otp, 3 * 60);
   }
 
   async resetPassword(resetPasswordDTO: ResetPasswordDTO, user: IUser) {
@@ -102,14 +130,17 @@ class AuthService {
 
     // if (!userExist) throw new NotFoundException("user not found");
 
-    const otp = await getFromCache(`${email}:otp`);
+    // const otp = await getFromCache(`${email}:otp`);
+    const otp = await this._cacheProvider.get(`${email}:otp`);
+
     if (otp != resetPasswordDTO.otp)
       throw new BadRequestException("invalid OTP");
 
     const password = await hash(newPassword);
     await this._userRepo.updateOne({ email }, { password });
 
-    await deleteFromCache(`${email}:otp`);
+    // await deleteFromCache(`${email}:otp`);
+    await this._cacheProvider.delete(`${email}:otp`);
   }
 
   async login(loginDTO: LoginDTO) {
@@ -131,4 +162,8 @@ class AuthService {
   }
 }
 
-export default new AuthService(new UserRepository());
+export default new AuthService(
+  userRepo,
+  nodemailerProvider,
+  redisCacheProvider,
+);
