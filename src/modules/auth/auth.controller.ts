@@ -11,6 +11,7 @@ import {
   resetPasswordSchema,
   sendOtpSchema,
   signupSchema,
+  updateUserSchema,
   verifyAccountSchema,
 } from "./auth.validation";
 
@@ -75,6 +76,38 @@ router.post(
       success: true,
       data: tokens,
     });
+  },
+);
+
+router.patch(
+  "/update",
+  isvalid(updateUserSchema),
+  isAuthenticated,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const updatedUser = await authService.update(req.user._id, req.body);
+    return res.status(200).json({
+      message: "password updated successfully",
+      success: true,
+      date: { updatedUser },
+    });
+  },
+);
+
+router.post(
+  "/logout",
+  isAuthenticated,
+  async (req: Request, res: Response, next: NextFunction) => {
+    await authService.logout(req.user._id, "");
+    return res.sendStatus(204);
+  },
+);
+
+router.delete(
+  "/",
+  isAuthenticated,
+  async (req: Request, res: Response, next: NextFunction) => {
+    await authService.delete(req.user._id);
+    return res.sendStatus(204);
   },
 );
 

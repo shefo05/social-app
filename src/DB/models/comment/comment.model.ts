@@ -20,7 +20,7 @@ const schema = new Schema<IComment>(
 );
 
 schema.pre("deleteOne", async function () {
-  console.log(this);
+  // console.log(this);
   let filter = this.getFilter();
 
   const replies = await this.model.find({ parentId: filter._id });
@@ -31,5 +31,6 @@ schema.pre("deleteOne", async function () {
     }
   }
 });
+
 
 export const Comment = model("Comment", schema);

@@ -28,4 +28,6 @@ const schema = new Schema<IPost>(
   },
 );
 
+
+
 export const Post = model<IPost>("Post", schema);

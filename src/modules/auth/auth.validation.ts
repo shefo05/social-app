@@ -12,6 +12,7 @@ export const signupSchema = z.object({
 export const loginSchema = z.object({
   email: GF.email,
   password: GF.password,
+  FCM: z.string().optional(),
 });
 export const verifyAccountSchema = z.object({
   email: GF.email,
@@ -26,4 +27,8 @@ export const resetPasswordSchema = z.object({
   otp: GF.otp,
   newPassword: GF.password,
 });
-export const forgetPasswordSchema = {};
+export const updateUserSchema = z.object({
+  email: GF.email.optional(),
+  phoneNumber: GF.phoneNumber.optional(),
+  userName: GF.userName.optional(),
+});

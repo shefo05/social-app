@@ -44,4 +44,20 @@ router.post("/login", (0, middleware_1.isvalid)(auth_validation_1.loginSchema), 
         data: tokens,
     });
 });
+router.patch("/update", (0, middleware_1.isvalid)(auth_validation_1.updateUserSchema), middleware_1.isAuthenticated, async (req, res, next) => {
+    const updatedUser = await auth_service_1.default.update(req.user._id, req.body);
+    return res.status(200).json({
+        message: "password updated successfully",
+        success: true,
+        date: { updatedUser },
+    });
+});
+router.post("/logout", middleware_1.isAuthenticated, async (req, res, next) => {
+    await auth_service_1.default.logout(req.user._id, "");
+    return res.sendStatus(204);
+});
+router.delete("/", middleware_1.isAuthenticated, async (req, res, next) => {
+    await auth_service_1.default.delete(req.user._id);
+    return res.sendStatus(204);
+});
 exports.default = router;

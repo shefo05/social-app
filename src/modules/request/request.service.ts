@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import mongoose from "mongoose";
 import {
   requestRepo,
   RequestRepository,
@@ -13,6 +13,8 @@ import {
   userFriendRepo,
   UserFriendRepository,
 } from "../../DB/models/user-friend/user-friend.repository";
+import { RequestDashboardQueryDTO } from "./request.dto";
+
 
 class RequestService {
   constructor(
@@ -20,15 +22,17 @@ class RequestService {
     private readonly _userFriendRepo: UserFriendRepository,
   ) {}
 
-  async sendRequest(senderId: Types.ObjectId, receiverId: Types.ObjectId) {
-    if (senderId.toString() === receiverId.toString()) {
+  async sendRequest(sender: mongoose.Types.ObjectId, receiverId: string) {
+    const receiver = new mongoose.Types.ObjectId(receiverId);
+
+    if (sender.toString() === receiver.toString()) {
       throw new BadRequestException("you can't send request to yourself ");
     }
 
     const userFriendExist = await this._userFriendRepo.getOne({
       $or: [
-        { user: senderId, friend: receiverId },
-        { user: receiverId, friend: senderId },
+        { user: sender, friend: receiver },
+        { user: receiver, friend: sender },
       ],
     });
     if (userFriendExist)
@@ -36,20 +40,22 @@ class RequestService {
 
     const requestExist = await this._requestRepo.getOne({
       $or: [
-        { sender: senderId, receiver: receiverId },
-        { sender: receiverId, receiver: senderId },
+        { sender: sender, receiver: receiver },
+        { sender: receiver, receiver: sender },
       ],
     });
     if (requestExist) throw new ConflictException("request already exists");
 
     return await this._requestRepo.create({
-      sender: senderId,
-      receiver: receiverId,
+      sender,
+      receiver,
     });
   }
 
-  async acceptRequest(userId: Types.ObjectId, id: Types.ObjectId) {
-    const requestExist = await this._requestRepo.getOne({ _id: id });
+  async acceptRequest(userId: mongoose.Types.ObjectId, id: string) {
+    const reqId = new mongoose.Types.ObjectId(id);
+
+    const requestExist = await this._requestRepo.getOne({ _id: reqId });
 
     if (!requestExist)
       throw new NotFoundException("request is no longer exist");
@@ -60,7 +66,7 @@ class RequestService {
       );
     }
 
-    await this._requestRepo.deleteOne({ _id: id });
+    await this._requestRepo.deleteOne({ _id: reqId });
 
     await this._userFriendRepo.create({
       user: userId,
@@ -68,8 +74,10 @@ class RequestService {
     });
   }
 
-  async declineRequest(userId: Types.ObjectId, id: Types.ObjectId) {
-    const requestExist = await this._requestRepo.getOne({ _id: id });
+  async declineRequest(userId: mongoose.Types.ObjectId, id: string) {
+    const reqId = new mongoose.Types.ObjectId(id);
+
+    const requestExist = await this._requestRepo.getOne({ _id: reqId });
     if (!requestExist)
       throw new NotFoundException("request is no longer exist");
 
@@ -82,12 +90,14 @@ class RequestService {
       );
     }
 
-    await this._requestRepo.deleteOne({ _id: id });
+    await this._requestRepo.deleteOne({ _id: reqId });
   }
 
-  async declineRequest2(userId: Types.ObjectId, id: Types.ObjectId) {
+  async declineRequest2(userId: mongoose.Types.ObjectId, id: string) {
+    const reqId = new mongoose.Types.ObjectId(id);
+
     const { deletedCount } = await this._requestRepo.deleteOne({
-      _id: id,
+      _id: reqId,
       $or: [{ sender: userId }, { receiver: userId }],
     });
     if (deletedCount == 0)
@@ -96,22 +106,58 @@ class RequestService {
       );
   }
 
-  async removeFriend(userId: Types.ObjectId, friendId: Types.ObjectId) {
-    if (userId.equals(friendId))
+  async removeFriend(userId: mongoose.Types.ObjectId, friendId: string) {
+    const friend = new mongoose.Types.ObjectId(friendId);
+
+    if (userId.equals(friend))
       throw new BadRequestException("you are not allowed to remove yourself");
     const { deletedCount } = await this._userFriendRepo.deleteOne({
       $or: [
         {
           user: userId,
-          friend: friendId,
+          friend: friend,
         },
         {
-          user: friendId,
+          user: friend,
           friend: userId,
         },
       ],
     });
     if (deletedCount == 0) throw new BadRequestException("you are not friends");
+  }
+
+  async getDashboard(
+    userId: mongoose.Types.ObjectId,
+    query: RequestDashboardQueryDTO,
+  ) {
+    const [incomingCount, outgoingCount, incomingRecent, outgoingRecent] =
+      await Promise.all([
+        this._requestRepo.model.countDocuments({ receiver: userId }),
+        this._requestRepo.model.countDocuments({ sender: userId }),
+        this._requestRepo.getAll(
+          { receiver: userId },
+          {},
+          {
+            sort: { createdAt: -1 },
+            limit: query.limit,
+          },
+        ),
+        this._requestRepo.getAll(
+          { sender: userId },
+          {},
+          {
+            sort: { createdAt: -1 },
+            limit: query.limit,
+          },
+        ),
+      ]);
+
+    return {
+      incomingCount,
+      outgoingCount,
+      incomingRecent,
+      outgoingRecent,
+    };
   }
 }
 

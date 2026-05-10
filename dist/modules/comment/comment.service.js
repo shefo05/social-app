@@ -47,6 +47,16 @@ class CommentService {
             throw new common_1.NotFoundException("no comments exist");
         return comments;
     }
+    async update(id, userId, updateCommentDTO) {
+        const commentExist = await this._commentRepo.getOne({ _id: id }, {}, { populate: [{ path: "postId" }] });
+        if (!commentExist)
+            throw new common_1.NotFoundException("comment is not available");
+        const commentAuthor = commentExist.userId.toString();
+        if (userId.toString() != commentAuthor) {
+            throw new common_1.UnauthorizedException("you are not authorized to update this comment");
+        }
+        return await this._commentRepo.updateOne({ _id: id }, updateCommentDTO);
+    }
     async delete(id, userId) {
         const commentExist = await this._commentRepo.getOne({ _id: id }, {}, { populate: [{ path: "postId" }] });
         if (!commentExist)

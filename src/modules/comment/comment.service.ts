@@ -1,8 +1,11 @@
 import { Types } from "mongoose";
-import { CreateCommentDTO } from "./comment.dto";
+import { CreateCommentDTO, UpdateCommentDTO } from "./comment.dto";
 import { postRepo, PostRepository } from "../../DB/models/post/post.repository";
 import { IPost, NotFoundException, UnauthorizedException } from "../../common";
-import { commentRepo, CommentRepository } from "../../DB/models/comment/comment.repository";
+import {
+  commentRepo,
+  CommentRepository,
+} from "../../DB/models/comment/comment.repository";
 
 export class CommentService {
   constructor(
@@ -53,6 +56,27 @@ export class CommentService {
     return comments;
   }
 
+  async update(
+    id: Types.ObjectId,
+    userId: Types.ObjectId,
+    updateCommentDTO: UpdateCommentDTO,
+  ) {
+    const commentExist = await this._commentRepo.getOne(
+      { _id: id },
+      {},
+      { populate: [{ path: "postId" }] },
+    );
+    if (!commentExist) throw new NotFoundException("comment is not available");
+    const commentAuthor = commentExist.userId.toString();
+    if (userId.toString() != commentAuthor) {
+      throw new UnauthorizedException(
+        "you are not authorized to update this comment",
+      );
+    }
+
+    return await this._commentRepo.updateOne({ _id: id }, updateCommentDTO);
+  }
+
   async delete(id: Types.ObjectId, userId: Types.ObjectId) {
     const commentExist = await this._commentRepo.getOne(
       { _id: id },
@@ -77,7 +101,4 @@ export class CommentService {
   }
 }
 
-export default new CommentService(
-  postRepo,
-  commentRepo,
-);
+export default new CommentService(postRepo, commentRepo);

@@ -17,16 +17,25 @@ import {
   ResetPasswordDTO,
   SendOtpDTO,
   SignupDTO,
+  UpdateUserDTO,
   VerifyAccountDTO,
 } from "./auth.dto";
 import { QueryFilter } from "mongoose";
 import { IMailProvider } from "../../common/email/mail.interface";
 import { ICacheProvider } from "../../common/cache/cache.interface";
 import { redisCacheProvider } from "../../common/cache/redis/init";
+import { Types } from "mongoose";
+import { postRepo, PostRepository } from "../../DB/models/post/post.repository";
+import {
+  commentRepo,
+  CommentRepository,
+} from "../../DB/models/comment/comment.repository";
 
 class AuthService {
   constructor(
     private _userRepo: UserRepository,
+    private _postRepo: PostRepository,
+    private _commentRepo: CommentRepository,
     private _mailProvider: IMailProvider,
     private _cacheProvider: ICacheProvider,
   ) {}
@@ -152,18 +161,55 @@ class AuthService {
     const hash = userExist?.password ?? DUMMY_HASH;
     const matchPassword = await compare(password, hash);
 
+    
     if (!matchPassword || !userExist)
       throw new BadRequestException("invalid credentials");
 
     const payloadData: JwtPayload = {
       sub: userExist._id.toString(),
     };
+    if (loginDTO.FCM) {
+      await this._cacheProvider.addToSet(
+        `${userExist._id.toString()}:FCM`,
+        loginDTO.FCM,
+      );
+    }
+
     return generateTokens(payloadData);
+  }
+
+  /**
+   *
+   * @param userId >> from accessToken
+   * @param fcm >> FE
+   */
+  async logout(userId: Types.ObjectId, fcm: string) {
+    await this._cacheProvider.rmSet(`${userId.toString()}:FCM`, fcm);
+  }
+
+  async update(id: Types.ObjectId, updateUserDTO: UpdateUserDTO) {
+    return await this._userRepo.updateOne({ _id: id }, updateUserDTO);
+  }
+
+  async delete(id: Types.ObjectId) {
+    const userPosts = await this._postRepo.getAll({ userId: id }, { _id: 1 });
+    const userPostIds = userPosts.map((post) => post._id);
+
+    if (userPostIds.length > 0) {
+      await this._commentRepo.deleteMany({ postId: { $in: userPostIds } });
+    }
+
+    await this._commentRepo.deleteMany({ userId: id });
+    await this._postRepo.deleteMany({ userId: id });
+
+    return await this._userRepo.deleteOne({ _id: id });
   }
 }
 
 export default new AuthService(
   userRepo,
+  postRepo,
+  commentRepo,
   nodemailerProvider,
   redisCacheProvider,
 );

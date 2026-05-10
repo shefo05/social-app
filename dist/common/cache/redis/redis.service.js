@@ -10,6 +10,16 @@ class RedisCacheProvider {
             console.log(err);
         });
     }
+    async getAllSet(key) {
+        return await this._client.sMembers(key);
+    }
+    async rmSet(key, value) {
+        const number = await this._client.sRem(key, value);
+        return !!number;
+    }
+    async addToSet(key, value) {
+        await this._client.sAdd(key, value);
+    }
     async get(key) {
         return await this._client.get(key);
     }

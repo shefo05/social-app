@@ -10,9 +10,11 @@ const comment_validation_1 = require("./comment.validation");
 const mongoose_1 = require("mongoose");
 const common_1 = require("../../common");
 const comment_repository_1 = require("../../DB/models/comment/comment.repository");
+const init_1 = require("../../common/notification/firebase/init");
+const init_2 = require("../../common/cache/redis/init");
 const router = (0, express_1.Router)({ mergeParams: true });
 router.post("/add-reaction", middleware_1.isAuthenticated, async (req, res, next) => {
-    await (0, common_1.addReaction)(req.body, req.user._id, comment_repository_1.commentRepo);
+    await (0, common_1.addReaction)(req.body, req.user._id, comment_repository_1.commentRepo, init_1.firebasePushNotificationProvider, init_2.redisCacheProvider);
     return res.sendStatus(204);
 });
 router.post("{/:parentId}", (0, middleware_1.isvalid)(comment_validation_1.createCommentSchema), middleware_1.isAuthenticated, async (req, res, next) => {
@@ -32,6 +34,10 @@ router.get("/:postId{/:parentId}", async (req, res, next) => {
 });
 router.delete("/:id", middleware_1.isAuthenticated, async (req, res, next) => {
     await comment_service_1.default.delete(new mongoose_1.Types.ObjectId(req.params.id), req.user._id);
+    return res.sendStatus(204);
+});
+router.patch("/:id", (0, middleware_1.isvalid)(comment_validation_1.updateCommentSchema), middleware_1.isAuthenticated, async (req, res, next) => {
+    await comment_service_1.default.update(new mongoose_1.Types.ObjectId(req.params.id), req.user._id, req.body);
     return res.sendStatus(204);
 });
 exports.default = router;

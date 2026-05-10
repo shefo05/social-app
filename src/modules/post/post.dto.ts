@@ -1,6 +1,10 @@
 import z from "zod";
-import { addReactionPostSchema, createPostSchema } from "./post.validation";
-
+import {
+  addReactionPostSchema,
+  createPostSchema,
+  listPostsQuerySchema,
+  updatePostSchema,
+} from "./post.validation";
 
 export type CreatePostDTO = z.infer<typeof createPostSchema>;
 
@@ -15,3 +19,5 @@ export type AddReactionDTO = z.infer<typeof addReactionPostSchema>;
 //   postId: Types.ObjectId;
 //   reaction: SYS_REACTION;
 // }
+export type UpdatePostDTO = z.infer<typeof updatePostSchema>;
+export type ListPostsQueryDTO = z.infer<typeof listPostsQuerySchema>;

@@ -13,6 +13,16 @@ export class RedisCacheProvider implements ICacheProvider {
       console.log(err);
     });
   }
+  async getAllSet(key: string): Promise<string[] | null> {
+    return await this._client.sMembers(key);
+  }
+  async rmSet(key: string, value: string): Promise<boolean> {
+    const number = await this._client.sRem(key, value);
+    return !!number;
+  }
+  async addToSet(key: string, value: string): Promise<void> {
+    await this._client.sAdd(key, value);
+  }
 
   async get(key: string): Promise<string | null> {
     return await this._client.get(key);

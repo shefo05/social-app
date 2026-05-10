@@ -18,4 +18,5 @@ exports.generalFields = {
     attachments: zod_1.default.array(zod_1.default.string()).optional(),
     otp: zod_1.default.string(),
     id: zod_1.default.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
+    reaction: zod_1.default.enum(enums_1.SYS_REACTION),
 };

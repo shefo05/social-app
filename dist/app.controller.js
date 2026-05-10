@@ -34,6 +34,7 @@ function bootstrap() {
     app.use("/comment", modules_1.commentRouter);
     app.use("/request", modules_1.requestRouter);
     app.use((err, req, res, next) => {
+        console.log(err);
         return res.status(err.cause || 500).json({
             message: err.message,
             success: false,

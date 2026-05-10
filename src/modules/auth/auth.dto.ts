@@ -4,6 +4,7 @@ import {
   resetPasswordSchema,
   sendOtpSchema,
   signupSchema,
+  updateUserSchema,
   verifyAccountSchema,
 } from "./auth.validation";
 
@@ -39,3 +40,5 @@ export type SendOtpDTO = z.infer<typeof sendOtpSchema>;
 //   newPassword: string;
 // }
 export type ResetPasswordDTO = z.infer<typeof resetPasswordSchema>;
+
+export type UpdateUserDTO = z.infer<typeof updateUserSchema>;

@@ -17,7 +17,7 @@ const schema = new mongoose_1.Schema({
     timestamps: true,
 });
 schema.pre("deleteOne", async function () {
-    console.log(this);
+    // console.log(this);
     let filter = this.getFilter();
     const replies = await this.model.find({ parentId: filter._id });
     if (replies.length > 0) {

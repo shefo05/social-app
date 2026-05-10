@@ -36,14 +36,18 @@ export function bootstrap() {
 
   connectDB();
   redisConnect();
-
   app.use(express.json());
+
+  
+
   app.use("/auth", authRouter);
   app.use("/post", postRouter);
   app.use("/comment", commentRouter);
   app.use("/request", requestRouter);
 
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.log(err);
+    
     return res.status((err.cause as number) || 500).json({
       message: err.message,
       success: false,

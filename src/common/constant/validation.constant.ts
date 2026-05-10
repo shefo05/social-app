@@ -1,5 +1,5 @@
-import z, { string } from "zod";
-import { SYS_GENDER } from "../enums";
+import z from "zod";
+import { SYS_GENDER, SYS_REACTION } from "../enums";
 
 export const generalFields = {
   email: z.email(),
@@ -13,4 +13,5 @@ export const generalFields = {
   attachments: z.array(z.string()).optional(),
   otp: z.string(),
   id: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
+  reaction: z.enum(SYS_REACTION),
 };

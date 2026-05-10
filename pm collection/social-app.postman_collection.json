@@ -17,7 +17,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"email\":\"a3@g.com\",\n    \"otp\":\"879608\"\n    \n}",
+              "raw": "{\n    \"email\":\"a4@g.com\",\n    \"otp\":\"458748\"\n    \n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -46,7 +46,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"userName\":\"ali\",\n    \"email\":\"a3@g.com\",\n    \"password\":\"1234@Ali\",\n    \"phoneNumber\":\"01234567890\",\n    \"salary\":\"123\"\n}",
+              "raw": "{\n    \"userName\":\"ali\",\n    \"email\":\"a4@g.com\",\n    \"password\":\"1234@Ali\",\n    \"phoneNumber\":\"01234567890\",\n    \"salary\":\"123\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -149,7 +149,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"email\":\"a3@g.com\",\n    \"password\":\"1234@Ali\"\n    \n}",
+              "raw": "{\n    \"email\":\"a@g.com\",\n    \"password\":\"1234@Ali\"\n    \n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -166,6 +166,66 @@
               "path": [
                 "auth",
                 "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete user",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\":\"welcome social app updated\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update user",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"userName\":\"amr\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/update",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "update"
               ]
             }
           },
@@ -189,7 +249,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"content\":\"new post\"\n}",
+              "raw": "{\n    \"content\":\"new post 2\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -238,6 +298,147 @@
               "path": [
                 "post",
                 "add-reaction"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get post",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/post/69ee6b06c9f258e693275cad",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "post",
+                "69ee6b06c9f258e693275cad"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update post",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\":\"welcome social app updated\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/post/69ee6b06c9f258e693275cad",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "post",
+                "69ee6b06c9f258e693275cad"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete post",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\":\"welcome social app updated\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/post/69ee6b2fc9f258e693275cae",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "post",
+                "69ee6b2fc9f258e693275cae"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get feed",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\":\"welcome social app updated\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/post/feed",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "post",
+                "feed"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all user posts",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\":\"welcome social app updated\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/post/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "post",
+                "me"
               ]
             }
           },
@@ -923,6 +1124,234 @@
               "body": "{\n    \"message\": \"you are not authorized to delete this comment\",\n    \"success\": false\n}"
             }
           ]
+        },
+        {
+          "name": "update comment",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\":\"updated content\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/comment/69f21d3c6f128dd43e87bfa8",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "comment",
+                "69f21d3c6f128dd43e87bfa8"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "request",
+      "item": [
+        {
+          "name": "send request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/request/69f52a7d303f10a8dbbd7be0",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "request",
+                "69f52a7d303f10a8dbbd7be0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "accept request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/request/accept/6a009a46702601695ea407b7",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "request",
+                "accept",
+                "6a009a46702601695ea407b7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "decline request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/request/decline/69f6956541e511e6e9501e74",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "request",
+                "decline",
+                "69f6956541e511e6e9501e74"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "remove friend",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/request/remove/69ea32fe571062f277edf995",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "request",
+                "remove",
+                "69ea32fe571062f277edf995"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "remove friend fail",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/request/remove/69f52a7d303f10a8dbbd7be0",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "request",
+                    "remove",
+                    "69f52a7d303f10a8dbbd7be0"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "X-Powered-By",
+                  "value": "Express"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "49"
+                },
+                {
+                  "key": "ETag",
+                  "value": "W/\"31-7/fX+ZAB0smcpMFQzu57lwb5ano\""
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 03 May 2026 00:34:42 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=5"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"message\": \"you are not friends\",\n    \"success\": false\n}"
+            }
+          ]
+        },
+        {
+          "name": "get dashboard",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\":\"welcome social app updated\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/request/dashboard",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "request",
+                "dashboard"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     }

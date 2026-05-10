@@ -1,10 +1,12 @@
 import { Request, Response, NextFunction, Router } from "express";
 import commentService from "./comment.service";
 import { isAuthenticated, isvalid } from "../../middleware";
-import { createCommentSchema } from "./comment.validation";
+import { createCommentSchema, updateCommentSchema } from "./comment.validation";
 import { Types } from "mongoose";
 import { addReaction } from "../../common";
 import { commentRepo } from "../../DB/models/comment/comment.repository";
+import { firebasePushNotificationProvider } from "../../common/notification/firebase/init";
+import { redisCacheProvider } from "../../common/cache/redis/init";
 
 const router = Router({ mergeParams: true });
 
@@ -12,7 +14,13 @@ router.post(
   "/add-reaction",
   isAuthenticated,
   async (req: Request, res: Response, next: NextFunction) => {
-    await addReaction(req.body, req.user._id, commentRepo);
+    await addReaction(
+      req.body,
+      req.user._id,
+      commentRepo,
+      firebasePushNotificationProvider,
+      redisCacheProvider,
+    );
     return res.sendStatus(204);
   },
 );
@@ -58,4 +66,17 @@ router.delete(
   },
 );
 
+router.patch(
+  "/:id",
+  isvalid(updateCommentSchema),
+  isAuthenticated,
+  async (req: Request, res: Response, next: NextFunction) => {
+    await commentService.update(
+      new Types.ObjectId(req.params.id as string),
+      req.user._id,
+      req.body,
+    );
+    return res.sendStatus(204);
+  },
+);
 export default router;

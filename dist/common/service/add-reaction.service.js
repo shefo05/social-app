@@ -14,7 +14,7 @@ function toModel(collectionName) {
             throw new __1.BadRequestException("invalid collection");
     }
 }
-const addReaction = async (addReactionDTO, userId, repo) => {
+const addReaction = async (addReactionDTO, userId, repo, pushNotificationProvider, cacheProvider) => {
     const docExist = await repo.getOne({
         _id: addReactionDTO.id,
     });
@@ -28,6 +28,7 @@ const addReaction = async (addReactionDTO, userId, repo) => {
         refId: modelId,
         userId,
     });
+    // add new reaction
     if (!userReaction) {
         await userReactionRepo.create({
             onModel: toModel(collectionName),
@@ -36,14 +37,30 @@ const addReaction = async (addReactionDTO, userId, repo) => {
             reaction: addReactionDTO.reaction,
         });
         await repo.updateOne({ _id: addReactionDTO.id }, { $inc: { reactionsCount: 1 } });
+        const fcmTokens = await cacheProvider.getAllSet(`${docExist.userId.toString()}:FCM`);
+        if (fcmTokens) {
+            await pushNotificationProvider.sendAll(fcmTokens, {
+                title: `your ${repo.model.modelName} you shared`,
+                body: `${userId.toString()} has react to your ${repo.model.modelName} by ${addReactionDTO.reaction}`,
+            });
+        }
         return;
     }
+    //remove reaction
     if (userReaction.reaction == addReactionDTO.reaction) {
         await userReactionRepo.deleteOne({ _id: userReaction._id });
         repo.updateOne({ _id: addReactionDTO.id }, { $inc: { reactionsCount: -1 } });
         return;
     }
+    //update reaction
     await userReactionRepo.updateOne({ _id: userReaction._id }, { reaction: addReactionDTO.reaction });
+    const fcmTokens = await cacheProvider.getAllSet(`${docExist.userId.toString()}:FCM`);
+    if (fcmTokens) {
+        await pushNotificationProvider.sendAll(fcmTokens, {
+            title: `your ${repo.model.modelName} you shared`,
+            body: `${userId.toString()} has react to your ${repo.model.modelName} by ${addReactionDTO.reaction}`,
+        });
+    }
     return;
 };
 exports.addReaction = addReaction;
