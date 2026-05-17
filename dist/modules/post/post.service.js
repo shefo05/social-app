@@ -36,7 +36,7 @@ class PostSevice {
         return await this._postRepo.create({ ...createPostDTO, userId });
     }
     async getOne(id) {
-        return await this._postRepo.getOne({ _id: id });
+        return await this._postRepo.getOne({ _id: id }, {}, { populate: { path: "userId" } });
     }
     async update(id, userId, updatePostDTO) {
         const postUpdated = await this._postRepo.updateOne({ _id: id, userId }, updatePostDTO);

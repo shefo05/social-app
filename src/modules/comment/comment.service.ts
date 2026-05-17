@@ -1,7 +1,12 @@
-import { Types } from "mongoose";
+import { _QueryFilter, QueryFilter, Types } from "mongoose";
 import { CreateCommentDTO, UpdateCommentDTO } from "./comment.dto";
 import { postRepo, PostRepository } from "../../DB/models/post/post.repository";
-import { IPost, NotFoundException, UnauthorizedException } from "../../common";
+import {
+  IComment,
+  IPost,
+  NotFoundException,
+  UnauthorizedException,
+} from "../../common";
 import {
   commentRepo,
   CommentRepository,
@@ -12,6 +17,19 @@ export class CommentService {
     private readonly _postRepo: PostRepository,
     private readonly _commentRepo: CommentRepository,
   ) {}
+
+  async getOne(filter: QueryFilter<IComment>) {
+    return await this._commentRepo.getOne(
+      filter,
+      {},
+      {
+        populate: [
+          { path: "userId" },
+          { path: "postId", populate: { path: "userId" } },
+        ],
+      },
+    );
+  }
 
   async create(
     createCommentDTO: CreateCommentDTO,

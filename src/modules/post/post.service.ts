@@ -51,7 +51,11 @@ class PostSevice {
   }
 
   async getOne(id: mongoose.Types.ObjectId) {
-    return await this._postRepo.getOne({ _id: id });
+    return await this._postRepo.getOne(
+      { _id: id },
+      {},
+      { populate: { path: "userId" } },
+    );
   }
 
   async update(
@@ -77,7 +81,6 @@ class PostSevice {
       if (!postExist) throw new NotFoundException("post not found");
 
       await this._commentRepo.deleteMany({ postId: id });
-    
 
       const { deletedCount } = await this._postRepo.deleteOne({
         _id: id,

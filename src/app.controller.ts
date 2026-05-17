@@ -11,6 +11,11 @@ import { redisConnect } from "./DB/redis.connect";
 import { s3CloudProvider } from "./common/cloud/s3/init";
 import { pipeline } from "node:stream";
 import { promisify } from "node:util";
+import { createHandler } from "graphql-http/lib/use/express";
+import { GraphQLObjectType, GraphQLSchema } from "graphql";
+import { userGQLQuery } from "./modules/auth/graphql/user.query.gql";
+import { postGQLQuery } from "./modules/post/graphql/post.query.gql";
+import { commentGQLQuery } from "./modules/comment/graphql/comment.gql.query";
 
 const pipelinePromise = promisify(pipeline);
 
@@ -36,9 +41,36 @@ export function bootstrap() {
 
   connectDB();
   redisConnect();
+
   app.use(express.json());
 
-  
+  const query = new GraphQLObjectType({
+    name: "RootQuery",
+    fields: {
+      //user
+      ...userGQLQuery,
+      //post
+      ...postGQLQuery,
+      //comment
+      ...commentGQLQuery,
+      //request
+    },
+  });
+
+  const mutation = new GraphQLObjectType({
+    name: "RootMutaton",
+    fields: {
+      //auth
+      //post
+      //comment
+      //request
+    },
+  });
+
+  const schema = new GraphQLSchema({
+    query,
+  });
+  app.all("/graphql", createHandler({ schema }));
 
   app.use("/auth", authRouter);
   app.use("/post", postRouter);
@@ -47,7 +79,7 @@ export function bootstrap() {
 
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.log(err);
-    
+
     return res.status((err.cause as number) || 500).json({
       message: err.message,
       success: false,
@@ -58,3 +90,30 @@ export function bootstrap() {
     console.log("app is running on port", port);
   });
 }
+
+// import { createHandler } from "graphql-http/lib/use/express";
+// import { GraphQLObjectType, GraphQLSchema } from "graphql";
+// import { postQuery } from "./modules/post/graphql/post.gql";
+// import { userMutation, userQuery } from "./modules/auth/graphql/user.gql";
+
+// let query = new GraphQLObjectType({
+//   name: "RootQuery",
+//   fields: {
+//     ...userQuery,
+
+//     ...postQuery,
+//   },
+// });
+
+// let mutation = new GraphQLObjectType({
+//   name: "RootMutation",
+//   fields: {
+//     ...userMutation
+//   }
+// });
+
+// let schema = new GraphQLSchema({
+//   query,
+//   mutation,
+// });
+// app.all("/graphql", createHandler({ schema }));

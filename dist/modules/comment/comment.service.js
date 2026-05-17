@@ -11,6 +11,14 @@ class CommentService {
         this._postRepo = _postRepo;
         this._commentRepo = _commentRepo;
     }
+    async getOne(filter) {
+        return await this._commentRepo.getOne(filter, {}, {
+            populate: [
+                { path: "userId" },
+                { path: "postId", populate: { path: "userId" } },
+            ],
+        });
+    }
     async create(createCommentDTO, params, userId) {
         if (params.postId) {
             const postExist = await this._postRepo.getOne({ _id: params.postId });
