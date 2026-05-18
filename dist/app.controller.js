@@ -17,6 +17,7 @@ const graphql_1 = require("graphql");
 const user_query_gql_1 = require("./modules/auth/graphql/user.query.gql");
 const post_query_gql_1 = require("./modules/post/graphql/post.query.gql");
 const comment_gql_query_1 = require("./modules/comment/graphql/comment.gql.query");
+const post_mutation_gql_1 = require("./modules/post/graphql/post.mutation.gql");
 const pipelinePromise = (0, node_util_1.promisify)(node_stream_1.pipeline);
 function bootstrap() {
     const app = (0, express_1.default)();
@@ -49,14 +50,16 @@ function bootstrap() {
     const mutation = new graphql_1.GraphQLObjectType({
         name: "RootMutaton",
         fields: {
-        //auth
-        //post
-        //comment
-        //request
+            //auth
+            //post
+            ...post_mutation_gql_1.postMutationGql,
+            //comment
+            //request
         },
     });
     const schema = new graphql_1.GraphQLSchema({
         query,
+        mutation,
     });
     app.all("/graphql", (0, express_2.createHandler)({ schema }));
     app.use("/auth", modules_1.authRouter);

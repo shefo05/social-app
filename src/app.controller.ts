@@ -16,6 +16,7 @@ import { GraphQLObjectType, GraphQLSchema } from "graphql";
 import { userGQLQuery } from "./modules/auth/graphql/user.query.gql";
 import { postGQLQuery } from "./modules/post/graphql/post.query.gql";
 import { commentGQLQuery } from "./modules/comment/graphql/comment.gql.query";
+import { postMutationGql } from "./modules/post/graphql/post.mutation.gql";
 
 const pipelinePromise = promisify(pipeline);
 
@@ -62,6 +63,7 @@ export function bootstrap() {
     fields: {
       //auth
       //post
+      ...postMutationGql,
       //comment
       //request
     },
@@ -69,6 +71,7 @@ export function bootstrap() {
 
   const schema = new GraphQLSchema({
     query,
+    mutation,
   });
   app.all("/graphql", createHandler({ schema }));
 

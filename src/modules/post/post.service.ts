@@ -10,6 +10,7 @@ import {
   userFriendRepo,
   UserFriendRepository,
 } from "../../DB/models/user-friend/user-friend.repository";
+import { after } from "node:test";
 
 class PostSevice {
   constructor(
@@ -66,6 +67,7 @@ class PostSevice {
     const postUpdated = await this._postRepo.updateOne(
       { _id: id, userId },
       updatePostDTO,
+      { returnDocument: "after" },
     );
 
     if (!postUpdated)
