@@ -10,11 +10,11 @@ import { cn, formatRelativeTime } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
 import { ApiError } from "@/types/api";
-import { Reaction, type Comment, type User } from "@/types";
+import { Reaction, type Comment, type PostAuthor } from "@/types";
 import { commentsApi } from "../api";
 import { CommentForm } from "./CommentForm";
 
-function isPopulatedUser(userId: Comment["userId"]): userId is User {
+function isPopulatedAuthor(userId: Comment["userId"]): userId is PostAuthor {
   return typeof userId === "object" && userId !== null;
 }
 
@@ -82,7 +82,7 @@ function CommentItem({
   const [content, setContent] = useState(comment.content ?? "");
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const author = isPopulatedUser(comment.userId) ? comment.userId : null;
+  const author = isPopulatedAuthor(comment.userId) ? comment.userId : null;
   const authorLabel = author?.userName ?? "Someone";
   const authorId = author?._id ?? (typeof comment.userId === "string" ? comment.userId : null);
   const isAuthor = currentUserId != null && authorId === currentUserId;
