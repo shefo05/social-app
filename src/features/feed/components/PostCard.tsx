@@ -1,20 +1,86 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Avatar } from "@/components/ui/Avatar";
+import { Button } from "@/components/ui/Button";
 import { IconMessageCircle } from "@/components/ui/icons";
 import { cn, formatRelativeTime } from "@/lib/utils";
 import { API_URL } from "@/lib/api-client";
+import { useAuthStore } from "@/stores/auth.store";
+import { useUiStore } from "@/stores/ui.store";
+import { ApiError } from "@/types/api";
 import type { Post, PostAuthor } from "@/types";
+import { feedApi } from "../api";
 import { ReactionButton } from "./ReactionButton";
 
 function isPopulatedAuthor(userId: Post["userId"]): userId is PostAuthor {
   return typeof userId === "object" && userId !== null;
 }
 
-export function PostCard({ post }: { post: Post }) {
+export function PostCard({
+  post,
+  onUpdated,
+  onDeleted,
+}: {
+  post: Post;
+  /** Feed page passes useFeedStore.updatePost to keep the list in sync. */
+  onUpdated?: (id: string, patch: Partial<Post>) => void;
+  /** Feed page passes useFeedStore.removePost; post detail redirects to /feed instead. */
+  onDeleted?: (id: string) => void;
+}) {
+  const router = useRouter();
+  const currentUserId = useAuthStore((s) => s.user?._id);
+  const showToast = useUiStore((s) => s.showToast);
   const author = isPopulatedAuthor(post.userId) ? post.userId : null;
   // Only unpopulated right after creating a post (see note on
   // Post.userId) - fall back to a neutral label rather than faking a name.
   const authorLabel = author?.userName ?? "Someone in your network";
+  const authorId = author?._id ?? (typeof post.userId === "string" ? post.userId : null);
+  const isOwner = currentUserId != null && authorId === currentUserId;
+
+  const [content, setContent] = useState(post.content ?? "");
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const saveEdit = async () => {
+    const trimmed = content.trim();
+    if (!trimmed) return;
+    setIsSaving(true);
+    try {
+      await feedApi.updatePost(post._id, { content: trimmed });
+      onUpdated?.(post._id, { content: trimmed });
+      setContent(trimmed);
+      setIsEditing(false);
+      showToast("Post updated", "success");
+    } catch (err) {
+      showToast(
+        err instanceof ApiError ? err.message : "Couldn't update that post.",
+        "error",
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const deletePost = async () => {
+    if (!window.confirm("Delete this post? This can't be undone.")) return;
+    setIsDeleting(true);
+    try {
+      await feedApi.deletePost(post._id);
+      showToast("Post deleted", "success");
+      if (onDeleted) onDeleted(post._id);
+      else router.replace("/feed");
+    } catch (err) {
+      showToast(
+        err instanceof ApiError ? err.message : "Couldn't delete that post.",
+        "error",
+      );
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <article className="rounded-2xl border border-neutral-200 bg-white p-5 transition-shadow duration-150 hover:shadow-sm">
@@ -28,12 +94,63 @@ export function PostCard({ post }: { post: Post }) {
             {formatRelativeTime(post.createdAt)}
           </p>
         </div>
+        {isOwner && !isEditing && (
+          <div className="flex shrink-0 gap-3">
+            <button
+              onClick={() => {
+                setContent(post.content ?? "");
+                setIsEditing(true);
+              }}
+              className="text-body-sm font-medium text-neutral-500 transition-colors hover:text-ink"
+            >
+              Edit
+            </button>
+            <button
+              onClick={deletePost}
+              disabled={isDeleting}
+              className="text-body-sm font-medium text-neutral-500 transition-colors hover:text-danger disabled:opacity-50"
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
 
-      {post.content && (
-        <p className="mt-4 whitespace-pre-wrap text-body-lg leading-relaxed text-ink">
-          {post.content}
-        </p>
+      {isEditing ? (
+        <div className="mt-4 flex flex-col gap-2">
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            rows={3}
+            className="w-full resize-none rounded-xl border border-neutral-200 bg-neutral-50 px-3.5 py-2.5 text-body text-ink outline-none transition-colors duration-150 focus:border-brand-300 focus:bg-white"
+          />
+          <div className="flex justify-end gap-2">
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => {
+                setIsEditing(false);
+                setContent(post.content ?? "");
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              onClick={saveEdit}
+              isLoading={isSaving}
+              disabled={!content.trim()}
+            >
+              Save
+            </Button>
+          </div>
+        </div>
+      ) : (
+        content && (
+          <p className="mt-4 whitespace-pre-wrap text-body-lg leading-relaxed text-ink">
+            {content}
+          </p>
+        )
       )}
 
       {post.attachments && post.attachments.length > 0 && (

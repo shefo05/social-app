@@ -19,6 +19,8 @@ export default function FeedPage() {
   const setPosts = useFeedStore((s) => s.setPosts);
   const appendPosts = useFeedStore((s) => s.appendPosts);
   const setLoading = useFeedStore((s) => s.setLoading);
+  const updatePost = useFeedStore((s) => s.updatePost);
+  const removePost = useFeedStore((s) => s.removePost);
   const [error, setError] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
 
@@ -67,7 +69,12 @@ export default function FeedPage() {
       ) : (
         <div className="flex flex-col gap-4">
           {posts.map((post) => (
-            <PostCard key={post._id} post={post} />
+            <PostCard
+              key={post._id}
+              post={post}
+              onUpdated={updatePost}
+              onDeleted={removePost}
+            />
           ))}
           {hasNext && (
             <Button

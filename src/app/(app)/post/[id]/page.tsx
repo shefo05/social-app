@@ -27,6 +27,9 @@ export default async function PostPage({
   }
   if (!post) notFound();
 
+  const postAuthorId =
+    typeof post.userId === "string" ? post.userId : post.userId._id;
+
   return (
     <div className="flex flex-col gap-5">
       <Link
@@ -38,7 +41,7 @@ export default async function PostPage({
       <PostCard post={post} />
       <div className="rounded-2xl border border-neutral-200 bg-white p-5">
         <h2 className="mb-4 text-h2 font-semibold text-ink">Comments</h2>
-        <CommentThread postId={id} />
+        <CommentThread postId={id} postAuthorId={postAuthorId} />
       </div>
     </div>
   );
