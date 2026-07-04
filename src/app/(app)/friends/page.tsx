@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FriendList } from "@/features/friends/components/FriendList";
+import { SendRequestForm } from "@/features/friends/components/SendRequestForm";
 
 export const metadata: Metadata = { title: "Friends — Social" };
 
@@ -16,6 +17,7 @@ export default function FriendsPage() {
           Requests
         </Link>
       </div>
+      <SendRequestForm />
       <FriendList />
     </div>
   );
