@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { IconHeart } from "@/components/ui/icons";
-import { Reaction } from "@/types";
+import { getSocket } from "@/lib/socket";
+import { Reaction, type ReactionEvent } from "@/types";
 import { ApiError } from "@/types/api";
 import { useUiStore } from "@/stores/ui.store";
 import { feedApi } from "../api";
@@ -23,6 +24,21 @@ export function ReactionButton({
   const [localCount, setLocalCount] = useState(count);
   const [pending, setPending] = useState(false);
   const showToast = useUiStore((s) => s.showToast);
+
+  // Only fires while this post's room is joined (post detail page) -
+  // the feed page never joins any post room, so this is a no-op there.
+  useEffect(() => {
+    const socket = getSocket();
+    const onReactionNew = (payload: ReactionEvent) => {
+      if (payload.targetType === "post" && payload.targetId === postId) {
+        setLocalCount(payload.reactionsCount);
+      }
+    };
+    socket.on("reaction:new", onReactionNew);
+    return () => {
+      socket.off("reaction:new", onReactionNew);
+    };
+  }, [postId]);
 
   const toggle = async () => {
     if (pending) return;

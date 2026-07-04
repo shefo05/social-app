@@ -8,14 +8,12 @@ const SOCKET_URL =
 let socket: Socket | null = null;
 
 /**
- * Connection-lifecycle singleton only. The backend's RealtimeGateway
- * (src/common/realtime-gateway/realtime.gateway.ts) currently has no
- * `io.use()` auth middleware and no real event handlers beyond
- * connect/disconnect logging - there's no server-side contract to build
- * feature listeners against yet. Sends the JWT via the standard `auth`
- * handshake object so the client is ready the moment the backend adds
- * real verification; don't attach feature-specific event handlers until
- * that contract exists server-side.
+ * Connection-lifecycle singleton. RealtimeGateway (backend) verifies the
+ * JWT sent here via the `auth` handshake object (io.use middleware),
+ * auto-joins `user:{userId}`, and lets clients join/leave `post:{postId}`
+ * via the post:join/post:leave events. Feature listeners (comment:new,
+ * reaction:new, request:new, request:accepted) are attached by the
+ * components/hooks that care about them, all sharing this one socket.
  */
 export function getSocket(): Socket {
   if (socket) return socket;

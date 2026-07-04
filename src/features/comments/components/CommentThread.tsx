@@ -9,8 +9,9 @@ import { IconHeart, IconMessageCircle } from "@/components/ui/icons";
 import { cn, formatRelativeTime } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
+import { getSocket } from "@/lib/socket";
 import { ApiError } from "@/types/api";
-import { Reaction, type Comment, type PostAuthor } from "@/types";
+import { Reaction, type Comment, type PostAuthor, type ReactionEvent } from "@/types";
 import { commentsApi } from "../api";
 import { CommentForm } from "./CommentForm";
 
@@ -25,6 +26,23 @@ function CommentReactionButton({ commentId, count }: { commentId: string; count:
   const [localCount, setLocalCount] = useState(count);
   const [pending, setPending] = useState(false);
   const showToast = useUiStore((s) => s.showToast);
+
+  // Only fires while the parent post's room is joined (post detail
+  // page). reactionsCount is an absolute value from the server, so
+  // there's nothing to dedupe against our own optimistic update - it
+  // just re-confirms the same number.
+  useEffect(() => {
+    const socket = getSocket();
+    const onReactionNew = (payload: ReactionEvent) => {
+      if (payload.targetType === "comment" && payload.targetId === commentId) {
+        setLocalCount(payload.reactionsCount);
+      }
+    };
+    socket.on("reaction:new", onReactionNew);
+    return () => {
+      socket.off("reaction:new", onReactionNew);
+    };
+  }, [commentId]);
 
   const toggle = async () => {
     if (pending) return;
@@ -229,8 +247,44 @@ export function CommentThread({
 
   useEffect(load, [postId]);
 
+  // Join this post's room for the duration of viewing it, and re-join on
+  // every "connect" event (fires on the initial connect too, and again
+  // on any reconnect - room membership doesn't survive a disconnect, so
+  // without this a dropped connection would silently stop delivering
+  // live comments until the next full page load).
+  useEffect(() => {
+    const socket = getSocket();
+    const join = () => socket.emit("post:join", { postId });
+    join();
+    socket.on("connect", join);
+
+    const onCommentNew = (comment: Comment) => {
+      setComments((prev) => {
+        if (!prev) return prev;
+        // Our own comment already landed via CommentForm's onCreated -
+        // the server echoes it back over the socket too, so dedupe by id.
+        if (prev.some((c) => c._id === comment._id)) return prev;
+        return [...prev, comment];
+      });
+    };
+    socket.on("comment:new", onCommentNew);
+
+    return () => {
+      socket.off("connect", join);
+      socket.off("comment:new", onCommentNew);
+      socket.emit("post:leave", { postId });
+    };
+  }, [postId]);
+
   const addComment = (c: Comment) =>
-    setComments((prev) => [...(prev ?? []), c]);
+    setComments((prev) => {
+      if (!prev) return [c];
+      // The socket's comment:new echo can land before this REST response
+      // does (it's already on an open connection vs. a fresh request) -
+      // same dedupe as onCommentNew above, just from the other side.
+      if (prev.some((existing) => existing._id === c._id)) return prev;
+      return [...prev, c];
+    });
 
   const updateComment = (id: string, patch: Partial<Comment>) =>
     setComments(

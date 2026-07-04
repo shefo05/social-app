@@ -35,6 +35,24 @@ export const authApi = {
   resetPassword: (payload: { otp: string; newPassword: string }) =>
     apiClient.patch<MessageResponse>("/auth/reset-password", payload),
 
+  // Unauthenticated recovery path - resetPassword above requires a valid
+  // session, which a locked-out user doesn't have. Uses a distinct
+  // `${email}:reset-otp` cache key server-side, separate from
+  // signup/sendOtp's OTP.
+  forgotPassword: (payload: { email: string }) =>
+    apiClient.post<MessageResponse>("/auth/forgot-password", payload, {
+      auth: false,
+    }),
+
+  resetPasswordConfirm: (payload: {
+    email: string;
+    otp: string;
+    newPassword: string;
+  }) =>
+    apiClient.post<MessageResponse>("/auth/reset-password-confirm", payload, {
+      auth: false,
+    }),
+
   // Note: the backend responds with `date` instead of `data` here (typo
   // in src/modules/auth/auth.controller.ts) - kept faithful to what the
   // API actually returns rather than what it should say.

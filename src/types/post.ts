@@ -37,3 +37,14 @@ export interface PaginatedPosts {
   limit: number;
   hasNext: boolean;
 }
+
+/** reaction:new socket payload - see add-reaction.service.ts. */
+export interface ReactionEvent {
+  targetType: "post" | "comment";
+  targetId: string;
+  postId: string;
+  reactionsCount: number;
+  userId: string;
+  reaction: Reaction;
+  action: "added" | "removed" | "changed";
+}

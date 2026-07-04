@@ -4,17 +4,21 @@ import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/auth.store";
 import { useRequestsStore } from "@/stores/requests.store";
+import { useUiStore } from "@/stores/ui.store";
 import { friendsApi } from "@/features/friends/api";
+import { connectSocket, disconnectSocket } from "@/lib/socket";
+import type { RequestAcceptedEvent, RequestNewEvent } from "@/types";
 import { Navbar } from "./Navbar";
 import { MobileHeader } from "./MobileHeader";
 import { MobileTabBar } from "./MobileTabBar";
-import { ToastHost } from "@/components/feedback/ToastHost";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const hasHydrated = useAuthStore((s) => s.hasHydrated);
   const accessToken = useAuthStore((s) => s.accessToken);
   const setIncomingCount = useRequestsStore((s) => s.setIncomingCount);
+  const incrementIncoming = useRequestsStore((s) => s.incrementIncoming);
+  const showToast = useUiStore((s) => s.showToast);
 
   useEffect(() => {
     if (hasHydrated && !accessToken) {
@@ -31,6 +35,34 @@ export function AppShell({ children }: { children: ReactNode }) {
       .then((res) => setIncomingCount(res.data.incomingCount))
       .catch(() => {});
   }, [hasHydrated, accessToken, setIncomingCount]);
+
+  // Socket lifecycle: connect once authenticated, disconnect on logout.
+  // Personal notifications (request:new/accepted) are global - they
+  // should reach the user regardless of what page they're on, unlike
+  // post:join/leave which is scoped to the post detail page itself.
+  useEffect(() => {
+    if (!hasHydrated || !accessToken) {
+      disconnectSocket();
+      return;
+    }
+    const socket = connectSocket(accessToken);
+
+    const onRequestNew = (payload: RequestNewEvent) => {
+      incrementIncoming();
+      showToast(`${payload.sender.userName} sent you a friend request`, "success");
+    };
+    const onRequestAccepted = (payload: RequestAcceptedEvent) => {
+      showToast(`${payload.accepter.userName} accepted your friend request`, "success");
+    };
+
+    socket.on("request:new", onRequestNew);
+    socket.on("request:accepted", onRequestAccepted);
+
+    return () => {
+      socket.off("request:new", onRequestNew);
+      socket.off("request:accepted", onRequestAccepted);
+    };
+  }, [hasHydrated, accessToken, incrementIncoming, showToast]);
 
   // Gate on hydration so we never flash the shell before we know whether
   // there's actually a persisted session (avoids an SSR/client mismatch
@@ -53,7 +85,6 @@ export function AppShell({ children }: { children: ReactNode }) {
         </main>
       </div>
       <MobileTabBar className="md:hidden" />
-      <ToastHost />
     </div>
   );
 }
