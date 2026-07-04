@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/auth.store";
+import { useRequestsStore } from "@/stores/requests.store";
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/Avatar";
+import { CountBadge } from "@/components/ui/CountBadge";
 import { Logo } from "@/components/ui/Logo";
 import {
   IconHome,
@@ -26,6 +28,7 @@ export function Navbar({ className }: { className?: string }) {
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
+  const incomingCount = useRequestsStore((s) => s.incomingCount);
 
   return (
     <aside
@@ -55,6 +58,9 @@ export function Navbar({ className }: { className?: string }) {
             >
               <Icon className="h-5 w-5" />
               {label}
+              {href === "/friends/requests" && (
+                <CountBadge count={incomingCount} className="ml-auto" />
+              )}
             </Link>
           );
         })}

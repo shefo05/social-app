@@ -3,6 +3,8 @@
 import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/auth.store";
+import { useRequestsStore } from "@/stores/requests.store";
+import { friendsApi } from "@/features/friends/api";
 import { Navbar } from "./Navbar";
 import { MobileHeader } from "./MobileHeader";
 import { MobileTabBar } from "./MobileTabBar";
@@ -12,12 +14,23 @@ export function AppShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const hasHydrated = useAuthStore((s) => s.hasHydrated);
   const accessToken = useAuthStore((s) => s.accessToken);
+  const setIncomingCount = useRequestsStore((s) => s.setIncomingCount);
 
   useEffect(() => {
     if (hasHydrated && !accessToken) {
       router.replace("/login");
     }
   }, [hasHydrated, accessToken, router]);
+
+  // Best-effort badge count for the nav - decorative, so a failure here
+  // just means no badge rather than a broken shell.
+  useEffect(() => {
+    if (!hasHydrated || !accessToken) return;
+    friendsApi
+      .getDashboard(1)
+      .then((res) => setIncomingCount(res.data.incomingCount))
+      .catch(() => {});
+  }, [hasHydrated, accessToken, setIncomingCount]);
 
   // Gate on hydration so we never flash the shell before we know whether
   // there's actually a persisted session (avoids an SSR/client mismatch

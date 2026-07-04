@@ -4,7 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
+import { useRequestsStore } from "@/stores/requests.store";
 import { Avatar } from "@/components/ui/Avatar";
+import { CountBadge } from "@/components/ui/CountBadge";
 import { IconHome, IconUsers, IconBell } from "@/components/ui/icons";
 
 const TAB_ITEMS = [
@@ -16,6 +18,7 @@ const TAB_ITEMS = [
 export function MobileTabBar({ className }: { className?: string }) {
   const pathname = usePathname();
   const user = useAuthStore((s) => s.user);
+  const incomingCount = useRequestsStore((s) => s.incomingCount);
   const profileActive = pathname === "/profile";
 
   return (
@@ -34,9 +37,14 @@ export function MobileTabBar({ className }: { className?: string }) {
             href={href}
             className="flex flex-col items-center gap-1 px-3 py-1"
           >
-            <Icon
-              className={cn("h-5 w-5", active ? "text-brand-600" : "text-neutral-400")}
-            />
+            <span className="relative">
+              <Icon
+                className={cn("h-5 w-5", active ? "text-brand-600" : "text-neutral-400")}
+              />
+              {href === "/friends/requests" && (
+                <CountBadge count={incomingCount} className="absolute -right-1.5 -top-1.5" />
+              )}
+            </span>
             <span
               className={cn(
                 "text-micro",

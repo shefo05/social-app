@@ -5,6 +5,7 @@ import { EmptyState } from "@/components/feedback/EmptyState";
 import { ErrorState } from "@/components/feedback/ErrorState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { IconBell } from "@/components/ui/icons";
+import { useRequestsStore } from "@/stores/requests.store";
 import type { RequestDashboard as RequestDashboardType } from "@/types";
 import { friendsApi } from "../api";
 import { FriendRequestCard } from "./FriendRequestCard";
@@ -12,19 +13,35 @@ import { FriendRequestCard } from "./FriendRequestCard";
 export function RequestsDashboard() {
   const [dashboard, setDashboard] = useState<RequestDashboardType | null>(null);
   const [error, setError] = useState(false);
+  const setIncomingCount = useRequestsStore((s) => s.setIncomingCount);
+  const decrementIncoming = useRequestsStore((s) => s.decrementIncoming);
 
   const load = () => {
     setError(false);
     setDashboard(null);
     friendsApi
       .getDashboard(20)
-      .then((res) => setDashboard(res.data))
+      .then((res) => {
+        setDashboard(res.data);
+        // Sync the nav badge with the authoritative count whenever this
+        // page is actually visited (it may be stale from AppShell's
+        // one-off fetch if requests arrived in another session).
+        setIncomingCount(res.data.incomingCount);
+      })
       .catch(() => setError(true));
   };
 
   useEffect(load, []);
 
   const removeFromList = (id: string) => {
+    // Decrement as a plain call in the event handler, not inside the
+    // setDashboard updater below - React can invoke that updater during
+    // render (e.g. Strict Mode's double-invoke), and triggering a
+    // different store's setState from in there is what to update a
+    // component while rendering a different component warns about.
+    if (dashboard?.incomingRecent.some((r) => r._id === id)) {
+      decrementIncoming();
+    }
     setDashboard((prev) =>
       prev
         ? {
