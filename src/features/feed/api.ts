@@ -14,7 +14,10 @@ export const feedApi = {
     apiClient.get<{ success: true; data: Post }>(`/post/${id}`, {
       auth: false,
     }),
-  createPost: (payload: { content?: string; attachments?: string[] }) =>
+  // FormData when attaching images (field name "attachments", up to 4 -
+  // see uploadAttachments() middleware / post.controller.ts), plain JSON
+  // for text-only posts.
+  createPost: (payload: FormData | { content?: string; attachments?: string[] }) =>
     apiClient.post<{ success: true; data: { createdPost: Post } }>(
       "/post",
       payload,

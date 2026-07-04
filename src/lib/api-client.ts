@@ -13,15 +13,19 @@ interface RequestOptions extends Omit<RequestInit, "body"> {
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { auth = true, headers, body, ...rest } = options;
   const token = auth ? useAuthStore.getState().accessToken : null;
+  // FormData (file uploads) must go through untouched - the browser sets
+  // its own Content-Type with the multipart boundary. Setting it manually
+  // (or JSON.stringify-ing a FormData) would break the request.
+  const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
 
   const res = await fetch(`${API_URL}${path}`, {
     ...rest,
     headers: {
-      "Content-Type": "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },
-    body: body !== undefined ? JSON.stringify(body) : undefined,
+    body: isFormData ? body : body !== undefined ? JSON.stringify(body) : undefined,
   });
 
   if (res.status === 204) {

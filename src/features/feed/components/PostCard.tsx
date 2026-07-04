@@ -7,7 +7,6 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { IconMessageCircle } from "@/components/ui/icons";
 import { cn, formatRelativeTime } from "@/lib/utils";
-import { API_URL } from "@/lib/api-client";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
 import { ApiError } from "@/types/api";
@@ -44,6 +43,7 @@ export function PostCard({
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const attachments = post.attachments;
 
   const saveEdit = async () => {
     const trimmed = content.trim();
@@ -153,20 +153,24 @@ export function PostCard({
         )
       )}
 
-      {post.attachments && post.attachments.length > 0 && (
+      {attachments && attachments.length > 0 && (
         <div
           className={cn(
             "mt-4 grid gap-2",
-            post.attachments.length > 1 ? "grid-cols-2" : "grid-cols-1",
+            attachments.length > 1 ? "grid-cols-2" : "grid-cols-1",
           )}
         >
-          {post.attachments.map((key) => (
+          {attachments.map((url) => (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              key={key}
-              src={`${API_URL}/uploads/${key}`}
+              key={url}
+              src={url}
               alt=""
-              className="max-h-96 w-full rounded-xl object-cover"
+              loading="lazy"
+              className={cn(
+                "w-full rounded-xl bg-neutral-100 object-cover",
+                attachments.length > 1 ? "aspect-square" : "max-h-96",
+              )}
             />
           ))}
         </div>

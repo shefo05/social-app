@@ -38,8 +38,12 @@ export const authApi = {
   // Note: the backend responds with `date` instead of `data` here (typo
   // in src/modules/auth/auth.controller.ts) - kept faithful to what the
   // API actually returns rather than what it should say.
+  // FormData when uploading an avatar (field name "avatar" - see
+  // uploadAvatar() middleware), plain JSON for text field updates.
   updateProfile: (
-    payload: Partial<Pick<User, "email" | "phoneNumber" | "userName">>,
+    payload:
+      | FormData
+      | Partial<Pick<User, "email" | "phoneNumber" | "userName">>,
   ) =>
     apiClient.patch<MessageResponse & { date: { updatedUser: User } }>(
       "/auth/update",
