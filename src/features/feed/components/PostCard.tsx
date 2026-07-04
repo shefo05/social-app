@@ -3,16 +3,16 @@ import { Avatar } from "@/components/ui/Avatar";
 import { IconMessageCircle } from "@/components/ui/icons";
 import { cn, formatRelativeTime } from "@/lib/utils";
 import { API_URL } from "@/lib/api-client";
-import type { Post, User } from "@/types";
+import type { Post, PostAuthor } from "@/types";
 import { ReactionButton } from "./ReactionButton";
 
-function isPopulatedUser(userId: Post["userId"]): userId is User {
+function isPopulatedAuthor(userId: Post["userId"]): userId is PostAuthor {
   return typeof userId === "object" && userId !== null;
 }
 
 export function PostCard({ post }: { post: Post }) {
-  const author = isPopulatedUser(post.userId) ? post.userId : null;
-  // Feed/my-posts list endpoints don't populate the author (see note on
+  const author = isPopulatedAuthor(post.userId) ? post.userId : null;
+  // Only unpopulated right after creating a post (see note on
   // Post.userId) - fall back to a neutral label rather than faking a name.
   const authorLabel = author?.userName ?? "Someone in your network";
 

@@ -9,15 +9,19 @@ export enum Reaction {
   Angry = 5,
 }
 
+export type PostAuthor = Pick<User, "_id" | "userName" | "profilePic">;
+
 export interface Post {
   _id: string;
   /**
-   * Bare ObjectId string on list endpoints (GET /post/feed, GET /post/me) -
-   * those queries don't populate the author. Only GET /post/:id (single
-   * post) returns a populated User object here. Always check the type at
-   * runtime before rendering author info.
+   * All three GET endpoints (feed/me/single) now populate this, but
+   * feed/me only select userName/profilePic (see post.service.ts) while
+   * single-post populates the full User unqualified - PostAuthor is the
+   * common subset safe to rely on everywhere. Still a bare ObjectId
+   * string on writes (create/update responses don't populate). Always
+   * check the type at runtime before rendering author info.
    */
-  userId: string | User;
+  userId: string | PostAuthor;
   content?: string;
   attachments?: string[];
   reactionsCount: number;
