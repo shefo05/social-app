@@ -36,10 +36,15 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   }
 
   if (!res.ok) {
-    if (res.status === 401 && auth) {
-      // The backend has no /auth/refresh endpoint - a 401 here means the
-      // access token is dead for good, not just due for a silent refresh.
-      // Clear the session so route guards bounce the user to /login.
+    // The backend's isAuthenticated middleware also throws 401 for
+    // ownership checks unrelated to session validity (e.g. "you are not
+    // authorized to delete this post" - see post/comment/request
+    // services), so a blanket `status === 401` would wrongly log out a
+    // still-valid session. Only the middleware's own token-rejection
+    // message means the session is actually dead. The backend has no
+    // /auth/refresh endpoint, so once dead it's dead for good - clear the
+    // session so route guards bounce the user to /login.
+    if (res.status === 401 && auth && parsed.message === "invalid or expired token") {
       useAuthStore.getState().logout();
     }
     throw new ApiError(res.status, parsed);
