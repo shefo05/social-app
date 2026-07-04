@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+:root {
+  --background: #faf9f7;
+  --foreground: #12141a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@theme {
+  /*
+   * Brand blue ramp, derived from the real logo mark (sampled solid fill:
+   * rgb(40,76,176) / hsl(224,63%,42%) - hue held constant at 224° through
+   * the ramp. The 50-300 steps carry extra saturation (+~15-20pt) versus
+   * a flat hue/sat hold-constant ramp - verified by rendering both and
+   * comparing: without the boost, the palest tints read as washed-out
+   * lavender-gray instead of a recognizable light blue.
+   */
+  --color-brand-50: #e8edfd;
+  --color-brand-100: #d5dffb;
+  --color-brand-200: #b4c6f8;
+  --color-brand-300: #89a5f0;
+  --color-brand-400: #4e73da;
+  --color-brand-500: #284cb0;
+  --color-brand-600: #1f3e93;
+  --color-brand-700: #173178;
+  --color-brand-800: #11265f;
+  --color-brand-900: #0b1b46;
+
+  /* Ink + warm-leaning neutrals (deliberately not cool slate-gray) */
+  --color-ink: #12141a;
+  --color-neutral-50: #faf9f7;
+  --color-neutral-100: #f4f2ef;
+  --color-neutral-200: #e8e5e0;
+  --color-neutral-300: #d6d2cb;
+  --color-neutral-400: #a8a29b;
+  --color-neutral-500: #7c766e;
+  --color-neutral-600: #5b564f;
+  --color-neutral-700: #3f3b36;
+  --color-neutral-800: #2a2723;
+  --color-neutral-900: #1a1815;
+
+  /* Semantic — muted, not stock Tailwind emerald-500/red-500 */
+  --color-success: #3e8e5a;
+  --color-success-bg: #e7f3ec;
+  --color-danger: #b3462c;
+  --color-danger-bg: #fbeae5;
+
+  /*
+   * Deliberate type scale. Use these instead of default text-sm/base/lg.
+   * Weight and letter-spacing are applied per-use via font-semibold /
+   * tracking-tight utilities, not baked into the token.
+   */
+  --text-display: 2.5rem;
+  --text-display--line-height: 1.1;
+  --text-h1: 1.75rem;
+  --text-h1--line-height: 1.2;
+  --text-h2: 1.25rem;
+  --text-h2--line-height: 1.3;
+  --text-body-lg: 1.0625rem;
+  --text-body-lg--line-height: 1.55;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.5;
+  --text-body-sm: 0.8125rem;
+  --text-body-sm--line-height: 1.4;
+  --text-micro: 0.75rem;
+  --text-micro--line-height: 1.3;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1a1815;
+    --foreground: #f4f2ef;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 180ms ease-out;
+}
