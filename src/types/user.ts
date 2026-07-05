@@ -1,3 +1,5 @@
+import type { PostAuthor } from "./post";
+
 export enum Gender {
   Male = 0,
   Female = 1,
@@ -28,8 +30,9 @@ export interface User {
 
 export interface UserFriend {
   _id: string;
-  user: string;
-  friend: string;
+  /** GET /user/'s friends list always populates both sides now. */
+  user: PostAuthor;
+  friend: PostAuthor;
   relationship?: string;
   closeFriend: boolean;
   createdAt: string;

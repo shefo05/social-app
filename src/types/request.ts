@@ -2,8 +2,9 @@ import type { PostAuthor } from "./post";
 
 export interface FriendRequest {
   _id: string;
-  sender: string;
-  receiver: string;
+  /** GET /request/dashboard always populates both sides now. */
+  sender: PostAuthor;
+  receiver: PostAuthor;
   createdAt: string;
 }
 
@@ -14,8 +15,9 @@ export interface RequestDashboard {
   outgoingRecent: FriendRequest[];
 }
 
-/** Socket payloads - distinct from the REST FriendRequest shape above,
- * which never populates sender/receiver. See realtime.gateway.ts. */
+/** Socket payload - unlike the REST FriendRequest shape above, only
+ * sender is populated here; receiver is just the current user's own id
+ * (no need to populate yourself). See realtime.gateway.ts. */
 export interface RequestNewEvent {
   _id: string;
   sender: PostAuthor;

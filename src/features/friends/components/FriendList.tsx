@@ -32,10 +32,10 @@ export function FriendList() {
   useEffect(load, []);
 
   const remove = async (friendship: UserFriend) => {
-    const otherId =
-      friendship.user === currentUserId ? friendship.friend : friendship.user;
+    const otherPerson =
+      friendship.user._id === currentUserId ? friendship.friend : friendship.user;
     try {
-      await friendsApi.remove(otherId);
+      await friendsApi.remove(otherPerson._id);
       setFriends(
         (prev) => prev?.filter((f) => f._id !== friendship._id) ?? null,
       );
@@ -75,15 +75,15 @@ export function FriendList() {
   return (
     <div className="flex flex-col gap-3">
       {friends.map((f) => {
-        const otherId = f.user === currentUserId ? f.friend : f.user;
+        const otherPerson = f.user._id === currentUserId ? f.friend : f.user;
         return (
           <div
             key={f._id}
             className="flex items-center gap-3 rounded-2xl border border-neutral-200 bg-white p-4"
           >
-            <Avatar name={otherId} size="md" />
+            <Avatar name={otherPerson.userName} src={otherPerson.profilePic} size="md" />
             <p className="flex-1 truncate text-body-sm font-medium text-ink">
-              User …{otherId.slice(-6)}
+              {otherPerson.userName}
             </p>
             <Button size="sm" variant="ghost" onClick={() => remove(f)}>
               Remove
