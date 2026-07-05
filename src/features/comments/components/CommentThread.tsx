@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { ErrorState } from "@/components/feedback/ErrorState";
 import { IconHeart, IconMessageCircle } from "@/components/ui/icons";
-import { cn, formatRelativeTime } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { useRelativeTime } from "@/lib/hooks/useRelativeTime";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
 import { getSocket } from "@/lib/socket";
@@ -20,6 +22,7 @@ function isPopulatedAuthor(userId: Comment["userId"]): userId is PostAuthor {
 }
 
 function CommentReactionButton({ commentId, count }: { commentId: string; count: number }) {
+  const t = useTranslations("comments");
   // Same caveat as the post ReactionButton: no "did I already react"
   // endpoint, so this is optimistic/session-only.
   const [reacted, setReacted] = useState(false);
@@ -55,10 +58,7 @@ function CommentReactionButton({ commentId, count }: { commentId: string; count:
     } catch (err) {
       setReacted(!next);
       setLocalCount((c) => c + (next ? -1 : 1));
-      showToast(
-        err instanceof ApiError ? err.message : "Couldn't react right now.",
-        "error",
-      );
+      showToast(err instanceof ApiError ? err.message : t("reactError"), "error");
     } finally {
       setPending(false);
     }
@@ -93,6 +93,9 @@ function CommentItem({
   onUpdated: (id: string, patch: Partial<Comment>) => void;
   onDeleted: (id: string) => void;
 }) {
+  const t = useTranslations("comments");
+  const tCommon = useTranslations("common");
+  const relativeTime = useRelativeTime();
   const currentUserId = useAuthStore((s) => s.user?._id);
   const showToast = useUiStore((s) => s.showToast);
   const [replying, setReplying] = useState(false);
@@ -101,7 +104,7 @@ function CommentItem({
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const author = isPopulatedAuthor(comment.userId) ? comment.userId : null;
-  const authorLabel = author?.userName ?? "Someone";
+  const authorLabel = author?.userName ?? t("unknownAuthor");
   const authorId = author?._id ?? (typeof comment.userId === "string" ? comment.userId : null);
   const isAuthor = currentUserId != null && authorId === currentUserId;
   const canDelete =
@@ -115,29 +118,23 @@ function CommentItem({
       await commentsApi.update(comment._id, { content: trimmed });
       onUpdated(comment._id, { content: trimmed });
       setIsEditing(false);
-      showToast("Comment updated", "success");
+      showToast(t("updated"), "success");
     } catch (err) {
-      showToast(
-        err instanceof ApiError ? err.message : "Couldn't update that comment.",
-        "error",
-      );
+      showToast(err instanceof ApiError ? err.message : t("updateError"), "error");
     } finally {
       setIsSaving(false);
     }
   };
 
   const deleteComment = async () => {
-    if (!window.confirm("Delete this comment? This can't be undone.")) return;
+    if (!window.confirm(t("deleteConfirm"))) return;
     setIsDeleting(true);
     try {
       await commentsApi.delete(comment._id);
-      showToast("Comment deleted", "success");
+      showToast(t("deleted"), "success");
       onDeleted(comment._id);
     } catch (err) {
-      showToast(
-        err instanceof ApiError ? err.message : "Couldn't delete that comment.",
-        "error",
-      );
+      showToast(err instanceof ApiError ? err.message : t("deleteError"), "error");
       setIsDeleting(false);
     }
   };
@@ -159,7 +156,7 @@ function CommentItem({
                     }}
                     className="text-micro font-medium text-neutral-400 transition-colors hover:text-ink"
                   >
-                    Edit
+                    {tCommon("edit")}
                   </button>
                 )}
                 {canDelete && (
@@ -168,7 +165,7 @@ function CommentItem({
                     disabled={isDeleting}
                     className="text-micro font-medium text-neutral-400 transition-colors hover:text-danger disabled:opacity-50"
                   >
-                    Delete
+                    {tCommon("delete")}
                   </button>
                 )}
               </div>
@@ -186,10 +183,10 @@ function CommentItem({
               />
               <div className="flex gap-2">
                 <Button size="sm" variant="secondary" onClick={() => setIsEditing(false)}>
-                  Cancel
+                  {tCommon("cancel")}
                 </Button>
                 <Button size="sm" onClick={saveEdit} isLoading={isSaving} disabled={!content.trim()}>
-                  Save
+                  {tCommon("save")}
                 </Button>
               </div>
             </div>
@@ -199,14 +196,14 @@ function CommentItem({
         </div>
         <div className="mt-1 flex items-center gap-3 px-1">
           <span className="text-micro text-neutral-400">
-            {formatRelativeTime(comment.createdAt)}
+            {relativeTime(comment.createdAt)}
           </span>
           <CommentReactionButton commentId={comment._id} count={comment.reactionsCount} />
           <button
             onClick={() => setReplying((v) => !v)}
             className="text-micro font-semibold text-neutral-500 transition-colors hover:text-brand-600"
           >
-            Reply
+            {tCommon("reply")}
           </button>
         </div>
         {replying && (
@@ -233,6 +230,7 @@ export function CommentThread({
   postId: string;
   postAuthorId?: string;
 }) {
+  const t = useTranslations("comments");
   const [comments, setComments] = useState<Comment[] | null>(null);
   const [error, setError] = useState(false);
 
@@ -295,7 +293,7 @@ export function CommentThread({
     setComments((prev) => prev?.filter((c) => c._id !== id && c.parentId !== id) ?? null);
 
   if (error) {
-    return <ErrorState title="Couldn't load comments" onRetry={load} />;
+    return <ErrorState title={t("loadError")} onRetry={load} />;
   }
 
   if (comments === null) {
@@ -328,8 +326,8 @@ export function CommentThread({
       {topLevel.length === 0 ? (
         <EmptyState
           icon={<IconMessageCircle className="h-8 w-8" />}
-          title="No comments yet"
-          description="Be the first to say something."
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
         />
       ) : (
         <div className="flex flex-col gap-4">
@@ -344,7 +342,7 @@ export function CommentThread({
                 onDeleted={removeComment}
               />
               {(repliesByParent.get(comment._id) ?? []).map((reply) => (
-                <div key={reply._id} className="ml-11">
+                <div key={reply._id} className="ms-11">
                   <CommentItem
                     comment={reply}
                     postId={postId}

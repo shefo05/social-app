@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/feedback/EmptyState";
@@ -15,6 +16,7 @@ import { authApi } from "@/features/auth/api";
 import { friendsApi } from "../api";
 
 export function FriendList() {
+  const t = useTranslations("friends");
   const currentUserId = useAuthStore((s) => s.user?._id);
   const [friends, setFriends] = useState<UserFriend[] | null>(null);
   const [error, setError] = useState(false);
@@ -39,17 +41,14 @@ export function FriendList() {
       setFriends(
         (prev) => prev?.filter((f) => f._id !== friendship._id) ?? null,
       );
-      showToast("Friend removed", "success");
+      showToast(t("removed"), "success");
     } catch (err) {
-      showToast(
-        err instanceof ApiError ? err.message : "Couldn't remove that friend.",
-        "error",
-      );
+      showToast(err instanceof ApiError ? err.message : t("removeError"), "error");
     }
   };
 
   if (error) {
-    return <ErrorState title="Couldn't load friends" onRetry={load} />;
+    return <ErrorState title={t("loadError")} onRetry={load} />;
   }
 
   if (friends === null) {
@@ -66,8 +65,8 @@ export function FriendList() {
     return (
       <EmptyState
         icon={<IconUsers className="h-8 w-8" />}
-        title="No friends yet"
-        description="Send a friend request to start building your network."
+        title={t("emptyTitle")}
+        description={t("emptyDescription")}
       />
     );
   }
@@ -86,7 +85,7 @@ export function FriendList() {
               {otherPerson.userName}
             </p>
             <Button size="sm" variant="ghost" onClick={() => remove(f)}>
-              Remove
+              {t("remove")}
             </Button>
           </div>
         );

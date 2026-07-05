@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useUiStore } from "@/stores/ui.store";
@@ -15,6 +16,8 @@ import { friendsApi } from "../api";
  * lookup/search endpoint exists.
  */
 export function SendRequestForm() {
+  const t = useTranslations("friends");
+  const tCommon = useTranslations("common");
   const [userId, setUserId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const showToast = useUiStore((s) => s.showToast);
@@ -25,13 +28,10 @@ export function SendRequestForm() {
     setIsSubmitting(true);
     try {
       await friendsApi.send(trimmed);
-      showToast("Friend request sent", "success");
+      showToast(t("requestSent"), "success");
       setUserId("");
     } catch (err) {
-      showToast(
-        err instanceof ApiError ? err.message : "Couldn't send that request.",
-        "error",
-      );
+      showToast(err instanceof ApiError ? err.message : t("requestSentError"), "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -41,14 +41,14 @@ export function SendRequestForm() {
     <div className="rounded-2xl border border-neutral-200 bg-surface p-4">
       <div className="flex items-end gap-2">
         <Input
-          label="Add a friend by user ID"
+          label={t("sendByIdLabel")}
           name="friendUserId"
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") submit();
           }}
-          placeholder="e.g. 6650f1c2a1b2c3d4e5f6a7b8"
+          placeholder={t("sendByIdPlaceholder")}
           className="flex-1"
         />
         <Button
@@ -56,7 +56,7 @@ export function SendRequestForm() {
           isLoading={isSubmitting}
           disabled={!userId.trim()}
         >
-          Send
+          {tCommon("send")}
         </Button>
       </div>
     </div>

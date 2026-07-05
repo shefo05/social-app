@@ -1,0 +1,230 @@
+{
+  "validation": {
+    "email": "Geben Sie eine gültige E-Mail-Adresse ein",
+    "password": "Mindestens 8 Zeichen, mit Groß- und Kleinbuchstaben, einer Zahl und einem Symbol",
+    "userNameMin": "Muss mindestens 2 Zeichen lang sein",
+    "userNameMax": "Darf höchstens 20 Zeichen lang sein",
+    "phoneNumber": "Geben Sie eine gültige ägyptische Telefonnummer ein",
+    "otp": "Geben Sie den Code ein, den wir Ihnen per E-Mail geschickt haben"
+  },
+  "common": {
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "saveChanges": "Änderungen speichern",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "send": "Senden",
+    "post": "Posten",
+    "backToFeed": "Zurück zum Feed",
+    "tryAgain": "Erneut versuchen",
+    "close": "Schließen",
+    "dismiss": "Verwerfen",
+    "reply": "Antworten",
+    "loadMore": "Mehr laden",
+    "unexpectedError": "Server konnte nicht erreicht werden. Versuchen Sie es gleich noch einmal.",
+    "delete_confirm": "Dies kann nicht rückgängig gemacht werden."
+  },
+  "nav": {
+    "brand": "Social",
+    "feed": "Feed",
+    "friends": "Freunde",
+    "requests": "Anfragen",
+    "friendRequests": "Freundschaftsanfragen",
+    "settings": "Einstellungen",
+    "profile": "Profil",
+    "viewProfile": "Profil ansehen",
+    "logOut": "Abmelden",
+    "changeTheme": "Design ändern",
+    "themeLight": "Hell",
+    "themeDark": "Dunkel",
+    "themeSystem": "System",
+    "changeLanguage": "Sprache ändern"
+  },
+  "auth": {
+    "login": {
+      "title": "Willkommen zurück",
+      "subtitle": "Melden Sie sich an, um Neuigkeiten zu sehen.",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "forgotPassword": "Passwort vergessen?",
+      "submit": "Anmelden",
+      "newHere": "Neu hier?",
+      "createAccount": "Konto erstellen",
+      "welcomeBack": "Willkommen zurück, {name}"
+    },
+    "signup": {
+      "title": "Konto erstellen",
+      "subtitle": "Registrieren Sie sich und teilen Sie los.",
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail",
+      "phoneNumber": "Telefonnummer",
+      "phonePlaceholder": "01xxxxxxxxx",
+      "password": "Passwort",
+      "submit": "Konto erstellen",
+      "haveAccount": "Haben Sie bereits ein Konto?",
+      "logIn": "Anmelden",
+      "emailTaken": "Es existiert bereits ein Konto mit dieser E-Mail-Adresse."
+    },
+    "verify": {
+      "title": "Überprüfen Sie Ihre E-Mail",
+      "sentTo": "Wir haben einen Bestätigungscode gesendet an",
+      "code": "Bestätigungscode",
+      "submit": "Konto verifizieren",
+      "resend": "Keinen Code erhalten? Erneut senden",
+      "resent": "Code erneut gesendet — überprüfen Sie Ihren Posteingang"
+    },
+    "forgotPassword": {
+      "title": "Passwort vergessen?",
+      "description": "Geben Sie die E-Mail-Adresse Ihres Kontos ein und wir senden Ihnen einen Code zum Zurücksetzen Ihres Passworts.",
+      "email": "E-Mail",
+      "submit": "Reset-Code senden",
+      "backToLogin": "Zurück zur Anmeldung"
+    },
+    "resetPassword": {
+      "title": "Überprüfen Sie Ihre E-Mail",
+      "sentTo": "Wir haben einen Reset-Code gesendet an",
+      "code": "Reset-Code",
+      "newPassword": "Neues Passwort",
+      "submit": "Passwort zurücksetzen",
+      "resend": "Keinen Code erhalten? Erneut senden",
+      "resent": "Code erneut gesendet — überprüfen Sie Ihren Posteingang",
+      "success": "Passwort aktualisiert — melden Sie sich mit Ihrem neuen Passwort an"
+    },
+    "waking": "Die erste Anfrage nach ein paar Minuten Inaktivität kann bis zu einer Minute dauern — der kostenlose Server wacht gerade auf."
+  },
+  "feed": {
+    "title": "Feed",
+    "loadError": "Ihr Feed konnte nicht geladen werden",
+    "emptyTitle": "Ihr Feed ist ruhig",
+    "emptyDescription": "Fügen Sie Freunde hinzu oder teilen Sie Ihren ersten Beitrag, um loszulegen.",
+    "composer": {
+      "placeholder": "Was gibt's Neues?",
+      "addPhotos": "Fotos hinzufügen",
+      "photoCount": "{count}/{max} Fotos",
+      "removeImage": "Bild entfernen",
+      "posted": "Beitrag geteilt",
+      "postError": "Gerade nicht möglich zu posten."
+    },
+    "post": {
+      "unknownAuthor": "Jemand aus Ihrem Netzwerk",
+      "updated": "Beitrag aktualisiert",
+      "updateError": "Dieser Beitrag konnte nicht aktualisiert werden.",
+      "deleted": "Beitrag gelöscht",
+      "deleteError": "Dieser Beitrag konnte nicht gelöscht werden.",
+      "deleteConfirm": "Diesen Beitrag löschen? Dies kann nicht rückgängig gemacht werden.",
+      "reactError": "Gerade nicht möglich zu reagieren."
+    }
+  },
+  "comments": {
+    "title": "Kommentare",
+    "loadError": "Kommentare konnten nicht geladen werden",
+    "emptyTitle": "Noch keine Kommentare",
+    "emptyDescription": "Seien Sie der Erste, der etwas sagt.",
+    "placeholder": "Schreiben Sie einen Kommentar...",
+    "replyPlaceholder": "Schreiben Sie eine Antwort...",
+    "unknownAuthor": "Jemand",
+    "commentError": "Gerade nicht möglich zu kommentieren.",
+    "updated": "Kommentar aktualisiert",
+    "updateError": "Dieser Kommentar konnte nicht aktualisiert werden.",
+    "deleted": "Kommentar gelöscht",
+    "deleteError": "Dieser Kommentar konnte nicht gelöscht werden.",
+    "deleteConfirm": "Diesen Kommentar löschen? Dies kann nicht rückgängig gemacht werden.",
+    "reactError": "Gerade nicht möglich zu reagieren."
+  },
+  "friends": {
+    "title": "Freunde",
+    "loadError": "Freunde konnten nicht geladen werden",
+    "loadErrorGeneric": "Freunde konnten nicht geladen werden.",
+    "emptyTitle": "Noch keine Freunde",
+    "emptyDescription": "Senden Sie eine Freundschaftsanfrage, um Ihr Netzwerk aufzubauen.",
+    "seeThemHere": "Fügen Sie Freunde hinzu, um sie hier zu sehen.",
+    "remove": "Entfernen",
+    "removed": "Freund entfernt",
+    "removeError": "Dieser Freund konnte nicht entfernt werden.",
+    "sendByIdLabel": "Freund per Benutzer-ID hinzufügen",
+    "sendByIdPlaceholder": "z. B. 6650f1c2a1b2c3d4e5f6a7b8",
+    "requestSent": "Freundschaftsanfrage gesendet",
+    "requestSentError": "Diese Anfrage konnte nicht gesendet werden.",
+    "sentSocketToast": "{name} hat Ihnen eine Freundschaftsanfrage gesendet",
+    "acceptedSocketToast": "{name} hat Ihre Freundschaftsanfrage angenommen",
+    "requests": {
+      "loadError": "Anfragen konnten nicht geladen werden",
+      "incoming": "Eingehend",
+      "sent": "Gesendet",
+      "noPending": "Keine ausstehenden Anfragen",
+      "noneSent": "Sie haben keine Anfragen gesendet",
+      "wantsToConnect": "Möchte sich mit Ihnen vernetzen",
+      "requestSentLabel": "Anfrage gesendet",
+      "decline": "Ablehnen",
+      "accept": "Annehmen",
+      "accepted": "Freundschaftsanfrage angenommen",
+      "declined": "Anfrage abgelehnt",
+      "respondError": "Diese Anfrage konnte nicht aktualisiert werden."
+    },
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "profile": {
+    "title": "Ihr Profil",
+    "genderMale": "Männlich",
+    "genderFemale": "Weiblich",
+    "avatar": {
+      "changePhoto": "Foto ändern",
+      "updated": "Profilfoto aktualisiert",
+      "updateError": "Ihr Foto konnte nicht aktualisiert werden."
+    },
+    "settingsForm": {
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail",
+      "phoneNumber": "Telefonnummer",
+      "phonePlaceholder": "01xxxxxxxxx",
+      "submit": "Änderungen speichern",
+      "updated": "Profil aktualisiert",
+      "updateError": "Änderungen konnten nicht gespeichert werden."
+    },
+    "password": {
+      "emailCode": "Senden Sie mir einen Code per E-Mail, um mein Passwort zu ändern",
+      "codeSent": "Überprüfen Sie Ihre E-Mail auf einen Code",
+      "code": "Bestätigungscode",
+      "newPassword": "Neues Passwort",
+      "submit": "Passwort aktualisieren",
+      "updated": "Passwort aktualisiert",
+      "sendError": "Ein Code konnte nicht gesendet werden.",
+      "updateError": "Ihr Passwort konnte nicht aktualisiert werden."
+    },
+    "deleteAccount": {
+      "sectionTitle": "Gefahrenzone",
+      "description": "Löschen Sie dauerhaft Ihr Konto, Ihre Beiträge und Kommentare. Dies kann nicht rückgängig gemacht werden.",
+      "trigger": "Konto löschen",
+      "modalTitle": "Ihr Konto löschen?",
+      "modalDescription": "Dies löscht dauerhaft Ihr Konto, Ihre Beiträge und Kommentare. Es gibt keine Möglichkeit, dies rückgängig zu machen. Geben Sie <phrase>DELETE</phrase> ein, um zu bestätigen.",
+      "confirm": "Endgültig löschen",
+      "deleted": "Ihr Konto wurde gelöscht",
+      "deleteError": "Ihr Konto konnte nicht gelöscht werden."
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "profilePhoto": "Profilfoto",
+    "profileDetails": "Profildetails",
+    "password": "Passwort"
+  },
+  "errors": {
+    "boundaryTitle": "Etwas ist schiefgelaufen",
+    "boundaryDescription": "Das liegt an uns, nicht an Ihnen. Versuchen Sie es noch einmal oder kehren Sie zu Ihrem Feed zurück.",
+    "notFoundTitle": "Seite nicht gefunden",
+    "notFoundDescription": "Diese Seite existiert nicht oder wurde möglicherweise entfernt.",
+    "genericTitle": "Etwas konnte nicht geladen werden",
+    "genericDescription": "Das liegt an uns, nicht an Ihnen. Versuchen Sie es noch einmal."
+  },
+  "offline": {
+    "title": "Sie sind offline",
+    "description": "Es sieht so aus, als hätten Sie Ihre Verbindung verloren. Stellen Sie die Verbindung wieder her, und wir machen dort weiter, wo Sie aufgehört haben."
+  },
+  "time": {
+    "justNow": "gerade eben",
+    "minutesAgo": "vor {count} Min.",
+    "hoursAgo": "vor {count} Std.",
+    "daysAgo": "vor {count} Tg."
+  }
+}

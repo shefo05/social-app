@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { IconHeart } from "@/components/ui/icons";
 import { getSocket } from "@/lib/socket";
@@ -20,6 +21,7 @@ export function ReactionButton({
   // is optimistic and session-only - it won't survive a page reload.
   // Only "like" is wired up in the UI (backend supports 6 reaction
   // types, but a 6-option picker felt like clutter for a first pass).
+  const t = useTranslations("feed.post");
   const [reacted, setReacted] = useState(false);
   const [localCount, setLocalCount] = useState(count);
   const [pending, setPending] = useState(false);
@@ -51,10 +53,7 @@ export function ReactionButton({
     } catch (err) {
       setReacted(!next);
       setLocalCount((c) => c + (next ? -1 : 1));
-      showToast(
-        err instanceof ApiError ? err.message : "Couldn't react right now.",
-        "error",
-      );
+      showToast(err instanceof ApiError ? err.message : t("reactError"), "error");
     } finally {
       setPending(false);
     }

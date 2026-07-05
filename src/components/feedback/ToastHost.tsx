@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useUiStore, type ToastVariant } from "@/stores/ui.store";
 import { cn } from "@/lib/utils";
 import { IconCheck, IconAlertCircle, IconX } from "@/components/ui/icons";
@@ -13,6 +14,7 @@ const variantStyles: Record<ToastVariant, string> = {
 };
 
 export function ToastHost() {
+  const t = useTranslations("common");
   const toasts = useUiStore((s) => s.toasts);
   const dismissToast = useUiStore((s) => s.dismissToast);
 
@@ -38,7 +40,7 @@ export function ToastHost() {
           <button
             onClick={() => dismissToast(toast.id)}
             className="shrink-0 opacity-70 transition-opacity hover:opacity-100"
-            aria-label="Dismiss"
+            aria-label={t("dismiss")}
           >
             <IconX className="h-3.5 w-3.5" />
           </button>

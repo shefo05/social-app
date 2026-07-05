@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { PostCard } from "@/features/feed/components/PostCard";
 import { CommentThread } from "@/features/comments/components/CommentThread";
 import { IconChevronLeft } from "@/components/ui/icons";
@@ -29,6 +30,7 @@ export default async function PostPage({
 
   const postAuthorId =
     typeof post.userId === "string" ? post.userId : post.userId._id;
+  const t = await getTranslations();
 
   return (
     <div className="flex flex-col gap-5">
@@ -36,11 +38,11 @@ export default async function PostPage({
         href="/feed"
         className="flex items-center gap-1 text-body-sm font-medium text-neutral-500 transition-colors hover:text-ink"
       >
-        <IconChevronLeft className="h-4 w-4" /> Back to feed
+        <IconChevronLeft className="h-4 w-4 rtl:rotate-180" /> {t("common.backToFeed")}
       </Link>
       <PostCard post={post} />
       <div className="rounded-2xl border border-neutral-200 bg-surface p-5">
-        <h2 className="mb-4 text-h2 font-semibold text-ink">Comments</h2>
+        <h2 className="mb-4 text-h2 font-semibold text-ink">{t("comments.title")}</h2>
         <CommentThread postId={id} postAuthorId={postAuthorId} />
       </div>
     </div>

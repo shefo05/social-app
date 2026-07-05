@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Avatar } from "@/components/ui/Avatar";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { cn } from "@/lib/utils";
@@ -20,6 +21,7 @@ import { authApi } from "@/features/auth/api";
  * component itself won't need to change at all.
  */
 export function FriendsSidebar({ className }: { className?: string }) {
+  const t = useTranslations("friends");
   const currentUserId = useAuthStore((s) => s.user?._id);
   const onlineUserIds = usePresenceStore((s) => s.onlineUserIds);
   const [friends, setFriends] = useState<UserFriend[] | null>(null);
@@ -39,10 +41,10 @@ export function FriendsSidebar({ className }: { className?: string }) {
         className,
       )}
     >
-      <h2 className="text-h2 font-semibold text-ink">Friends</h2>
+      <h2 className="text-h2 font-semibold text-ink">{t("title")}</h2>
 
       {error ? (
-        <p className="text-body-sm text-neutral-500">Couldn&apos;t load friends.</p>
+        <p className="text-body-sm text-neutral-500">{t("loadErrorGeneric")}</p>
       ) : friends === null ? (
         <div className="flex flex-col gap-3">
           {[0, 1, 2].map((i) => (
@@ -50,9 +52,7 @@ export function FriendsSidebar({ className }: { className?: string }) {
           ))}
         </div>
       ) : friends.length === 0 ? (
-        <p className="text-body-sm text-neutral-500">
-          Add friends to see them here.
-        </p>
+        <p className="text-body-sm text-neutral-500">{t("seeThemHere")}</p>
       ) : (
         <ul className="flex flex-col gap-1">
           {friends.map((f) => {
@@ -68,7 +68,7 @@ export function FriendsSidebar({ className }: { className?: string }) {
                     <Avatar name={otherPerson.userName} src={otherPerson.profilePic} size="sm" />
                     <span
                       role="status"
-                      aria-label={isOnline ? "Online" : "Offline"}
+                      aria-label={isOnline ? t("online") : t("offline")}
                       className={cn(
                         "absolute -end-0.5 -bottom-0.5 h-2.5 w-2.5 rounded-full border-2 border-surface",
                         isOnline ? "bg-success" : "bg-neutral-300",

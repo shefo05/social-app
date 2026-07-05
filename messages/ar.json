@@ -1,0 +1,230 @@
+{
+  "validation": {
+    "email": "أدخل بريدًا إلكترونيًا صالحًا",
+    "password": "8 أحرف على الأقل، تحتوي على حرف كبير وحرف صغير ورقم ورمز",
+    "userNameMin": "يجب أن يكون حرفين على الأقل",
+    "userNameMax": "يجب ألا يزيد عن 20 حرفًا",
+    "phoneNumber": "أدخل رقم هاتف مصري صالح",
+    "otp": "أدخل الرمز الذي أرسلناه إلى بريدك الإلكتروني"
+  },
+  "common": {
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "saveChanges": "حفظ التغييرات",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "send": "إرسال",
+    "post": "نشر",
+    "backToFeed": "العودة إلى الخلاصة",
+    "tryAgain": "حاول مرة أخرى",
+    "close": "إغلاق",
+    "dismiss": "تجاهل",
+    "reply": "رد",
+    "loadMore": "تحميل المزيد",
+    "unexpectedError": "تعذّر الوصول إلى الخادم. حاول مرة أخرى بعد قليل.",
+    "delete_confirm": "لا يمكن التراجع عن هذا الإجراء."
+  },
+  "nav": {
+    "brand": "سوشال",
+    "feed": "الخلاصة",
+    "friends": "الأصدقاء",
+    "requests": "الطلبات",
+    "friendRequests": "طلبات الصداقة",
+    "settings": "الإعدادات",
+    "profile": "الملف الشخصي",
+    "viewProfile": "عرض الملف الشخصي",
+    "logOut": "تسجيل الخروج",
+    "changeTheme": "تغيير المظهر",
+    "themeLight": "فاتح",
+    "themeDark": "داكن",
+    "themeSystem": "النظام",
+    "changeLanguage": "تغيير اللغة"
+  },
+  "auth": {
+    "login": {
+      "title": "مرحبًا بعودتك",
+      "subtitle": "سجّل الدخول لمعرفة الجديد.",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "submit": "تسجيل الدخول",
+      "newHere": "جديد هنا؟",
+      "createAccount": "إنشاء حساب",
+      "welcomeBack": "مرحبًا بعودتك، {name}"
+    },
+    "signup": {
+      "title": "إنشاء حساب",
+      "subtitle": "انضم وابدأ المشاركة.",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phoneNumber": "رقم الهاتف",
+      "phonePlaceholder": "01xxxxxxxxx",
+      "password": "كلمة المرور",
+      "submit": "إنشاء الحساب",
+      "haveAccount": "لديك حساب بالفعل؟",
+      "logIn": "تسجيل الدخول",
+      "emailTaken": "يوجد حساب بالفعل بهذا البريد الإلكتروني."
+    },
+    "verify": {
+      "title": "تحقق من بريدك الإلكتروني",
+      "sentTo": "أرسلنا رمز التحقق إلى",
+      "code": "رمز التحقق",
+      "submit": "تأكيد الحساب",
+      "resend": "لم تحصل على رمز؟ إعادة الإرسال",
+      "resent": "تم إعادة إرسال الرمز — تحقق من بريدك الوارد"
+    },
+    "forgotPassword": {
+      "title": "نسيت كلمة المرور؟",
+      "description": "أدخل البريد الإلكتروني الخاص بحسابك وسنرسل لك رمزًا لإعادة تعيين كلمة المرور.",
+      "email": "البريد الإلكتروني",
+      "submit": "إرسال رمز إعادة التعيين",
+      "backToLogin": "العودة إلى تسجيل الدخول"
+    },
+    "resetPassword": {
+      "title": "تحقق من بريدك الإلكتروني",
+      "sentTo": "أرسلنا رمز إعادة التعيين إلى",
+      "code": "رمز إعادة التعيين",
+      "newPassword": "كلمة المرور الجديدة",
+      "submit": "إعادة تعيين كلمة المرور",
+      "resend": "لم تحصل على رمز؟ إعادة الإرسال",
+      "resent": "تم إعادة إرسال الرمز — تحقق من بريدك الوارد",
+      "success": "تم تحديث كلمة المرور — سجّل الدخول بكلمة المرور الجديدة"
+    },
+    "waking": "قد يستغرق أول طلب بعد بضع دقائق من عدم النشاط حتى دقيقة كاملة — الخادم المجاني يستيقظ الآن."
+  },
+  "feed": {
+    "title": "الخلاصة",
+    "loadError": "تعذّر تحميل خلاصتك",
+    "emptyTitle": "خلاصتك هادئة",
+    "emptyDescription": "أضف بعض الأصدقاء أو شارك أول منشور لك للبدء.",
+    "composer": {
+      "placeholder": "بم تفكر؟",
+      "addPhotos": "إضافة صور",
+      "photoCount": "{count}/{max} صور",
+      "removeImage": "إزالة الصورة",
+      "posted": "تمت مشاركة المنشور",
+      "postError": "تعذّر النشر الآن."
+    },
+    "post": {
+      "unknownAuthor": "شخص ما في شبكتك",
+      "updated": "تم تحديث المنشور",
+      "updateError": "تعذّر تحديث هذا المنشور.",
+      "deleted": "تم حذف المنشور",
+      "deleteError": "تعذّر حذف هذا المنشور.",
+      "deleteConfirm": "حذف هذا المنشور؟ لا يمكن التراجع عن هذا الإجراء.",
+      "reactError": "تعذّر التفاعل الآن."
+    }
+  },
+  "comments": {
+    "title": "التعليقات",
+    "loadError": "تعذّر تحميل التعليقات",
+    "emptyTitle": "لا توجد تعليقات بعد",
+    "emptyDescription": "كن أول من يعلّق.",
+    "placeholder": "اكتب تعليقًا...",
+    "replyPlaceholder": "اكتب ردًا...",
+    "unknownAuthor": "شخص ما",
+    "commentError": "تعذّر التعليق الآن.",
+    "updated": "تم تحديث التعليق",
+    "updateError": "تعذّر تحديث هذا التعليق.",
+    "deleted": "تم حذف التعليق",
+    "deleteError": "تعذّر حذف هذا التعليق.",
+    "deleteConfirm": "حذف هذا التعليق؟ لا يمكن التراجع عن هذا الإجراء.",
+    "reactError": "تعذّر التفاعل الآن."
+  },
+  "friends": {
+    "title": "الأصدقاء",
+    "loadError": "تعذّر تحميل الأصدقاء",
+    "loadErrorGeneric": "تعذّر تحميل الأصدقاء.",
+    "emptyTitle": "لا يوجد أصدقاء بعد",
+    "emptyDescription": "أرسل طلب صداقة لبدء بناء شبكتك.",
+    "seeThemHere": "أضف أصدقاء لرؤيتهم هنا.",
+    "remove": "إزالة",
+    "removed": "تمت إزالة الصديق",
+    "removeError": "تعذّر إزالة هذا الصديق.",
+    "sendByIdLabel": "أضف صديقًا عبر معرّف المستخدم",
+    "sendByIdPlaceholder": "مثال: 6650f1c2a1b2c3d4e5f6a7b8",
+    "requestSent": "تم إرسال طلب الصداقة",
+    "requestSentError": "تعذّر إرسال هذا الطلب.",
+    "sentSocketToast": "أرسل لك {name} طلب صداقة",
+    "acceptedSocketToast": "قبل {name} طلب صداقتك",
+    "requests": {
+      "loadError": "تعذّر تحميل الطلبات",
+      "incoming": "واردة",
+      "sent": "مرسلة",
+      "noPending": "لا توجد طلبات معلّقة",
+      "noneSent": "لم ترسل أي طلبات",
+      "wantsToConnect": "يريد التواصل معك",
+      "requestSentLabel": "تم إرسال الطلب",
+      "decline": "رفض",
+      "accept": "قبول",
+      "accepted": "تم قبول طلب الصداقة",
+      "declined": "تم رفض الطلب",
+      "respondError": "تعذّر تحديث هذا الطلب."
+    },
+    "online": "متصل",
+    "offline": "غير متصل"
+  },
+  "profile": {
+    "title": "ملفك الشخصي",
+    "genderMale": "ذكر",
+    "genderFemale": "أنثى",
+    "avatar": {
+      "changePhoto": "تغيير الصورة",
+      "updated": "تم تحديث صورة الملف الشخصي",
+      "updateError": "تعذّر تحديث صورتك."
+    },
+    "settingsForm": {
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phoneNumber": "رقم الهاتف",
+      "phonePlaceholder": "01xxxxxxxxx",
+      "submit": "حفظ التغييرات",
+      "updated": "تم تحديث الملف الشخصي",
+      "updateError": "تعذّر حفظ التغييرات."
+    },
+    "password": {
+      "emailCode": "أرسل لي رمزًا عبر البريد الإلكتروني لتغيير كلمة المرور",
+      "codeSent": "تحقق من بريدك الإلكتروني للحصول على الرمز",
+      "code": "رمز التحقق",
+      "newPassword": "كلمة المرور الجديدة",
+      "submit": "تحديث كلمة المرور",
+      "updated": "تم تحديث كلمة المرور",
+      "sendError": "تعذّر إرسال رمز.",
+      "updateError": "تعذّر تحديث كلمة المرور."
+    },
+    "deleteAccount": {
+      "sectionTitle": "منطقة الخطر",
+      "description": "احذف حسابك ومنشوراتك وتعليقاتك نهائيًا. لا يمكن التراجع عن هذا الإجراء.",
+      "trigger": "حذف الحساب",
+      "modalTitle": "حذف حسابك؟",
+      "modalDescription": "سيؤدي هذا إلى حذف حسابك ومنشوراتك وتعليقاتك نهائيًا. لا توجد طريقة للتراجع عن هذا. اكتب <phrase>DELETE</phrase> للتأكيد.",
+      "confirm": "حذف نهائي",
+      "deleted": "تم حذف حسابك",
+      "deleteError": "تعذّر حذف حسابك."
+    }
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "profilePhoto": "صورة الملف الشخصي",
+    "profileDetails": "تفاصيل الملف الشخصي",
+    "password": "كلمة المرور"
+  },
+  "errors": {
+    "boundaryTitle": "حدث خطأ ما",
+    "boundaryDescription": "هذا خطأ منا، وليس منك. حاول مرة أخرى، أو عد إلى خلاصتك.",
+    "notFoundTitle": "الصفحة غير موجودة",
+    "notFoundDescription": "هذه الصفحة غير موجودة، أو ربما تمت إزالتها.",
+    "genericTitle": "تعذّر تحميل شيء ما",
+    "genericDescription": "هذا خطأ منا، وليس منك. حاول مرة أخرى."
+  },
+  "offline": {
+    "title": "أنت غير متصل",
+    "description": "يبدو أنك فقدت اتصالك. أعد الاتصال وسنكمل من حيث توقفت."
+  },
+  "time": {
+    "justNow": "الآن",
+    "minutesAgo": "منذ {count} د",
+    "hoursAgo": "منذ {count} س",
+    "daysAgo": "منذ {count} ي"
+  }
+}

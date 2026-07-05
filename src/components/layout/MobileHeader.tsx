@@ -1,9 +1,12 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Logo } from "@/components/ui/Logo";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./ThemeToggle";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export function MobileHeader({ className }: { className?: string }) {
+  const t = useTranslations("nav");
   return (
     <header
       className={cn(
@@ -13,9 +16,12 @@ export function MobileHeader({ className }: { className?: string }) {
     >
       <Link href="/feed" className="flex items-center gap-2">
         <Logo size={28} />
-        <span className="text-h2 font-semibold text-ink">Social</span>
+        <span className="text-h2 font-semibold text-ink">{t("brand")}</span>
       </Link>
-      <ThemeToggle />
+      <div className="flex items-center gap-1">
+        <LanguageSwitcher />
+        <ThemeToggle />
+      </div>
     </header>
   );
 }

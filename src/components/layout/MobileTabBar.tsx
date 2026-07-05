@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
 import { useRequestsStore } from "@/stores/requests.store";
@@ -10,12 +11,13 @@ import { CountBadge } from "@/components/ui/CountBadge";
 import { IconHome, IconUsers, IconBell } from "@/components/ui/icons";
 
 const TAB_ITEMS = [
-  { href: "/feed", label: "Feed", icon: IconHome },
-  { href: "/friends", label: "Friends", icon: IconUsers },
-  { href: "/friends/requests", label: "Requests", icon: IconBell },
-];
+  { href: "/feed", key: "feed", icon: IconHome },
+  { href: "/friends", key: "friends", icon: IconUsers },
+  { href: "/friends/requests", key: "requests", icon: IconBell },
+] as const;
 
 export function MobileTabBar({ className }: { className?: string }) {
+  const t = useTranslations("nav");
   const pathname = usePathname();
   const user = useAuthStore((s) => s.user);
   const incomingCount = useRequestsStore((s) => s.incomingCount);
@@ -29,7 +31,7 @@ export function MobileTabBar({ className }: { className?: string }) {
       )}
       style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
     >
-      {TAB_ITEMS.map(({ href, label, icon: Icon }) => {
+      {TAB_ITEMS.map(({ href, key, icon: Icon }) => {
         const active = pathname === href || pathname?.startsWith(`${href}/`);
         return (
           <Link
@@ -42,7 +44,7 @@ export function MobileTabBar({ className }: { className?: string }) {
                 className={cn("h-5 w-5", active ? "text-brand-600" : "text-neutral-400")}
               />
               {href === "/friends/requests" && (
-                <CountBadge count={incomingCount} className="absolute -right-1.5 -top-1.5" />
+                <CountBadge count={incomingCount} className="absolute -end-1.5 -top-1.5" />
               )}
             </span>
             <span
@@ -51,7 +53,7 @@ export function MobileTabBar({ className }: { className?: string }) {
                 active ? "font-semibold text-brand-600" : "text-neutral-400",
               )}
             >
-              {label}
+              {t(key)}
             </span>
           </Link>
         );
@@ -69,7 +71,7 @@ export function MobileTabBar({ className }: { className?: string }) {
             profileActive ? "font-semibold text-brand-600" : "text-neutral-400",
           )}
         >
-          Profile
+          {t("profile")}
         </span>
       </Link>
     </nav>

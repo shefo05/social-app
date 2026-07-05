@@ -1,0 +1,230 @@
+{
+  "validation": {
+    "email": "Enter a valid email address",
+    "password": "At least 8 characters, with an uppercase and lowercase letter, a number, and a symbol",
+    "userNameMin": "Must be at least 2 characters",
+    "userNameMax": "Must be 20 characters or fewer",
+    "phoneNumber": "Enter a valid Egyptian phone number",
+    "otp": "Enter the code we emailed you"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "saveChanges": "Save changes",
+    "edit": "Edit",
+    "delete": "Delete",
+    "send": "Send",
+    "post": "Post",
+    "backToFeed": "Back to feed",
+    "tryAgain": "Try again",
+    "close": "Close",
+    "dismiss": "Dismiss",
+    "reply": "Reply",
+    "loadMore": "Load more",
+    "unexpectedError": "Couldn't reach the server. Try again in a moment.",
+    "delete_confirm": "This can't be undone."
+  },
+  "nav": {
+    "brand": "Social",
+    "feed": "Feed",
+    "friends": "Friends",
+    "requests": "Requests",
+    "friendRequests": "Friend requests",
+    "settings": "Settings",
+    "profile": "Profile",
+    "viewProfile": "View profile",
+    "logOut": "Log out",
+    "changeTheme": "Change theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System",
+    "changeLanguage": "Change language"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Log in to see what's new.",
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Forgot password?",
+      "submit": "Log in",
+      "newHere": "New here?",
+      "createAccount": "Create an account",
+      "welcomeBack": "Welcome back, {name}"
+    },
+    "signup": {
+      "title": "Create an account",
+      "subtitle": "Join and start sharing.",
+      "fullName": "Full name",
+      "email": "Email",
+      "phoneNumber": "Phone number",
+      "phonePlaceholder": "01xxxxxxxxx",
+      "password": "Password",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "logIn": "Log in",
+      "emailTaken": "An account with that email already exists."
+    },
+    "verify": {
+      "title": "Check your email",
+      "sentTo": "We emailed a verification code to",
+      "code": "Verification code",
+      "submit": "Verify account",
+      "resend": "Didn't get a code? Resend",
+      "resent": "Code resent — check your inbox"
+    },
+    "forgotPassword": {
+      "title": "Forgot your password?",
+      "description": "Enter the email on your account and we'll send you a code to reset your password.",
+      "email": "Email",
+      "submit": "Send reset code",
+      "backToLogin": "Back to login"
+    },
+    "resetPassword": {
+      "title": "Check your email",
+      "sentTo": "We emailed a reset code to",
+      "code": "Reset code",
+      "newPassword": "New password",
+      "submit": "Reset password",
+      "resend": "Didn't get a code? Resend",
+      "resent": "Code resent — check your inbox",
+      "success": "Password updated — log in with your new password"
+    },
+    "waking": "First request after a few minutes of inactivity can take up to a minute — the free-tier server is waking up."
+  },
+  "feed": {
+    "title": "Feed",
+    "loadError": "Couldn't load your feed",
+    "emptyTitle": "Your feed is quiet",
+    "emptyDescription": "Add some friends or share your first post to get things going.",
+    "composer": {
+      "placeholder": "What's on your mind?",
+      "addPhotos": "Add photos",
+      "photoCount": "{count}/{max} photos",
+      "removeImage": "Remove image",
+      "posted": "Post shared",
+      "postError": "Couldn't post right now."
+    },
+    "post": {
+      "unknownAuthor": "Someone in your network",
+      "updated": "Post updated",
+      "updateError": "Couldn't update that post.",
+      "deleted": "Post deleted",
+      "deleteError": "Couldn't delete that post.",
+      "deleteConfirm": "Delete this post? This can't be undone.",
+      "reactError": "Couldn't react right now."
+    }
+  },
+  "comments": {
+    "title": "Comments",
+    "loadError": "Couldn't load comments",
+    "emptyTitle": "No comments yet",
+    "emptyDescription": "Be the first to say something.",
+    "placeholder": "Write a comment...",
+    "replyPlaceholder": "Write a reply...",
+    "unknownAuthor": "Someone",
+    "commentError": "Couldn't comment right now.",
+    "updated": "Comment updated",
+    "updateError": "Couldn't update that comment.",
+    "deleted": "Comment deleted",
+    "deleteError": "Couldn't delete that comment.",
+    "deleteConfirm": "Delete this comment? This can't be undone.",
+    "reactError": "Couldn't react right now."
+  },
+  "friends": {
+    "title": "Friends",
+    "loadError": "Couldn't load friends",
+    "loadErrorGeneric": "Couldn't load friends.",
+    "emptyTitle": "No friends yet",
+    "emptyDescription": "Send a friend request to start building your network.",
+    "seeThemHere": "Add friends to see them here.",
+    "remove": "Remove",
+    "removed": "Friend removed",
+    "removeError": "Couldn't remove that friend.",
+    "sendByIdLabel": "Add a friend by user ID",
+    "sendByIdPlaceholder": "e.g. 6650f1c2a1b2c3d4e5f6a7b8",
+    "requestSent": "Friend request sent",
+    "requestSentError": "Couldn't send that request.",
+    "sentSocketToast": "{name} sent you a friend request",
+    "acceptedSocketToast": "{name} accepted your friend request",
+    "requests": {
+      "loadError": "Couldn't load requests",
+      "incoming": "Incoming",
+      "sent": "Sent",
+      "noPending": "No pending requests",
+      "noneSent": "You haven't sent any requests",
+      "wantsToConnect": "Wants to connect with you",
+      "requestSentLabel": "Request sent",
+      "decline": "Decline",
+      "accept": "Accept",
+      "accepted": "Friend request accepted",
+      "declined": "Request declined",
+      "respondError": "Couldn't update that request."
+    },
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "profile": {
+    "title": "Your profile",
+    "genderMale": "Male",
+    "genderFemale": "Female",
+    "avatar": {
+      "changePhoto": "Change photo",
+      "updated": "Profile photo updated",
+      "updateError": "Couldn't update your photo."
+    },
+    "settingsForm": {
+      "fullName": "Full name",
+      "email": "Email",
+      "phoneNumber": "Phone number",
+      "phonePlaceholder": "01xxxxxxxxx",
+      "submit": "Save changes",
+      "updated": "Profile updated",
+      "updateError": "Couldn't save changes."
+    },
+    "password": {
+      "emailCode": "Email me a code to change my password",
+      "codeSent": "Check your email for a code",
+      "code": "Verification code",
+      "newPassword": "New password",
+      "submit": "Update password",
+      "updated": "Password updated",
+      "sendError": "Couldn't send a code.",
+      "updateError": "Couldn't update your password."
+    },
+    "deleteAccount": {
+      "sectionTitle": "Danger zone",
+      "description": "Permanently delete your account, posts, and comments. This can't be undone.",
+      "trigger": "Delete account",
+      "modalTitle": "Delete your account?",
+      "modalDescription": "This permanently deletes your account, posts, and comments. There's no way to undo this. Type <phrase>DELETE</phrase> to confirm.",
+      "confirm": "Delete permanently",
+      "deleted": "Your account has been deleted",
+      "deleteError": "Couldn't delete your account."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "profilePhoto": "Profile photo",
+    "profileDetails": "Profile details",
+    "password": "Password"
+  },
+  "errors": {
+    "boundaryTitle": "Something went wrong",
+    "boundaryDescription": "That's on us, not you. Give it another try, or head back to your feed.",
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "That page doesn't exist, or it may have been removed.",
+    "genericTitle": "Something didn't load right",
+    "genericDescription": "That's on us, not you. Give it another try."
+  },
+  "offline": {
+    "title": "You're offline",
+    "description": "Looks like you've lost your connection. Reconnect and we'll pick up where you left off."
+  },
+  "time": {
+    "justNow": "just now",
+    "minutesAgo": "{count}m ago",
+    "hoursAgo": "{count}h ago",
+    "daysAgo": "{count}d ago"
+  }
+}

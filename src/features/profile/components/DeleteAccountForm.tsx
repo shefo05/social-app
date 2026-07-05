@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
@@ -13,6 +14,8 @@ import { authApi } from "../../auth/api";
 const CONFIRM_PHRASE = "DELETE";
 
 export function DeleteAccountForm() {
+  const t = useTranslations("profile.deleteAccount");
+  const tCommon = useTranslations("common");
   const router = useRouter();
   const logout = useAuthStore((s) => s.logout);
   const showToast = useUiStore((s) => s.showToast);
@@ -32,33 +35,28 @@ export function DeleteAccountForm() {
     try {
       await authApi.deleteAccount();
       logout();
-      showToast("Your account has been deleted", "success");
+      showToast(t("deleted"), "success");
       router.replace("/login");
     } catch (err) {
-      showToast(
-        err instanceof ApiError ? err.message : "Couldn't delete your account.",
-        "error",
-      );
+      showToast(err instanceof ApiError ? err.message : t("deleteError"), "error");
       setIsDeleting(false);
     }
   };
 
   return (
     <div>
-      <p className="mb-4 text-body-sm text-neutral-500">
-        Permanently delete your account, posts, and comments. This can&apos;t
-        be undone.
-      </p>
+      <p className="mb-4 text-body-sm text-neutral-500">{t("description")}</p>
       <Button variant="danger" size="sm" onClick={() => setIsOpen(true)}>
-        Delete account
+        {t("trigger")}
       </Button>
 
-      <Modal isOpen={isOpen} onClose={close} title="Delete your account?">
+      <Modal isOpen={isOpen} onClose={close} title={t("modalTitle")}>
         <p className="text-body-sm text-neutral-600">
-          This permanently deletes your account, posts, and comments. There&apos;s
-          no way to undo this. Type{" "}
-          <span className="font-semibold text-ink">{CONFIRM_PHRASE}</span> to
-          confirm.
+          {t.rich("modalDescription", {
+            phrase: (chunks) => (
+              <span className="font-semibold text-ink">{chunks}</span>
+            ),
+          })}
         </p>
         <Input
           className="mt-4"
@@ -75,7 +73,7 @@ export function DeleteAccountForm() {
             onClick={close}
             disabled={isDeleting}
           >
-            Cancel
+            {tCommon("cancel")}
           </Button>
           <Button
             variant="danger"
@@ -84,7 +82,7 @@ export function DeleteAccountForm() {
             isLoading={isDeleting}
             disabled={confirmText !== CONFIRM_PHRASE}
           >
-            Delete permanently
+            {t("confirm")}
           </Button>
         </div>
       </Modal>

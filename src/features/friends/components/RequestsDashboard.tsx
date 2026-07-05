@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { ErrorState } from "@/components/feedback/ErrorState";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -11,6 +12,7 @@ import { friendsApi } from "../api";
 import { FriendRequestCard } from "./FriendRequestCard";
 
 export function RequestsDashboard() {
+  const t = useTranslations("friends.requests");
   const [dashboard, setDashboard] = useState<RequestDashboardType | null>(null);
   const [error, setError] = useState(false);
   const setIncomingCount = useRequestsStore((s) => s.setIncomingCount);
@@ -54,7 +56,7 @@ export function RequestsDashboard() {
   };
 
   if (error) {
-    return <ErrorState title="Couldn't load requests" onRetry={load} />;
+    return <ErrorState title={t("loadError")} onRetry={load} />;
   }
 
   if (dashboard === null) {
@@ -70,12 +72,9 @@ export function RequestsDashboard() {
   return (
     <div className="flex flex-col gap-6">
       <section>
-        <h2 className="mb-3 text-h2 font-semibold text-ink">Incoming</h2>
+        <h2 className="mb-3 text-h2 font-semibold text-ink">{t("incoming")}</h2>
         {dashboard.incomingRecent.length === 0 ? (
-          <EmptyState
-            icon={<IconBell className="h-7 w-7" />}
-            title="No pending requests"
-          />
+          <EmptyState icon={<IconBell className="h-7 w-7" />} title={t("noPending")} />
         ) : (
           <div className="flex flex-col gap-3">
             {dashboard.incomingRecent.map((r) => (
@@ -90,12 +89,9 @@ export function RequestsDashboard() {
         )}
       </section>
       <section>
-        <h2 className="mb-3 text-h2 font-semibold text-ink">Sent</h2>
+        <h2 className="mb-3 text-h2 font-semibold text-ink">{t("sent")}</h2>
         {dashboard.outgoingRecent.length === 0 ? (
-          <EmptyState
-            icon={<IconBell className="h-7 w-7" />}
-            title="You haven't sent any requests"
-          />
+          <EmptyState icon={<IconBell className="h-7 w-7" />} title={t("noneSent")} />
         ) : (
           <div className="flex flex-col gap-3">
             {dashboard.outgoingRecent.map((r) => (

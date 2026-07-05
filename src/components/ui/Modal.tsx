@@ -2,6 +2,7 @@
 
 import { useEffect, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { useTranslations } from "next-intl";
 import { IconX } from "./icons";
 
 export function Modal({
@@ -15,6 +16,7 @@ export function Modal({
   title?: string;
   children: ReactNode;
 }) {
+  const t = useTranslations("common");
   useEffect(() => {
     if (!isOpen) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -44,7 +46,7 @@ export function Modal({
             <h2 className="text-h2 font-semibold text-ink">{title}</h2>
             <button
               onClick={onClose}
-              aria-label="Close"
+              aria-label={t("close")}
               className="rounded-lg p-1 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-ink"
             >
               <IconX className="h-4 w-4" />

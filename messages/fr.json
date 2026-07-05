@@ -1,0 +1,230 @@
+{
+  "validation": {
+    "email": "Saisissez une adresse e-mail valide",
+    "password": "Au moins 8 caractères, avec une majuscule, une minuscule, un chiffre et un symbole",
+    "userNameMin": "Doit contenir au moins 2 caractères",
+    "userNameMax": "Doit contenir 20 caractères ou moins",
+    "phoneNumber": "Saisissez un numéro de téléphone égyptien valide",
+    "otp": "Saisissez le code que nous vous avons envoyé par e-mail"
+  },
+  "common": {
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "saveChanges": "Enregistrer les modifications",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "send": "Envoyer",
+    "post": "Publier",
+    "backToFeed": "Retour au fil d'actualité",
+    "tryAgain": "Réessayer",
+    "close": "Fermer",
+    "dismiss": "Ignorer",
+    "reply": "Répondre",
+    "loadMore": "Charger plus",
+    "unexpectedError": "Impossible de contacter le serveur. Réessayez dans un instant.",
+    "delete_confirm": "Cette action est irréversible."
+  },
+  "nav": {
+    "brand": "Social",
+    "feed": "Fil d'actualité",
+    "friends": "Amis",
+    "requests": "Demandes",
+    "friendRequests": "Demandes d'amis",
+    "settings": "Paramètres",
+    "profile": "Profil",
+    "viewProfile": "Voir le profil",
+    "logOut": "Se déconnecter",
+    "changeTheme": "Changer de thème",
+    "themeLight": "Clair",
+    "themeDark": "Sombre",
+    "themeSystem": "Système",
+    "changeLanguage": "Changer de langue"
+  },
+  "auth": {
+    "login": {
+      "title": "Content de vous revoir",
+      "subtitle": "Connectez-vous pour voir les nouveautés.",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "forgotPassword": "Mot de passe oublié ?",
+      "submit": "Se connecter",
+      "newHere": "Nouveau ici ?",
+      "createAccount": "Créer un compte",
+      "welcomeBack": "Content de vous revoir, {name}"
+    },
+    "signup": {
+      "title": "Créer un compte",
+      "subtitle": "Inscrivez-vous et commencez à partager.",
+      "fullName": "Nom complet",
+      "email": "E-mail",
+      "phoneNumber": "Numéro de téléphone",
+      "phonePlaceholder": "01xxxxxxxxx",
+      "password": "Mot de passe",
+      "submit": "Créer le compte",
+      "haveAccount": "Vous avez déjà un compte ?",
+      "logIn": "Se connecter",
+      "emailTaken": "Un compte existe déjà avec cet e-mail."
+    },
+    "verify": {
+      "title": "Vérifiez votre e-mail",
+      "sentTo": "Nous avons envoyé un code de vérification à",
+      "code": "Code de vérification",
+      "submit": "Vérifier le compte",
+      "resend": "Vous n'avez pas reçu de code ? Renvoyer",
+      "resent": "Code renvoyé — vérifiez votre boîte de réception"
+    },
+    "forgotPassword": {
+      "title": "Mot de passe oublié ?",
+      "description": "Saisissez l'e-mail de votre compte et nous vous enverrons un code pour réinitialiser votre mot de passe.",
+      "email": "E-mail",
+      "submit": "Envoyer le code de réinitialisation",
+      "backToLogin": "Retour à la connexion"
+    },
+    "resetPassword": {
+      "title": "Vérifiez votre e-mail",
+      "sentTo": "Nous avons envoyé un code de réinitialisation à",
+      "code": "Code de réinitialisation",
+      "newPassword": "Nouveau mot de passe",
+      "submit": "Réinitialiser le mot de passe",
+      "resend": "Vous n'avez pas reçu de code ? Renvoyer",
+      "resent": "Code renvoyé — vérifiez votre boîte de réception",
+      "success": "Mot de passe mis à jour — connectez-vous avec votre nouveau mot de passe"
+    },
+    "waking": "La première requête après quelques minutes d'inactivité peut prendre jusqu'à une minute — le serveur (offre gratuite) se réveille."
+  },
+  "feed": {
+    "title": "Fil d'actualité",
+    "loadError": "Impossible de charger votre fil d'actualité",
+    "emptyTitle": "Votre fil d'actualité est calme",
+    "emptyDescription": "Ajoutez des amis ou partagez votre première publication pour commencer.",
+    "composer": {
+      "placeholder": "À quoi pensez-vous ?",
+      "addPhotos": "Ajouter des photos",
+      "photoCount": "{count}/{max} photos",
+      "removeImage": "Supprimer l'image",
+      "posted": "Publication partagée",
+      "postError": "Impossible de publier pour le moment."
+    },
+    "post": {
+      "unknownAuthor": "Quelqu'un dans votre réseau",
+      "updated": "Publication mise à jour",
+      "updateError": "Impossible de mettre à jour cette publication.",
+      "deleted": "Publication supprimée",
+      "deleteError": "Impossible de supprimer cette publication.",
+      "deleteConfirm": "Supprimer cette publication ? Cette action est irréversible.",
+      "reactError": "Impossible de réagir pour le moment."
+    }
+  },
+  "comments": {
+    "title": "Commentaires",
+    "loadError": "Impossible de charger les commentaires",
+    "emptyTitle": "Aucun commentaire pour l'instant",
+    "emptyDescription": "Soyez le premier à réagir.",
+    "placeholder": "Écrivez un commentaire...",
+    "replyPlaceholder": "Écrivez une réponse...",
+    "unknownAuthor": "Quelqu'un",
+    "commentError": "Impossible de commenter pour le moment.",
+    "updated": "Commentaire mis à jour",
+    "updateError": "Impossible de mettre à jour ce commentaire.",
+    "deleted": "Commentaire supprimé",
+    "deleteError": "Impossible de supprimer ce commentaire.",
+    "deleteConfirm": "Supprimer ce commentaire ? Cette action est irréversible.",
+    "reactError": "Impossible de réagir pour le moment."
+  },
+  "friends": {
+    "title": "Amis",
+    "loadError": "Impossible de charger les amis",
+    "loadErrorGeneric": "Impossible de charger les amis.",
+    "emptyTitle": "Pas encore d'amis",
+    "emptyDescription": "Envoyez une demande d'ami pour commencer à construire votre réseau.",
+    "seeThemHere": "Ajoutez des amis pour les voir ici.",
+    "remove": "Retirer",
+    "removed": "Ami retiré",
+    "removeError": "Impossible de retirer cet ami.",
+    "sendByIdLabel": "Ajouter un ami par ID utilisateur",
+    "sendByIdPlaceholder": "ex. 6650f1c2a1b2c3d4e5f6a7b8",
+    "requestSent": "Demande d'ami envoyée",
+    "requestSentError": "Impossible d'envoyer cette demande.",
+    "sentSocketToast": "{name} vous a envoyé une demande d'ami",
+    "acceptedSocketToast": "{name} a accepté votre demande d'ami",
+    "requests": {
+      "loadError": "Impossible de charger les demandes",
+      "incoming": "Reçues",
+      "sent": "Envoyées",
+      "noPending": "Aucune demande en attente",
+      "noneSent": "Vous n'avez envoyé aucune demande",
+      "wantsToConnect": "Souhaite se connecter avec vous",
+      "requestSentLabel": "Demande envoyée",
+      "decline": "Refuser",
+      "accept": "Accepter",
+      "accepted": "Demande d'ami acceptée",
+      "declined": "Demande refusée",
+      "respondError": "Impossible de mettre à jour cette demande."
+    },
+    "online": "En ligne",
+    "offline": "Hors ligne"
+  },
+  "profile": {
+    "title": "Votre profil",
+    "genderMale": "Homme",
+    "genderFemale": "Femme",
+    "avatar": {
+      "changePhoto": "Changer la photo",
+      "updated": "Photo de profil mise à jour",
+      "updateError": "Impossible de mettre à jour votre photo."
+    },
+    "settingsForm": {
+      "fullName": "Nom complet",
+      "email": "E-mail",
+      "phoneNumber": "Numéro de téléphone",
+      "phonePlaceholder": "01xxxxxxxxx",
+      "submit": "Enregistrer les modifications",
+      "updated": "Profil mis à jour",
+      "updateError": "Impossible d'enregistrer les modifications."
+    },
+    "password": {
+      "emailCode": "M'envoyer un code par e-mail pour changer mon mot de passe",
+      "codeSent": "Vérifiez votre e-mail pour le code",
+      "code": "Code de vérification",
+      "newPassword": "Nouveau mot de passe",
+      "submit": "Mettre à jour le mot de passe",
+      "updated": "Mot de passe mis à jour",
+      "sendError": "Impossible d'envoyer un code.",
+      "updateError": "Impossible de mettre à jour votre mot de passe."
+    },
+    "deleteAccount": {
+      "sectionTitle": "Zone de danger",
+      "description": "Supprimez définitivement votre compte, vos publications et vos commentaires. Cette action est irréversible.",
+      "trigger": "Supprimer le compte",
+      "modalTitle": "Supprimer votre compte ?",
+      "modalDescription": "Cette action supprime définitivement votre compte, vos publications et vos commentaires. Il n'y a aucun moyen d'annuler cela. Tapez <phrase>DELETE</phrase> pour confirmer.",
+      "confirm": "Supprimer définitivement",
+      "deleted": "Votre compte a été supprimé",
+      "deleteError": "Impossible de supprimer votre compte."
+    }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "profilePhoto": "Photo de profil",
+    "profileDetails": "Détails du profil",
+    "password": "Mot de passe"
+  },
+  "errors": {
+    "boundaryTitle": "Une erreur est survenue",
+    "boundaryDescription": "C'est de notre faute, pas de la vôtre. Réessayez, ou retournez à votre fil d'actualité.",
+    "notFoundTitle": "Page introuvable",
+    "notFoundDescription": "Cette page n'existe pas, ou a peut-être été supprimée.",
+    "genericTitle": "Quelque chose n'a pas pu être chargé",
+    "genericDescription": "C'est de notre faute, pas de la vôtre. Réessayez."
+  },
+  "offline": {
+    "title": "Vous êtes hors ligne",
+    "description": "Il semble que vous ayez perdu votre connexion. Reconnectez-vous et nous reprendrons là où vous vous êtes arrêté."
+  },
+  "time": {
+    "justNow": "à l'instant",
+    "minutesAgo": "il y a {count} min",
+    "hoursAgo": "il y a {count} h",
+    "daysAgo": "il y a {count} j"
+  }
+}

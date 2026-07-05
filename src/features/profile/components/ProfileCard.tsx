@@ -1,11 +1,13 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { useAuthStore } from "@/stores/auth.store";
 import { Gender } from "@/types";
 
 export function ProfileCard() {
+  const t = useTranslations("profile");
   const user = useAuthStore((s) => s.user);
   if (!user) return null;
 
@@ -28,7 +30,7 @@ export function ProfileCard() {
       {user.gender !== undefined && (
         <div className="mt-5">
           <Badge variant="brand">
-            {user.gender === Gender.Male ? "Male" : "Female"}
+            {user.gender === Gender.Male ? t("genderMale") : t("genderFemale")}
           </Badge>
         </div>
       )}

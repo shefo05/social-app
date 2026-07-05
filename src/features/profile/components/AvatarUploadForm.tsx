@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { useAuthStore } from "@/stores/auth.store";
@@ -9,6 +10,7 @@ import { ApiError } from "@/types/api";
 import { authApi } from "../../auth/api";
 
 export function AvatarUploadForm() {
+  const t = useTranslations("profile.avatar");
   const user = useAuthStore((s) => s.user);
   const setUser = useAuthStore((s) => s.setUser);
   const showToast = useUiStore((s) => s.showToast);
@@ -30,12 +32,9 @@ export function AvatarUploadForm() {
       formData.append("avatar", file);
       const res = await authApi.updateProfile(formData);
       setUser(res.date.updatedUser);
-      showToast("Profile photo updated", "success");
+      showToast(t("updated"), "success");
     } catch (err) {
-      showToast(
-        err instanceof ApiError ? err.message : "Couldn't update your photo.",
-        "error",
-      );
+      showToast(err instanceof ApiError ? err.message : t("updateError"), "error");
     } finally {
       setIsUploading(false);
       setPreview(null);
@@ -56,7 +55,7 @@ export function AvatarUploadForm() {
           isLoading={isUploading}
           onClick={() => inputRef.current?.click()}
         >
-          Change photo
+          {t("changePhoto")}
         </Button>
         <input
           ref={inputRef}

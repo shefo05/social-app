@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Avatar } from "@/components/ui/Avatar";
 import { IconImage, IconX } from "@/components/ui/icons";
@@ -13,6 +14,8 @@ import { feedApi } from "../api";
 const MAX_ATTACHMENTS = 4;
 
 export function PostComposer() {
+  const t = useTranslations("feed.composer");
+  const tCommon = useTranslations("common");
   const user = useAuthStore((s) => s.user);
   const prependPost = useFeedStore((s) => s.prependPost);
   const showToast = useUiStore((s) => s.showToast);
@@ -63,12 +66,9 @@ export function PostComposer() {
       prependPost(res.data.createdPost);
       setContent("");
       setFiles([]);
-      showToast("Post shared", "success");
+      showToast(t("posted"), "success");
     } catch (err) {
-      showToast(
-        err instanceof ApiError ? err.message : "Couldn't post right now.",
-        "error",
-      );
+      showToast(err instanceof ApiError ? err.message : t("postError"), "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -81,7 +81,7 @@ export function PostComposer() {
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="What's on your mind?"
+          placeholder={t("placeholder")}
           rows={2}
           className="flex-1 resize-none rounded-xl border border-transparent bg-neutral-50 px-3.5 py-2.5 text-body text-ink outline-none transition-colors duration-150 placeholder:text-neutral-400 focus:border-brand-300 focus:bg-surface"
         />
@@ -99,8 +99,8 @@ export function PostComposer() {
               <button
                 type="button"
                 onClick={() => removeFile(i)}
-                aria-label="Remove image"
-                className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80"
+                aria-label={t("removeImage")}
+                className="absolute end-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80"
               >
                 <IconX className="h-3.5 w-3.5" />
               </button>
@@ -117,7 +117,9 @@ export function PostComposer() {
           className="flex items-center gap-1.5 text-body-sm font-medium text-neutral-500 transition-colors hover:text-brand-600 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <IconImage className="h-4 w-4" />
-          {files.length > 0 ? `${files.length}/${MAX_ATTACHMENTS} photos` : "Add photos"}
+          {files.length > 0
+            ? t("photoCount", { count: files.length, max: MAX_ATTACHMENTS })
+            : t("addPhotos")}
         </button>
         <input
           ref={fileInputRef}
@@ -133,7 +135,7 @@ export function PostComposer() {
           isLoading={isSubmitting}
           disabled={!content.trim() && files.length === 0}
         >
-          Post
+          {tCommon("post")}
         </Button>
       </div>
     </div>

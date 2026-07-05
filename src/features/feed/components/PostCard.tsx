@@ -3,10 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { IconMessageCircle } from "@/components/ui/icons";
-import { cn, formatRelativeTime } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import { useRelativeTime } from "@/lib/hooks/useRelativeTime";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
 import { ApiError } from "@/types/api";
@@ -29,13 +31,16 @@ export function PostCard({
   /** Feed page passes useFeedStore.removePost; post detail redirects to /feed instead. */
   onDeleted?: (id: string) => void;
 }) {
+  const t = useTranslations("feed.post");
+  const tCommon = useTranslations("common");
+  const relativeTime = useRelativeTime();
   const router = useRouter();
   const currentUserId = useAuthStore((s) => s.user?._id);
   const showToast = useUiStore((s) => s.showToast);
   const author = isPopulatedAuthor(post.userId) ? post.userId : null;
   // Only unpopulated right after creating a post (see note on
   // Post.userId) - fall back to a neutral label rather than faking a name.
-  const authorLabel = author?.userName ?? "Someone in your network";
+  const authorLabel = author?.userName ?? t("unknownAuthor");
   const authorId = author?._id ?? (typeof post.userId === "string" ? post.userId : null);
   const isOwner = currentUserId != null && authorId === currentUserId;
 
@@ -54,30 +59,24 @@ export function PostCard({
       onUpdated?.(post._id, { content: trimmed });
       setContent(trimmed);
       setIsEditing(false);
-      showToast("Post updated", "success");
+      showToast(t("updated"), "success");
     } catch (err) {
-      showToast(
-        err instanceof ApiError ? err.message : "Couldn't update that post.",
-        "error",
-      );
+      showToast(err instanceof ApiError ? err.message : t("updateError"), "error");
     } finally {
       setIsSaving(false);
     }
   };
 
   const deletePost = async () => {
-    if (!window.confirm("Delete this post? This can't be undone.")) return;
+    if (!window.confirm(t("deleteConfirm"))) return;
     setIsDeleting(true);
     try {
       await feedApi.deletePost(post._id);
-      showToast("Post deleted", "success");
+      showToast(t("deleted"), "success");
       if (onDeleted) onDeleted(post._id);
       else router.replace("/feed");
     } catch (err) {
-      showToast(
-        err instanceof ApiError ? err.message : "Couldn't delete that post.",
-        "error",
-      );
+      showToast(err instanceof ApiError ? err.message : t("deleteError"), "error");
       setIsDeleting(false);
     }
   };
@@ -91,7 +90,7 @@ export function PostCard({
             {authorLabel}
           </p>
           <p className="text-body-sm text-neutral-400">
-            {formatRelativeTime(post.createdAt)}
+            {relativeTime(post.createdAt)}
           </p>
         </div>
         {isOwner && !isEditing && (
@@ -103,14 +102,14 @@ export function PostCard({
               }}
               className="text-body-sm font-medium text-neutral-500 transition-colors hover:text-ink"
             >
-              Edit
+              {tCommon("edit")}
             </button>
             <button
               onClick={deletePost}
               disabled={isDeleting}
               className="text-body-sm font-medium text-neutral-500 transition-colors hover:text-danger disabled:opacity-50"
             >
-              Delete
+              {tCommon("delete")}
             </button>
           </div>
         )}
@@ -133,7 +132,7 @@ export function PostCard({
                 setContent(post.content ?? "");
               }}
             >
-              Cancel
+              {tCommon("cancel")}
             </Button>
             <Button
               size="sm"
@@ -141,7 +140,7 @@ export function PostCard({
               isLoading={isSaving}
               disabled={!content.trim()}
             >
-              Save
+              {tCommon("save")}
             </Button>
           </div>
         </div>

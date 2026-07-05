@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { PostComposer } from "@/features/feed/components/PostComposer";
 import { PostCard } from "@/features/feed/components/PostCard";
 import { FeedSkeleton } from "@/features/feed/components/FeedSkeleton";
@@ -12,6 +13,8 @@ import { useFeedStore } from "@/stores/feed.store";
 import { feedApi } from "@/features/feed/api";
 
 export default function FeedPage() {
+  const t = useTranslations("feed");
+  const tCommon = useTranslations("common");
   const posts = useFeedStore((s) => s.posts);
   const hasNext = useFeedStore((s) => s.hasNext);
   const page = useFeedStore((s) => s.page);
@@ -53,18 +56,18 @@ export default function FeedPage() {
 
   return (
     <div className="flex flex-col gap-5">
-      <h1 className="text-h1 font-semibold text-ink">Feed</h1>
+      <h1 className="text-h1 font-semibold text-ink">{t("title")}</h1>
       <PostComposer />
 
       {error ? (
-        <ErrorState title="Couldn't load your feed" onRetry={load} />
+        <ErrorState title={t("loadError")} onRetry={load} />
       ) : isLoading ? (
         <FeedSkeleton />
       ) : posts.length === 0 ? (
         <EmptyState
           icon={<IconHome className="h-8 w-8" />}
-          title="Your feed is quiet"
-          description="Add some friends or share your first post to get things going."
+          title={t("emptyTitle")}
+          description={t("emptyDescription")}
         />
       ) : (
         <div className="flex flex-col gap-4">
@@ -83,7 +86,7 @@ export default function FeedPage() {
               isLoading={loadingMore}
               className="self-center"
             >
-              Load more
+              {tCommon("loadMore")}
             </Button>
           )}
         </div>

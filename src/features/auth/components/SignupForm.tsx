@@ -4,17 +4,22 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { ApiError } from "@/types/api";
 import { authApi } from "../api";
-import { signupSchema, type SignupFormValues } from "../schemas";
+import { createAuthSchemas, type SignupFormValues } from "../schemas";
 
 export function SignupForm() {
+  const t = useTranslations("auth.signup");
+  const tCommon = useTranslations("common");
+  const tValidation = useTranslations("validation");
   const router = useRouter();
   const [formError, setFormError] = useState<string | null>(null);
 
+  const { signupSchema } = createAuthSchemas(tValidation);
   const {
     register,
     handleSubmit,
@@ -28,13 +33,9 @@ export function SignupForm() {
       router.push(`/verify?email=${encodeURIComponent(values.email)}`);
     } catch (err) {
       if (err instanceof ApiError) {
-        setFormError(
-          err.status === 409
-            ? "An account with that email already exists."
-            : err.message,
-        );
+        setFormError(err.status === 409 ? t("emailTaken") : err.message);
       } else {
-        setFormError("Couldn't reach the server. Try again in a moment.");
+        setFormError(tCommon("unexpectedError"));
       }
     }
   };
@@ -42,28 +43,28 @@ export function SignupForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <Input
-        label="Full name"
+        label={t("fullName")}
         autoComplete="name"
         error={errors.userName?.message}
         {...register("userName")}
       />
       <Input
-        label="Email"
+        label={t("email")}
         type="email"
         autoComplete="email"
         error={errors.email?.message}
         {...register("email")}
       />
       <Input
-        label="Phone number"
+        label={t("phoneNumber")}
         type="tel"
-        placeholder="01xxxxxxxxx"
+        placeholder={t("phonePlaceholder")}
         autoComplete="tel"
         error={errors.phoneNumber?.message}
         {...register("phoneNumber")}
       />
       <Input
-        label="Password"
+        label={t("password")}
         type="password"
         autoComplete="new-password"
         error={errors.password?.message}
@@ -71,12 +72,12 @@ export function SignupForm() {
       />
       {formError && <p className="text-body-sm text-danger">{formError}</p>}
       <Button type="submit" isLoading={isSubmitting} className="mt-2">
-        Create account
+        {t("submit")}
       </Button>
       <p className="text-center text-body-sm text-neutral-500">
-        Already have an account?{" "}
+        {t("haveAccount")}{" "}
         <Link href="/login" className="font-medium text-brand-600 hover:underline">
-          Log in
+          {t("logIn")}
         </Link>
       </p>
     </form>

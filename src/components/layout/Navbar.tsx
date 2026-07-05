@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/stores/auth.store";
 import { useRequestsStore } from "@/stores/requests.store";
 import { cn } from "@/lib/utils";
@@ -10,6 +11,7 @@ import { CountBadge } from "@/components/ui/CountBadge";
 import { DropdownMenu, DropdownItem } from "@/components/ui/DropdownMenu";
 import { Logo } from "@/components/ui/Logo";
 import { ThemeToggle } from "./ThemeToggle";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import {
   IconHome,
   IconUsers,
@@ -19,12 +21,13 @@ import {
 } from "@/components/ui/icons";
 
 const NAV_ITEMS = [
-  { href: "/feed", label: "Feed", icon: IconHome },
-  { href: "/friends", label: "Friends", icon: IconUsers },
-  { href: "/settings", label: "Settings", icon: IconSettings },
-];
+  { href: "/feed", key: "feed", icon: IconHome },
+  { href: "/friends", key: "friends", icon: IconUsers },
+  { href: "/settings", key: "settings", icon: IconSettings },
+] as const;
 
 export function Navbar({ className }: { className?: string }) {
+  const t = useTranslations("nav");
   const pathname = usePathname();
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
@@ -40,11 +43,11 @@ export function Navbar({ className }: { className?: string }) {
     >
       <Link href="/feed" className="flex shrink-0 items-center gap-2">
         <Logo size={30} />
-        <span className="text-h2 font-semibold text-ink">Social</span>
+        <span className="text-h2 font-semibold text-ink">{t("brand")}</span>
       </Link>
 
       <nav className="flex flex-1 items-center gap-1">
-        {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+        {NAV_ITEMS.map(({ href, key, icon: Icon }) => {
           const active = pathname === href || pathname?.startsWith(`${href}/`);
           return (
             <Link
@@ -58,18 +61,19 @@ export function Navbar({ className }: { className?: string }) {
               )}
             >
               <Icon className="h-5 w-5" />
-              <span className="hidden lg:inline">{label}</span>
+              <span className="hidden lg:inline">{t(key)}</span>
             </Link>
           );
         })}
       </nav>
 
       <div className="flex shrink-0 items-center gap-1">
+        <LanguageSwitcher />
         <ThemeToggle />
 
         <Link
           href="/friends/requests"
-          aria-label="Friend requests"
+          aria-label={t("friendRequests")}
           className={cn(
             "relative flex h-9 w-9 items-center justify-center rounded-lg transition-colors",
             pathname?.startsWith("/friends/requests")
@@ -96,7 +100,7 @@ export function Navbar({ className }: { className?: string }) {
           )}
         >
           <DropdownItem onClick={() => router.push("/profile")}>
-            View profile
+            {t("viewProfile")}
           </DropdownItem>
           <DropdownItem
             onClick={() => {
@@ -105,7 +109,7 @@ export function Navbar({ className }: { className?: string }) {
             }}
           >
             <IconLogOut className="h-4 w-4" />
-            Log out
+            {t("logOut")}
           </DropdownItem>
         </DropdownMenu>
       </div>

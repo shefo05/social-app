@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useAuthStore } from "@/stores/auth.store";
@@ -9,6 +10,7 @@ import { ApiError } from "@/types/api";
 import { authApi } from "@/features/auth/api";
 
 export function ChangePasswordForm() {
+  const t = useTranslations("profile.password");
   const user = useAuthStore((s) => s.user);
   const [codeSent, setCodeSent] = useState(false);
   const [otp, setOtp] = useState("");
@@ -25,9 +27,9 @@ export function ChangePasswordForm() {
     try {
       await authApi.sendOtp({ email: user.email });
       setCodeSent(true);
-      showToast("Check your email for a code", "success");
+      showToast(t("codeSent"), "success");
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : "Couldn't send a code.");
+      setError(err instanceof ApiError ? err.message : t("sendError"));
     } finally {
       setIsSendingCode(false);
     }
@@ -39,14 +41,12 @@ export function ChangePasswordForm() {
     setError(null);
     try {
       await authApi.resetPassword({ otp, newPassword });
-      showToast("Password updated", "success");
+      showToast(t("updated"), "success");
       setCodeSent(false);
       setOtp("");
       setNewPassword("");
     } catch (err) {
-      setError(
-        err instanceof ApiError ? err.message : "Couldn't update your password.",
-      );
+      setError(err instanceof ApiError ? err.message : t("updateError"));
     } finally {
       setIsSubmitting(false);
     }
@@ -61,23 +61,23 @@ export function ChangePasswordForm() {
           isLoading={isSendingCode}
           className="self-start"
         >
-          Email me a code to change my password
+          {t("emailCode")}
         </Button>
       ) : (
         <>
           <Input
-            label="Verification code"
+            label={t("code")}
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
           />
           <Input
-            label="New password"
+            label={t("newPassword")}
             type="password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />
           <Button onClick={submit} isLoading={isSubmitting} className="self-start">
-            Update password
+            {t("submit")}
           </Button>
         </>
       )}
