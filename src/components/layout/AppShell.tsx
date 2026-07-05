@@ -2,24 +2,31 @@
 
 import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/stores/auth.store";
 import { useRequestsStore } from "@/stores/requests.store";
 import { useUiStore } from "@/stores/ui.store";
+import { usePresenceStore } from "@/stores/presence.store";
 import { friendsApi } from "@/features/friends/api";
-import { connectSocket, disconnectSocket } from "@/lib/socket";
-import type { RequestAcceptedEvent, RequestNewEvent } from "@/types";
+import { authApi } from "@/features/auth/api";
+import { connectSocket, disconnectSocket, getSocket } from "@/lib/socket";
+import type { PresenceEvent, RequestAcceptedEvent, RequestNewEvent } from "@/types";
 import { Navbar } from "./Navbar";
 import { MobileHeader } from "./MobileHeader";
 import { MobileTabBar } from "./MobileTabBar";
 import { FriendsSidebar } from "./FriendsSidebar";
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const t = useTranslations("friends");
   const router = useRouter();
   const hasHydrated = useAuthStore((s) => s.hasHydrated);
   const accessToken = useAuthStore((s) => s.accessToken);
   const setIncomingCount = useRequestsStore((s) => s.setIncomingCount);
   const incrementIncoming = useRequestsStore((s) => s.incrementIncoming);
   const showToast = useUiStore((s) => s.showToast);
+  const setOnline = usePresenceStore((s) => s.setOnline);
+  const setOffline = usePresenceStore((s) => s.setOffline);
+  const setOnlineUserIds = usePresenceStore((s) => s.setOnlineUserIds);
 
   useEffect(() => {
     if (hasHydrated && !accessToken) {
@@ -50,10 +57,10 @@ export function AppShell({ children }: { children: ReactNode }) {
 
     const onRequestNew = (payload: RequestNewEvent) => {
       incrementIncoming();
-      showToast(`${payload.sender.userName} sent you a friend request`, "success");
+      showToast(t("sentSocketToast", { name: payload.sender.userName }), "success");
     };
     const onRequestAccepted = (payload: RequestAcceptedEvent) => {
-      showToast(`${payload.accepter.userName} accepted your friend request`, "success");
+      showToast(t("acceptedSocketToast", { name: payload.accepter.userName }), "success");
     };
 
     socket.on("request:new", onRequestNew);
@@ -63,7 +70,37 @@ export function AppShell({ children }: { children: ReactNode }) {
       socket.off("request:new", onRequestNew);
       socket.off("request:accepted", onRequestAccepted);
     };
-  }, [hasHydrated, accessToken, incrementIncoming, showToast]);
+  }, [hasHydrated, accessToken, incrementIncoming, showToast, t]);
+
+  // Presence: fetch the initial online-friends snapshot on every connect
+  // (including reconnects, same as CommentThread's post:join re-emit) -
+  // a dropped connection means we missed whatever presence events fired
+  // while offline, so re-fetching the snapshot rather than trusting the
+  // stale in-memory set is what keeps this correct after a reconnect.
+  useEffect(() => {
+    if (!hasHydrated || !accessToken) return;
+    const socket = getSocket();
+
+    const fetchSnapshot = () => {
+      authApi
+        .getOnlineFriends()
+        .then((res) => setOnlineUserIds(res.data.onlineFriendIds))
+        .catch(() => {});
+    };
+    fetchSnapshot();
+    socket.on("connect", fetchSnapshot);
+
+    const onPresenceOnline = (payload: PresenceEvent) => setOnline(payload.userId);
+    const onPresenceOffline = (payload: PresenceEvent) => setOffline(payload.userId);
+    socket.on("presence:online", onPresenceOnline);
+    socket.on("presence:offline", onPresenceOffline);
+
+    return () => {
+      socket.off("connect", fetchSnapshot);
+      socket.off("presence:online", onPresenceOnline);
+      socket.off("presence:offline", onPresenceOffline);
+    };
+  }, [hasHydrated, accessToken, setOnline, setOffline, setOnlineUserIds]);
 
   // Gate on hydration so we never flash the shell before we know whether
   // there's actually a persisted session (avoids an SSR/client mismatch

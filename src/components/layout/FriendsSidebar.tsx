@@ -11,15 +11,10 @@ import { usePresenceStore } from "@/stores/presence.store";
 import type { UserFriend } from "@/types";
 import { authApi } from "@/features/auth/api";
 
-/**
- * Friend list data is real (same GET /user/ friends already used by
- * FriendList). Online/offline is NOT real yet - usePresenceStore starts
- * everyone offline and has no producer wired in. Once the backend's
- * presence contract lands, add a socket listener (in AppShell, next to
- * the existing request:new/accepted ones) that calls
- * usePresenceStore.setOnline/setOffline/setOnlineUserIds - this
- * component itself won't need to change at all.
- */
+/** Friend list data is real (same GET /user/ friends already used by
+ * FriendList); presence dots reflect usePresenceStore, populated in
+ * AppShell.tsx from the GET /user/online-friends snapshot plus live
+ * presence:online/offline socket events. */
 export function FriendsSidebar({ className }: { className?: string }) {
   const t = useTranslations("friends");
   const currentUserId = useAuthStore((s) => s.user?._id);

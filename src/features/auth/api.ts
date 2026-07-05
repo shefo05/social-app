@@ -77,4 +77,14 @@ export const authApi = {
       message: string;
       data: { user: User; friends: unknown[] };
     }>("/user/"),
+
+  // Initial presence snapshot - independent of socket connection timing,
+  // since the socket might connect before or after this resolves. See
+  // RealtimeGateway's presence:online/offline events for the live updates
+  // that follow this.
+  getOnlineFriends: () =>
+    apiClient.get<{
+      message: string;
+      data: { onlineFriendIds: string[] };
+    }>("/user/online-friends"),
 };

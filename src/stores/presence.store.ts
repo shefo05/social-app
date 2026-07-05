@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
 interface PresenceState {
-  /** userIds currently known to be online. Nobody is online until the
-   * backend's presence events populate this - see the note in
-   * FriendsSidebar.tsx for exactly where to wire that in. */
+  /** userIds currently known to be online. Populated from the
+   * GET /user/online-friends snapshot on socket connect/reconnect and
+   * kept live via presence:online/offline - see AppShell.tsx. */
   onlineUserIds: Set<string>;
   setOnline: (userId: string) => void;
   setOffline: (userId: string) => void;
