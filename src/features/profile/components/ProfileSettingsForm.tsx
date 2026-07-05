@@ -27,6 +27,7 @@ export function ProfileSettingsForm() {
     userName: z.union([userNameSchema, z.literal("")]),
     email: z.union([emailSchema, z.literal("")]),
     phoneNumber: z.union([phoneNumberSchema, z.literal("")]),
+    bio: z.string().max(160).optional(),
   });
   type UpdateFormValues = z.infer<typeof updateSchema>;
 
@@ -40,6 +41,7 @@ export function ProfileSettingsForm() {
       userName: user?.userName ?? "",
       email: user?.email ?? "",
       phoneNumber: "",
+      bio: user?.bio ?? "",
     },
   });
 
@@ -76,6 +78,22 @@ export function ProfileSettingsForm() {
         error={errors.phoneNumber?.message}
         {...register("phoneNumber")}
       />
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="bio" className="text-body-sm font-medium text-neutral-700">
+          {t("bio")}
+        </label>
+        <textarea
+          id="bio"
+          rows={3}
+          maxLength={160}
+          placeholder={t("bioPlaceholder")}
+          className="resize-none rounded-xl border border-neutral-200 bg-surface px-3.5 py-2.5 text-body text-ink outline-none transition-colors duration-150 placeholder:text-neutral-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+          {...register("bio")}
+        />
+        {errors.bio?.message && (
+          <p className="text-body-sm text-danger">{errors.bio.message}</p>
+        )}
+      </div>
       {formError && <p className="text-body-sm text-danger">{formError}</p>}
       <Button type="submit" isLoading={isSubmitting} className="self-start">
         {t("submit")}

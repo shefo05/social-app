@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { IconMessageCircle } from "@/components/ui/icons";
-import { cn } from "@/lib/utils";
+import { cn, profileHref } from "@/lib/utils";
 import { useRelativeTime } from "@/lib/hooks/useRelativeTime";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
@@ -84,11 +84,21 @@ export function PostCard({
   return (
     <article className="rounded-2xl border border-neutral-200 bg-surface p-5 transition-shadow duration-150 hover:shadow-sm">
       <div className="flex items-center gap-3">
-        <Avatar name={authorLabel} src={author?.profilePic} size="md" />
+        {authorId ? (
+          <Link href={profileHref(authorId, currentUserId)}>
+            <Avatar name={authorLabel} src={author?.profilePic} size="md" />
+          </Link>
+        ) : (
+          <Avatar name={authorLabel} src={author?.profilePic} size="md" />
+        )}
         <div className="min-w-0 flex-1">
-          <p className="truncate text-body font-semibold text-ink">
-            {authorLabel}
-          </p>
+          {authorId ? (
+            <Link href={profileHref(authorId, currentUserId)} className="hover:underline">
+              <p className="truncate text-body font-semibold text-ink">{authorLabel}</p>
+            </Link>
+          ) : (
+            <p className="truncate text-body font-semibold text-ink">{authorLabel}</p>
+          )}
           <p className="text-body-sm text-neutral-400">
             {relativeTime(post.createdAt)}
           </p>

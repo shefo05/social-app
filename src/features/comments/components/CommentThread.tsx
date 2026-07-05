@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { ErrorState } from "@/components/feedback/ErrorState";
 import { IconHeart, IconMessageCircle } from "@/components/ui/icons";
-import { cn } from "@/lib/utils";
+import { cn, profileHref } from "@/lib/utils";
 import { useRelativeTime } from "@/lib/hooks/useRelativeTime";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
@@ -141,11 +142,23 @@ function CommentItem({
 
   return (
     <div className="flex gap-3">
-      <Avatar name={authorLabel} src={author?.profilePic} size="sm" />
+      {authorId ? (
+        <Link href={profileHref(authorId, currentUserId)} className="shrink-0">
+          <Avatar name={authorLabel} src={author?.profilePic} size="sm" />
+        </Link>
+      ) : (
+        <Avatar name={authorLabel} src={author?.profilePic} size="sm" />
+      )}
       <div className="flex-1">
         <div className="rounded-2xl bg-neutral-50 px-3.5 py-2.5">
           <div className="flex items-start justify-between gap-2">
-            <p className="text-body-sm font-semibold text-ink">{authorLabel}</p>
+            {authorId ? (
+              <Link href={profileHref(authorId, currentUserId)} className="hover:underline">
+                <p className="text-body-sm font-semibold text-ink">{authorLabel}</p>
+              </Link>
+            ) : (
+              <p className="text-body-sm font-semibold text-ink">{authorLabel}</p>
+            )}
             {(isAuthor || canDelete) && !isEditing && (
               <div className="flex shrink-0 gap-2">
                 {isAuthor && (

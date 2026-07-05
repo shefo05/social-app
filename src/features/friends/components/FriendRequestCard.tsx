@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Avatar } from "@/components/ui/Avatar";
+import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
 import { ApiError } from "@/types/api";
 import type { FriendRequest } from "@/types";
+import { profileHref } from "@/lib/utils";
 import { friendsApi } from "../api";
 
 export function FriendRequestCard({
@@ -19,6 +22,7 @@ export function FriendRequestCard({
   onResolved: (id: string) => void;
 }) {
   const t = useTranslations("friends.requests");
+  const currentUserId = useAuthStore((s) => s.user?._id);
   const [pending, setPending] = useState(false);
   const showToast = useUiStore((s) => s.showToast);
   const otherParty = direction === "incoming" ? request.sender : request.receiver;
@@ -39,11 +43,15 @@ export function FriendRequestCard({
 
   return (
     <div className="flex items-center gap-3 rounded-2xl border border-neutral-200 bg-surface p-4">
-      <Avatar name={otherParty.userName} src={otherParty.profilePic} size="md" />
+      <Link href={profileHref(otherParty._id, currentUserId)} className="shrink-0">
+        <Avatar name={otherParty.userName} src={otherParty.profilePic} size="md" />
+      </Link>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-body-sm font-medium text-ink">
-          {otherParty.userName}
-        </p>
+        <Link href={profileHref(otherParty._id, currentUserId)} className="hover:underline">
+          <p className="truncate text-body-sm font-medium text-ink">
+            {otherParty.userName}
+          </p>
+        </Link>
         <p className="truncate text-micro text-neutral-400">
           {direction === "incoming" ? t("wantsToConnect") : t("requestSentLabel")}
         </p>

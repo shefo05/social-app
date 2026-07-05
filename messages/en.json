@@ -165,9 +165,13 @@
     "offline": "Offline"
   },
   "profile": {
-    "title": "Your profile",
     "genderMale": "Male",
     "genderFemale": "Female",
+    "memberSince": "Member since {date}",
+    "editProfile": "Edit profile",
+    "postsEmptyTitle": "No posts yet",
+    "postsEmptyDescription": "Nothing shared yet.",
+    "loadError": "Couldn't load these posts",
     "avatar": {
       "changePhoto": "Change photo",
       "updated": "Profile photo updated",
@@ -178,6 +182,8 @@
       "email": "Email",
       "phoneNumber": "Phone number",
       "phonePlaceholder": "01xxxxxxxxx",
+      "bio": "Bio",
+      "bioPlaceholder": "Tell people a bit about yourself",
       "submit": "Save changes",
       "updated": "Profile updated",
       "updateError": "Couldn't save changes."

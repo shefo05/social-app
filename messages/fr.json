@@ -165,9 +165,13 @@
     "offline": "Hors ligne"
   },
   "profile": {
-    "title": "Votre profil",
     "genderMale": "Homme",
     "genderFemale": "Femme",
+    "memberSince": "Membre depuis {date}",
+    "editProfile": "Modifier le profil",
+    "postsEmptyTitle": "Aucune publication pour l'instant",
+    "postsEmptyDescription": "Rien n'a encore été partagé.",
+    "loadError": "Impossible de charger ces publications",
     "avatar": {
       "changePhoto": "Changer la photo",
       "updated": "Photo de profil mise à jour",
@@ -178,6 +182,8 @@
       "email": "E-mail",
       "phoneNumber": "Numéro de téléphone",
       "phonePlaceholder": "01xxxxxxxxx",
+      "bio": "Bio",
+      "bioPlaceholder": "Parlez un peu de vous",
       "submit": "Enregistrer les modifications",
       "updated": "Profil mis à jour",
       "updateError": "Impossible d'enregistrer les modifications."

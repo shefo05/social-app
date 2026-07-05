@@ -24,8 +24,18 @@ export interface User {
   gender?: Gender;
   provider: Provider;
   profilePic?: string;
+  bio?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+/** GET /user/:id - explicit field allowlist, never email/phoneNumber/role. */
+export interface PublicProfile {
+  _id: string;
+  userName: string;
+  profilePic?: string;
+  bio?: string;
+  createdAt: string;
 }
 
 export interface UserFriend {

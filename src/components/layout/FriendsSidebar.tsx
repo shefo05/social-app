@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Avatar } from "@/components/ui/Avatar";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { cn } from "@/lib/utils";
+import { cn, profileHref } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
 import { usePresenceStore } from "@/stores/presence.store";
 import type { UserFriend } from "@/types";
@@ -56,7 +56,7 @@ export function FriendsSidebar({ className }: { className?: string }) {
             return (
               <li key={f._id}>
                 <Link
-                  href="/friends"
+                  href={profileHref(otherPerson._id, currentUserId)}
                   className="flex items-center gap-3 rounded-xl px-2 py-2 transition-colors hover:bg-neutral-100"
                 >
                   <span className="relative shrink-0">

@@ -165,9 +165,13 @@
     "offline": "غير متصل"
   },
   "profile": {
-    "title": "ملفك الشخصي",
     "genderMale": "ذكر",
     "genderFemale": "أنثى",
+    "memberSince": "عضو منذ {date}",
+    "editProfile": "تعديل الملف الشخصي",
+    "postsEmptyTitle": "لا توجد منشورات بعد",
+    "postsEmptyDescription": "لم تتم مشاركة أي شيء بعد.",
+    "loadError": "تعذّر تحميل هذه المنشورات",
     "avatar": {
       "changePhoto": "تغيير الصورة",
       "updated": "تم تحديث صورة الملف الشخصي",
@@ -178,6 +182,8 @@
       "email": "البريد الإلكتروني",
       "phoneNumber": "رقم الهاتف",
       "phonePlaceholder": "01xxxxxxxxx",
+      "bio": "نبذة تعريفية",
+      "bioPlaceholder": "أخبر الآخرين قليلاً عن نفسك",
       "submit": "حفظ التغييرات",
       "updated": "تم تحديث الملف الشخصي",
       "updateError": "تعذّر حفظ التغييرات."

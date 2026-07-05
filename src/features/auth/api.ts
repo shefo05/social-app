@@ -61,7 +61,7 @@ export const authApi = {
   updateProfile: (
     payload:
       | FormData
-      | Partial<Pick<User, "email" | "phoneNumber" | "userName">>,
+      | Partial<Pick<User, "email" | "phoneNumber" | "userName" | "bio">>,
   ) =>
     apiClient.patch<MessageResponse & { date: { updatedUser: User } }>(
       "/auth/update",

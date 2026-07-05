@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
@@ -13,6 +14,7 @@ import { useUiStore } from "@/stores/ui.store";
 import { ApiError } from "@/types/api";
 import type { UserFriend } from "@/types";
 import { authApi } from "@/features/auth/api";
+import { profileHref } from "@/lib/utils";
 import { friendsApi } from "../api";
 
 export function FriendList() {
@@ -80,10 +82,15 @@ export function FriendList() {
             key={f._id}
             className="flex items-center gap-3 rounded-2xl border border-neutral-200 bg-surface p-4"
           >
-            <Avatar name={otherPerson.userName} src={otherPerson.profilePic} size="md" />
-            <p className="flex-1 truncate text-body-sm font-medium text-ink">
-              {otherPerson.userName}
-            </p>
+            <Link
+              href={profileHref(otherPerson._id, currentUserId)}
+              className="flex min-w-0 flex-1 items-center gap-3 hover:underline"
+            >
+              <Avatar name={otherPerson.userName} src={otherPerson.profilePic} size="md" />
+              <p className="truncate text-body-sm font-medium text-ink">
+                {otherPerson.userName}
+              </p>
+            </Link>
             <Button size="sm" variant="ghost" onClick={() => remove(f)}>
               {t("remove")}
             </Button>
