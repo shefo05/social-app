@@ -5,3 +5,4 @@ export * from "./Skeleton";
 export * from "./Badge";
 export * from "./CountBadge";
 export * from "./Modal";
+export * from "./DropdownMenu";

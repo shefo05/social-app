@@ -49,7 +49,7 @@ export function CommentForm({
           if (e.key === "Enter") submit();
         }}
         placeholder={parentId ? "Write a reply..." : "Write a comment..."}
-        className="flex-1 rounded-full border border-neutral-200 bg-neutral-50 px-4 py-2 text-body-sm text-ink outline-none transition-colors duration-150 focus:border-brand-300 focus:bg-white"
+        className="flex-1 rounded-full border border-neutral-200 bg-neutral-50 px-4 py-2 text-body-sm text-ink outline-none transition-colors duration-150 focus:border-brand-300 focus:bg-surface"
       />
       <Button
         size="sm"

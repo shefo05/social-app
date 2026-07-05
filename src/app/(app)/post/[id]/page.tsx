@@ -39,7 +39,7 @@ export default async function PostPage({
         <IconChevronLeft className="h-4 w-4" /> Back to feed
       </Link>
       <PostCard post={post} />
-      <div className="rounded-2xl border border-neutral-200 bg-white p-5">
+      <div className="rounded-2xl border border-neutral-200 bg-surface p-5">
         <h2 className="mb-4 text-h2 font-semibold text-ink">Comments</h2>
         <CommentThread postId={id} postAuthorId={postAuthorId} />
       </div>

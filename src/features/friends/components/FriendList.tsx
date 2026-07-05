@@ -79,7 +79,7 @@ export function FriendList() {
         return (
           <div
             key={f._id}
-            className="flex items-center gap-3 rounded-2xl border border-neutral-200 bg-white p-4"
+            className="flex items-center gap-3 rounded-2xl border border-neutral-200 bg-surface p-4"
           >
             <Avatar name={otherPerson.userName} src={otherPerson.profilePic} size="md" />
             <p className="flex-1 truncate text-body-sm font-medium text-ink">

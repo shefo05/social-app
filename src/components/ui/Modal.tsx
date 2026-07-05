@@ -37,7 +37,7 @@ export function Modal({
       <div
         role="dialog"
         aria-modal="true"
-        className="relative w-full max-w-sm rounded-2xl border border-neutral-200 bg-white p-6 shadow-lg"
+        className="relative w-full max-w-sm rounded-2xl border border-neutral-200 bg-surface p-6 shadow-lg"
       >
         {title && (
           <div className="mb-4 flex items-center justify-between gap-4">

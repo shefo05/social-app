@@ -83,7 +83,7 @@ export function PostCard({
   };
 
   return (
-    <article className="rounded-2xl border border-neutral-200 bg-white p-5 transition-shadow duration-150 hover:shadow-sm">
+    <article className="rounded-2xl border border-neutral-200 bg-surface p-5 transition-shadow duration-150 hover:shadow-sm">
       <div className="flex items-center gap-3">
         <Avatar name={authorLabel} src={author?.profilePic} size="md" />
         <div className="min-w-0 flex-1">
@@ -122,7 +122,7 @@ export function PostCard({
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={3}
-            className="w-full resize-none rounded-xl border border-neutral-200 bg-neutral-50 px-3.5 py-2.5 text-body text-ink outline-none transition-colors duration-150 focus:border-brand-300 focus:bg-white"
+            className="w-full resize-none rounded-xl border border-neutral-200 bg-neutral-50 px-3.5 py-2.5 text-body text-ink outline-none transition-colors duration-150 focus:border-brand-300 focus:bg-surface"
           />
           <div className="flex justify-end gap-2">
             <Button

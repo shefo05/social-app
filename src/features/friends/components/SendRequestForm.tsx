@@ -38,7 +38,7 @@ export function SendRequestForm() {
   };
 
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-4">
+    <div className="rounded-2xl border border-neutral-200 bg-surface p-4">
       <div className="flex items-end gap-2">
         <Input
           label="Add a friend by user ID"

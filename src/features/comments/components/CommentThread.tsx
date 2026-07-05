@@ -182,7 +182,7 @@ function CommentItem({
                 onKeyDown={(e) => {
                   if (e.key === "Enter") saveEdit();
                 }}
-                className="rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-body-sm text-ink outline-none focus:border-brand-300"
+                className="rounded-full border border-neutral-200 bg-surface px-3 py-1.5 text-body-sm text-ink outline-none focus:border-brand-300"
               />
               <div className="flex gap-2">
                 <Button size="sm" variant="secondary" onClick={() => setIsEditing(false)}>

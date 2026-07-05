@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
+/* Class-based dark mode (next-themes toggles `.dark` on <html>). Only
+   needed if a component ever reaches for a `dark:` utility directly -
+   most of the theme swap happens below at the token level instead, so
+   existing bg-white/text-ink/border-neutral-200 usages adapt for free. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #faf9f7;
-  --foreground: #12141a;
+  --background: var(--color-neutral-50);
+  --foreground: var(--color-ink);
 }
 
 @theme inline {
@@ -32,7 +38,13 @@
   --color-brand-800: #11265f;
   --color-brand-900: #0b1b46;
 
-  /* Ink + warm-leaning neutrals (deliberately not cool slate-gray) */
+  /* Ink + warm-leaning neutrals (deliberately not cool slate-gray).
+   * Light-mode values below; .dark overrides every one of these further
+   * down so existing bg-neutral, text-ink, and border-neutral usages
+   * across the app adapt automatically - this is a token swap, not a
+   * component rewrite. Roles stay fixed across themes (200 = border,
+   * 400 = idle/placeholder, 500/600 = secondary text, 50/100 = subtle
+   * fill) even though the literal values invert. */
   --color-ink: #12141a;
   --color-neutral-50: #faf9f7;
   --color-neutral-100: #f4f2ef;
@@ -44,6 +56,21 @@
   --color-neutral-700: #3f3b36;
   --color-neutral-800: #2a2723;
   --color-neutral-900: #1a1815;
+
+  /*
+   * Surface is a *separate* token from Tailwind's built-in `white` -
+   * cards/panels use bg-surface so they can flip to a dark panel color
+   * in dark mode, while literal text-white/bg-white-on-brand stays put
+   * (button labels on brand-500, toast text, CountBadge text all need to
+   * stay light regardless of theme - see the .dark block for why
+   * overriding --color-white globally would have broken those instead).
+   */
+  --color-surface: #ffffff;
+
+  /* Always-dark chip color, deliberately NOT themed - ToastHost's default
+   * (non success/error) variant needs to stay a dark chip with light text
+   * in both themes, same reasoning as --color-surface above but inverted. */
+  --color-charcoal: #26241d;
 
   /* Semantic — muted, not stock Tailwind emerald-500/red-500 */
   --color-success: #3e8e5a;
@@ -72,11 +99,38 @@
   --text-micro--line-height: 1.3;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #1a1815;
-    --foreground: #f4f2ef;
-  }
+/* Dark mode: same token names, inverted values. next-themes adds/removes
+ * this class on <html> - see src/components/ThemeProvider.tsx. */
+.dark {
+  --color-ink: #f2efe9;
+  --color-neutral-50: #17160f;
+  --color-neutral-100: #221f18;
+  --color-neutral-200: #332e26;
+  --color-neutral-300: #443e33;
+  --color-neutral-400: #75695a;
+  --color-neutral-500: #9a8f7d;
+  --color-neutral-600: #b8ad9c;
+  --color-neutral-700: #d6cdbf;
+  --color-neutral-800: #e8e2d6;
+  --color-neutral-900: #f2efe9;
+
+  --color-surface: #1e1c17;
+
+  /* Pale brand/success/danger tints are backgrounds (active nav item,
+   * badges) - same "role conflict" as neutral-50 above, so they get
+   * dark-appropriate tints too rather than staying a glowing pale patch
+   * on a dark surface. The saturated versions (brand-500 buttons,
+   * danger text, etc.) read fine unchanged on a dark surface. */
+  --color-brand-50: #182242;
+  --color-brand-100: #1f2c50;
+
+  /* Slightly brightened so small text stays readable against the tint
+   * backgrounds above (dark backgrounds reduce a color's apparent
+   * contrast, unlike the light-mode values which sit on white). */
+  --color-success: #5cb37d;
+  --color-success-bg: #16261c;
+  --color-danger: #e0785c;
+  --color-danger-bg: #2c1811;
 }
 
 body {

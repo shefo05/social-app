@@ -10,19 +10,19 @@ export default function SettingsPage() {
   return (
     <div className="flex flex-col gap-8">
       <h1 className="text-h1 font-semibold text-ink">Settings</h1>
-      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+      <section className="rounded-2xl border border-neutral-200 bg-surface p-6">
         <h2 className="mb-4 text-h2 font-semibold text-ink">
           Profile photo
         </h2>
         <AvatarUploadForm />
       </section>
-      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+      <section className="rounded-2xl border border-neutral-200 bg-surface p-6">
         <h2 className="mb-4 text-h2 font-semibold text-ink">
           Profile details
         </h2>
         <ProfileSettingsForm />
       </section>
-      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+      <section className="rounded-2xl border border-neutral-200 bg-surface p-6">
         <h2 className="mb-4 text-h2 font-semibold text-ink">Password</h2>
         <ChangePasswordForm />
       </section>

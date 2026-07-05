@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/Avatar";
 import { CountBadge } from "@/components/ui/CountBadge";
 import { Logo } from "@/components/ui/Logo";
+import { ThemeToggle } from "./ThemeToggle";
 import {
   IconHome,
   IconUsers,
@@ -33,14 +34,17 @@ export function Navbar({ className }: { className?: string }) {
   return (
     <aside
       className={cn(
-        "sticky top-0 flex h-dvh w-64 shrink-0 flex-col border-r border-neutral-200 bg-white px-4 py-6",
+        "sticky top-0 flex h-dvh w-64 shrink-0 flex-col border-r border-neutral-200 bg-surface px-4 py-6",
         className,
       )}
     >
-      <Link href="/feed" className="mb-8 flex items-center gap-2 px-2">
-        <Logo size={32} />
-        <span className="text-h2 font-semibold text-ink">Social</span>
-      </Link>
+      <div className="mb-8 flex items-center justify-between px-2">
+        <Link href="/feed" className="flex items-center gap-2">
+          <Logo size={32} />
+          <span className="text-h2 font-semibold text-ink">Social</span>
+        </Link>
+        <ThemeToggle />
+      </div>
 
       <nav className="flex flex-1 flex-col gap-1">
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
@@ -52,7 +56,7 @@ export function Navbar({ className }: { className?: string }) {
               className={cn(
                 "flex items-center gap-3 rounded-xl px-3 py-2.5 text-body font-medium transition-colors duration-150",
                 active
-                  ? "bg-brand-50 text-brand-700"
+                  ? "bg-brand-50 text-brand-700 dark:text-brand-200"
                   : "text-neutral-600 hover:bg-neutral-100 hover:text-ink",
               )}
             >

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { ToastHost } from "@/components/feedback/ToastHost";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,12 +39,18 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      // next-themes sets the .dark class on this element via a blocking
+      // inline script before hydration - suppress the one-time mismatch
+      // warning that causes, since it's expected and harmless here.
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
-        {children}
+        <ThemeProvider>
+          {children}
+          <ToastHost />
+        </ThemeProvider>
         <ServiceWorkerRegister />
-        <ToastHost />
       </body>
     </html>
   );

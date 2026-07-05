@@ -24,7 +24,7 @@ export function MobileTabBar({ className }: { className?: string }) {
   return (
     <nav
       className={cn(
-        "fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-neutral-200 bg-white/95 px-2 py-2 backdrop-blur",
+        "fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-neutral-200 bg-surface/95 px-2 py-2 backdrop-blur",
         className,
       )}
       style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}

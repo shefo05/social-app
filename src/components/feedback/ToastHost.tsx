@@ -5,7 +5,9 @@ import { cn } from "@/lib/utils";
 import { IconCheck, IconAlertCircle, IconX } from "@/components/ui/icons";
 
 const variantStyles: Record<ToastVariant, string> = {
-  default: "bg-ink text-white",
+  // charcoal is a deliberately non-themed dark chip - bg-ink would
+  // invert to near-white in dark mode and erase the white text below.
+  default: "bg-charcoal text-white",
   success: "bg-success text-white",
   error: "bg-danger text-white",
 };

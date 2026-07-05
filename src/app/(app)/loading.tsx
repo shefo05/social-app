@@ -7,7 +7,7 @@ export default function AppLoading() {
       {[0, 1, 2].map((i) => (
         <div
           key={i}
-          className="rounded-2xl border border-neutral-200 bg-white p-5"
+          className="rounded-2xl border border-neutral-200 bg-surface p-5"
         >
           <div className="flex items-center gap-3">
             <Skeleton className="h-10 w-10 rounded-full" />

@@ -10,7 +10,7 @@ export function ProfileCard() {
   if (!user) return null;
 
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-6">
+    <div className="rounded-2xl border border-neutral-200 bg-surface p-6">
       <div className="flex items-center gap-4">
         <Avatar name={user.userName} src={user.profilePic} size="lg" />
         <div>

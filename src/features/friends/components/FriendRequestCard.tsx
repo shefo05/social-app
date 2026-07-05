@@ -42,7 +42,7 @@ export function FriendRequestCard({
   };
 
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-neutral-200 bg-white p-4">
+    <div className="flex items-center gap-3 rounded-2xl border border-neutral-200 bg-surface p-4">
       <Avatar name={otherParty.userName} src={otherParty.profilePic} size="md" />
       <div className="min-w-0 flex-1">
         <p className="truncate text-body-sm font-medium text-ink">
