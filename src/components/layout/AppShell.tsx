@@ -11,6 +11,7 @@ import type { RequestAcceptedEvent, RequestNewEvent } from "@/types";
 import { Navbar } from "./Navbar";
 import { MobileHeader } from "./MobileHeader";
 import { MobileTabBar } from "./MobileTabBar";
+import { FriendsSidebar } from "./FriendsSidebar";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -76,13 +77,14 @@ export function AppShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-dvh bg-background">
+    <div className="flex min-h-dvh flex-col bg-background">
       <Navbar className="hidden md:flex" />
-      <div className="flex-1 pb-20 md:pb-0">
-        <MobileHeader className="md:hidden" />
-        <main className="mx-auto w-full max-w-2xl px-4 py-6 md:px-8 md:py-10">
+      <MobileHeader className="md:hidden" />
+      <div className="flex flex-1">
+        <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-6 pb-20 md:px-8 md:py-10 md:pb-10">
           {children}
         </main>
+        <FriendsSidebar className="hidden lg:flex" />
       </div>
       <MobileTabBar className="md:hidden" />
     </div>
