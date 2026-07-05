@@ -50,7 +50,8 @@
       "submit": "Anmelden",
       "newHere": "Neu hier?",
       "createAccount": "Konto erstellen",
-      "welcomeBack": "Willkommen zurück, {name}"
+      "welcomeBack": "Willkommen zurück, {name}",
+      "reactivatedToast": "Willkommen zurück — Ihr Konto wurde wiederhergestellt."
     },
     "signup": {
       "title": "Konto erstellen",
@@ -90,7 +91,13 @@
       "resent": "Code erneut gesendet — überprüfen Sie Ihren Posteingang",
       "success": "Passwort aktualisiert — melden Sie sich mit Ihrem neuen Passwort an"
     },
-    "waking": "Die erste Anfrage nach ein paar Minuten Inaktivität kann bis zu einer Minute dauern — der kostenlose Server wacht gerade auf."
+    "waking": "Die erste Anfrage nach ein paar Minuten Inaktivität kann bis zu einer Minute dauern — der kostenlose Server wacht gerade auf.",
+    "google": {
+      "continue": "Mit Google fortfahren",
+      "orDivider": "oder",
+      "error": "Anmeldung mit Google fehlgeschlagen. Versuchen Sie es erneut.",
+      "newUserToast": "Willkommen, {name}! Ihr Konto ist bereit."
+    }
   },
   "feed": {
     "title": "Feed",

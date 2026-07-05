@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api-client";
-import type { AuthTokens, User } from "@/types";
+import type { AuthResult, User } from "@/types";
 
 interface MessageResponse {
   message: string;
@@ -26,8 +26,19 @@ export const authApi = {
     }),
 
   login: (payload: { email: string; password: string }) =>
-    apiClient.post<MessageResponse & { data: AuthTokens }>(
+    apiClient.post<MessageResponse & { data: AuthResult }>(
       "/auth/login",
+      payload,
+      { auth: false },
+    ),
+
+  // ID-token flow (Google Identity Services) - no redirect, no client
+  // secret on this side. Same response shape as login(); backend decides
+  // login-vs-signup based on whether the token's email matches an
+  // existing account (see auth.service.ts googleAuth()).
+  googleAuth: (payload: { idToken: string }) =>
+    apiClient.post<MessageResponse & { data: AuthResult }>(
+      "/auth/google",
       payload,
       { auth: false },
     ),

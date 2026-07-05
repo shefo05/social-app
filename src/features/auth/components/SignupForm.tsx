@@ -11,9 +11,11 @@ import { Button } from "@/components/ui/Button";
 import { ApiError } from "@/types/api";
 import { authApi } from "../api";
 import { createAuthSchemas, type SignupFormValues } from "../schemas";
+import { GoogleButton } from "./GoogleButton";
 
 export function SignupForm() {
   const t = useTranslations("auth.signup");
+  const tGoogle = useTranslations("auth.google");
   const tCommon = useTranslations("common");
   const tValidation = useTranslations("validation");
   const router = useRouter();
@@ -74,6 +76,12 @@ export function SignupForm() {
       <Button type="submit" isLoading={isSubmitting} className="mt-2">
         {t("submit")}
       </Button>
+      <div className="flex items-center gap-3 text-body-sm text-neutral-400">
+        <span className="h-px flex-1 bg-neutral-200" />
+        {tGoogle("orDivider")}
+        <span className="h-px flex-1 bg-neutral-200" />
+      </div>
+      <GoogleButton />
       <p className="text-center text-body-sm text-neutral-500">
         {t("haveAccount")}{" "}
         <Link href="/login" className="font-medium text-brand-600 hover:underline">

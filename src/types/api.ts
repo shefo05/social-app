@@ -25,3 +25,12 @@ export interface AuthTokens {
   accessToken: string;
   refreshToken: string;
 }
+
+/** login() and googleAuth() both return this - reactivated is set when a
+ * soft-deleted account signed back in within its grace period; isNewUser
+ * only ever comes from googleAuth() (password signup is a separate,
+ * OTP-gated flow with no equivalent "just created" moment here). */
+export interface AuthResult extends AuthTokens {
+  reactivated?: boolean;
+  isNewUser?: boolean;
+}

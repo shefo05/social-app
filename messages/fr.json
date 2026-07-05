@@ -50,7 +50,8 @@
       "submit": "Se connecter",
       "newHere": "Nouveau ici ?",
       "createAccount": "Créer un compte",
-      "welcomeBack": "Content de vous revoir, {name}"
+      "welcomeBack": "Content de vous revoir, {name}",
+      "reactivatedToast": "Content de vous revoir — votre compte a été restauré."
     },
     "signup": {
       "title": "Créer un compte",
@@ -90,7 +91,13 @@
       "resent": "Code renvoyé — vérifiez votre boîte de réception",
       "success": "Mot de passe mis à jour — connectez-vous avec votre nouveau mot de passe"
     },
-    "waking": "La première requête après quelques minutes d'inactivité peut prendre jusqu'à une minute — le serveur (offre gratuite) se réveille."
+    "waking": "La première requête après quelques minutes d'inactivité peut prendre jusqu'à une minute — le serveur (offre gratuite) se réveille.",
+    "google": {
+      "continue": "Continuer avec Google",
+      "orDivider": "ou",
+      "error": "Impossible de se connecter avec Google. Réessayez.",
+      "newUserToast": "Bienvenue, {name} ! Votre compte est prêt."
+    }
   },
   "feed": {
     "title": "Fil d'actualité",
