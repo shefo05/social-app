@@ -144,25 +144,33 @@ export function ProfileView({ profile, isOwnProfile, email, gender }: ProfileVie
   return (
     <div className="flex flex-col gap-5">
       <div className="rounded-2xl border border-neutral-200 bg-surface p-6">
-        <div className="flex items-center gap-4">
-          <Avatar name={profile.userName} src={profile.profilePic} size="lg" />
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-h1 font-semibold text-ink">{profile.userName}</p>
-            {isOwnProfile && email && (
-              <p className="truncate text-body text-neutral-500">{email}</p>
-            )}
-            <p className="text-body-sm text-neutral-400">
-              {t("memberSince", { date: memberSince })}
-            </p>
+        {/* Stacked on mobile - the action button was squeezing the name/
+            member-since column down to a couple of truncated characters
+            on narrow screens. Row layout returns at sm: and up, where
+            there's room for both without truncating. */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div className="flex min-w-0 items-center gap-4">
+            <Avatar name={profile.userName} src={profile.profilePic} size="lg" />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-h1 font-semibold text-ink">{profile.userName}</p>
+              {isOwnProfile && email && (
+                <p className="truncate text-body text-neutral-500">{email}</p>
+              )}
+              <p className="truncate text-body-sm text-neutral-400">
+                {t("memberSince", { date: memberSince })}
+              </p>
+            </div>
           </div>
           {isOwnProfile ? (
-            <Link href="/settings" className="shrink-0">
-              <Button variant="secondary" size="sm">
+            <Link href="/settings" className="sm:ms-auto sm:shrink-0">
+              <Button variant="secondary" size="sm" className="w-full sm:w-auto">
                 {t("editProfile")}
               </Button>
             </Link>
           ) : (
-            <FriendAction profileId={profile._id} />
+            <div className="sm:ms-auto sm:shrink-0">
+              <FriendAction profileId={profile._id} />
+            </div>
           )}
         </div>
 
