@@ -7,7 +7,8 @@ import { ErrorState } from "@/components/feedback/ErrorState";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { IconBell } from "@/components/ui/icons";
 import { useRequestsStore } from "@/stores/requests.store";
-import type { RequestDashboard as RequestDashboardType } from "@/types";
+import { getSocket } from "@/lib/socket";
+import type { RequestCancelledEvent, RequestDashboard as RequestDashboardType } from "@/types";
 import { friendsApi } from "../api";
 import { FriendRequestCard } from "./FriendRequestCard";
 
@@ -54,6 +55,31 @@ export function RequestsDashboard() {
         : prev,
     );
   };
+
+  // Live removal when the other party cancels a request while this page
+  // is open (either direction: they cancelled one sent to us, or -
+  // multi-tab - we cancelled one from elsewhere). Deliberately doesn't
+  // call decrementIncoming() here - AppShell's own listener already
+  // updates the badge globally regardless of whether this page is
+  // mounted, so doing it again here would double-decrement.
+  useEffect(() => {
+    const socket = getSocket();
+    const onCancelled = (payload: RequestCancelledEvent) => {
+      setDashboard((prev) =>
+        prev
+          ? {
+              ...prev,
+              incomingRecent: prev.incomingRecent.filter((r) => r._id !== payload._id),
+              outgoingRecent: prev.outgoingRecent.filter((r) => r._id !== payload._id),
+            }
+          : prev,
+      );
+    };
+    socket.on("request:cancelled", onCancelled);
+    return () => {
+      socket.off("request:cancelled", onCancelled);
+    };
+  }, []);
 
   if (error) {
     return <ErrorState title={t("loadError")} onRetry={load} />;

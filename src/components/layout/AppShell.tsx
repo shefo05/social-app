@@ -10,7 +10,12 @@ import { usePresenceStore } from "@/stores/presence.store";
 import { friendsApi } from "@/features/friends/api";
 import { authApi } from "@/features/auth/api";
 import { connectSocket, disconnectSocket, getSocket } from "@/lib/socket";
-import type { PresenceEvent, RequestAcceptedEvent, RequestNewEvent } from "@/types";
+import type {
+  PresenceEvent,
+  RequestAcceptedEvent,
+  RequestCancelledEvent,
+  RequestNewEvent,
+} from "@/types";
 import { Navbar } from "./Navbar";
 import { MobileHeader } from "./MobileHeader";
 import { MobileTabBar } from "./MobileTabBar";
@@ -23,6 +28,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const accessToken = useAuthStore((s) => s.accessToken);
   const setIncomingCount = useRequestsStore((s) => s.setIncomingCount);
   const incrementIncoming = useRequestsStore((s) => s.incrementIncoming);
+  const decrementIncoming = useRequestsStore((s) => s.decrementIncoming);
   const showToast = useUiStore((s) => s.showToast);
   const setOnline = usePresenceStore((s) => s.setOnline);
   const setOffline = usePresenceStore((s) => s.setOffline);
@@ -62,15 +68,24 @@ export function AppShell({ children }: { children: ReactNode }) {
     const onRequestAccepted = (payload: RequestAcceptedEvent) => {
       showToast(t("acceptedSocketToast", { name: payload.accepter.userName }), "success");
     };
+    // Not live yet (backend contract to be confirmed) - badge only.
+    // RequestsDashboard listens for this event separately to drop the
+    // item from a visible incoming list; doing both here too would
+    // double-decrement whenever that page happens to be mounted.
+    const onRequestCancelled = (_payload: RequestCancelledEvent) => {
+      decrementIncoming();
+    };
 
     socket.on("request:new", onRequestNew);
     socket.on("request:accepted", onRequestAccepted);
+    socket.on("request:cancelled", onRequestCancelled);
 
     return () => {
       socket.off("request:new", onRequestNew);
       socket.off("request:accepted", onRequestAccepted);
+      socket.off("request:cancelled", onRequestCancelled);
     };
-  }, [hasHydrated, accessToken, incrementIncoming, showToast, t]);
+  }, [hasHydrated, accessToken, incrementIncoming, decrementIncoming, showToast, t]);
 
   // Presence: fetch the initial online-friends snapshot on every connect
   // (including reconnects, same as CommentThread's post:join re-emit) -

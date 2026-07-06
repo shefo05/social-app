@@ -153,6 +153,8 @@
     "alreadyFriends": "Befreundet",
     "requestSent": "Freundschaftsanfrage gesendet",
     "requestSentError": "Diese Anfrage konnte nicht gesendet werden.",
+    "requestCancelled": "Freundschaftsanfrage zurückgezogen",
+    "cancelError": "Diese Anfrage konnte nicht zurückgezogen werden.",
     "sentSocketToast": "{name} hat Ihnen eine Freundschaftsanfrage gesendet",
     "acceptedSocketToast": "{name} hat Ihre Freundschaftsanfrage angenommen",
     "requests": {

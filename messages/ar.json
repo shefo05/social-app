@@ -153,6 +153,8 @@
     "alreadyFriends": "أصدقاء",
     "requestSent": "تم إرسال طلب الصداقة",
     "requestSentError": "تعذّر إرسال هذا الطلب.",
+    "requestCancelled": "تم إلغاء طلب الصداقة",
+    "cancelError": "تعذّر إلغاء هذا الطلب.",
     "sentSocketToast": "أرسل لك {name} طلب صداقة",
     "acceptedSocketToast": "قبل {name} طلب صداقتك",
     "requests": {

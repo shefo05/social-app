@@ -21,6 +21,8 @@ export function FriendRequestCard({
   onResolved: (id: string) => void;
 }) {
   const t = useTranslations("friends.requests");
+  const tFriends = useTranslations("friends");
+  const tCommon = useTranslations("common");
   const currentUserId = useAuthStore((s) => s.user?._id);
   const [pending, setPending] = useState(false);
   const showToast = useUiStore((s) => s.showToast);
@@ -35,6 +37,23 @@ export function FriendRequestCard({
       showToast(action === "accept" ? t("accepted") : t("declined"), "success");
     } catch (err) {
       showToast(getErrorMessage(err, t("respondError")), "error");
+    } finally {
+      setPending(false);
+    }
+  };
+
+  // Not part of the original outgoing-list design (it only ever showed a
+  // static "Request sent" label) - added alongside the toggle everywhere
+  // else so this page, of all places, isn't the one spot without a way
+  // to cancel a sent request.
+  const cancel = async () => {
+    setPending(true);
+    try {
+      await friendsApi.cancel(request._id);
+      onResolved(request._id);
+      showToast(tFriends("requestCancelled"), "success");
+    } catch (err) {
+      showToast(getErrorMessage(err, tFriends("cancelError")), "error");
     } finally {
       setPending(false);
     }
@@ -55,7 +74,7 @@ export function FriendRequestCard({
           {direction === "incoming" ? t("wantsToConnect") : t("requestSentLabel")}
         </p>
       </div>
-      {direction === "incoming" && (
+      {direction === "incoming" ? (
         <div className="flex shrink-0 gap-2">
           <Button
             size="sm"
@@ -69,6 +88,16 @@ export function FriendRequestCard({
             {t("accept")}
           </Button>
         </div>
+      ) : (
+        <Button
+          size="sm"
+          variant="secondary"
+          disabled={pending}
+          onClick={cancel}
+          className="shrink-0"
+        >
+          {tCommon("cancel")}
+        </Button>
       )}
     </div>
   );

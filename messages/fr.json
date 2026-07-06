@@ -153,6 +153,8 @@
     "alreadyFriends": "Amis",
     "requestSent": "Demande d'ami envoyée",
     "requestSentError": "Impossible d'envoyer cette demande.",
+    "requestCancelled": "Demande d'ami annulée",
+    "cancelError": "Impossible d'annuler cette demande.",
     "sentSocketToast": "{name} vous a envoyé une demande d'ami",
     "acceptedSocketToast": "{name} a accepté votre demande d'ami",
     "requests": {

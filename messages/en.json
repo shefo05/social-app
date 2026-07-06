@@ -153,6 +153,8 @@
     "alreadyFriends": "Friends",
     "requestSent": "Friend request sent",
     "requestSentError": "Couldn't send that request.",
+    "requestCancelled": "Friend request cancelled",
+    "cancelError": "Couldn't cancel that request.",
     "sentSocketToast": "{name} sent you a friend request",
     "acceptedSocketToast": "{name} accepted your friend request",
     "requests": {

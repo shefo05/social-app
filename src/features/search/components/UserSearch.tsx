@@ -38,7 +38,8 @@ export function UserSearch({ showQuickAdd, onNavigate, autoFocus, className }: U
   const [results, setResults] = useState<UserSearchResult[] | null>(null);
   const [error, setError] = useState(false);
   const [sendingId, setSendingId] = useState<string | null>(null);
-  const [sentIds, setSentIds] = useState<Set<string>>(new Set());
+  // userId -> that request's own _id, needed by DELETE /request/cancel/:requestId.
+  const [sentRequestIds, setSentRequestIds] = useState<Map<string, string>>(new Map());
 
   useEffect(() => {
     if (debouncedQuery.length < MIN_QUERY_LENGTH) {
@@ -71,10 +72,35 @@ export function UserSearch({ showQuickAdd, onNavigate, autoFocus, className }: U
     setSendingId(id);
     try {
       await friendsApi.send(id);
-      setSentIds((prev) => new Set(prev).add(id));
+      // send() returns no body, so the new request's _id (needed later to
+      // cancel) is looked up via the dashboard's outgoingRecent.
+      const dashRes = await friendsApi.getDashboard(50);
+      const created = dashRes.data.outgoingRecent.find((r) => r.receiver._id === id);
+      if (created) {
+        setSentRequestIds((prev) => new Map(prev).set(id, created._id));
+      }
       showToast(tFriends("requestSent"), "success");
     } catch (err) {
       showToast(getErrorMessage(err, tFriends("requestSentError")), "error");
+    } finally {
+      setSendingId(null);
+    }
+  };
+
+  const cancelRequest = async (id: string) => {
+    const requestId = sentRequestIds.get(id);
+    if (!requestId) return;
+    setSendingId(id);
+    try {
+      await friendsApi.cancel(requestId);
+      setSentRequestIds((prev) => {
+        const next = new Map(prev);
+        next.delete(id);
+        return next;
+      });
+      showToast(tFriends("requestCancelled"), "success");
+    } catch (err) {
+      showToast(getErrorMessage(err, tFriends("cancelError")), "error");
     } finally {
       setSendingId(null);
     }
@@ -132,14 +158,22 @@ export function UserSearch({ showQuickAdd, onNavigate, autoFocus, className }: U
                   {showQuickAdd && (
                     <button
                       type="button"
-                      aria-label={tFriends("requestSent")}
-                      disabled={sendingId === result._id || sentIds.has(result._id)}
-                      onClick={() => sendRequest(result._id)}
+                      aria-label={
+                        sentRequestIds.has(result._id)
+                          ? tFriends("requests.requestSentLabel")
+                          : tFriends("sendFriendRequest")
+                      }
+                      disabled={sendingId === result._id}
+                      onClick={() =>
+                        sentRequestIds.has(result._id)
+                          ? cancelRequest(result._id)
+                          : sendRequest(result._id)
+                      }
                       className={cn(
-                        "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors",
-                        sentIds.has(result._id)
-                          ? "text-success"
-                          : "text-neutral-500 hover:bg-neutral-200 hover:text-ink disabled:opacity-50",
+                        "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors disabled:opacity-50",
+                        sentRequestIds.has(result._id)
+                          ? "text-success hover:bg-danger-bg hover:text-danger"
+                          : "text-neutral-500 hover:bg-neutral-200 hover:text-ink",
                       )}
                     >
                       <IconUserPlus className="h-4 w-4" />

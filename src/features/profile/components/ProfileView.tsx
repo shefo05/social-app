@@ -32,24 +32,43 @@ interface ProfileViewProps {
  * the current user's own friends list for a match - the same source
  * FriendList/FriendsSidebar already use. Only rendered for someone
  * else's profile, so a match always means "friends with the viewer."
+ *
+ * "sent" is a toggle, not a dead end: clicking again cancels the
+ * request via DELETE /request/cancel/:requestId, which needs the
+ * request's own _id - POST /request/:receiverId (send) doesn't return
+ * one (still a 204/no body), so it's looked up via getDashboard()'s
+ * outgoingRecent instead, both on mount (a pending request from an
+ * earlier visit) and right after sending (to capture the new one).
  */
 function FriendAction({ profileId }: { profileId: string }) {
   const t = useTranslations("friends");
   const showToast = useUiStore((s) => s.showToast);
   const [status, setStatus] = useState<"loading" | "friends" | "none" | "sent">("loading");
-  const [isSending, setIsSending] = useState(false);
+  const [requestId, setRequestId] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    authApi
-      .getMe()
-      .then((res) => {
+    Promise.all([authApi.getMe(), friendsApi.getDashboard(50)])
+      .then(([meRes, dashRes]) => {
         if (cancelled) return;
-        const friends = res.data.friends as UserFriend[];
+        const friends = meRes.data.friends as UserFriend[];
         const isFriend = friends.some(
           (f) => f.user._id === profileId || f.friend._id === profileId,
         );
-        setStatus(isFriend ? "friends" : "none");
+        if (isFriend) {
+          setStatus("friends");
+          return;
+        }
+        const pending = dashRes.data.outgoingRecent.find(
+          (r) => r.receiver._id === profileId,
+        );
+        if (pending) {
+          setRequestId(pending._id);
+          setStatus("sent");
+        } else {
+          setStatus("none");
+        }
       })
       .catch(() => {
         if (!cancelled) setStatus("none");
@@ -60,22 +79,42 @@ function FriendAction({ profileId }: { profileId: string }) {
   }, [profileId]);
 
   const send = async () => {
-    setIsSending(true);
+    setIsProcessing(true);
     try {
       await friendsApi.send(profileId);
+      const dashRes = await friendsApi.getDashboard(50);
+      const created = dashRes.data.outgoingRecent.find(
+        (r) => r.receiver._id === profileId,
+      );
+      setRequestId(created?._id ?? null);
       setStatus("sent");
       showToast(t("requestSent"), "success");
     } catch (err) {
       showToast(getErrorMessage(err, t("requestSentError")), "error");
     } finally {
-      setIsSending(false);
+      setIsProcessing(false);
+    }
+  };
+
+  const cancel = async () => {
+    if (!requestId) return;
+    setIsProcessing(true);
+    try {
+      await friendsApi.cancel(requestId);
+      setStatus("none");
+      setRequestId(null);
+      showToast(t("requestCancelled"), "success");
+    } catch (err) {
+      showToast(getErrorMessage(err, t("cancelError")), "error");
+    } finally {
+      setIsProcessing(false);
     }
   };
 
   if (status === "loading") return null;
   if (status === "friends") {
     return (
-      <Badge variant="neutral" className="shrink-0">
+      <Badge variant="neutral" className="self-start sm:self-auto">
         {t("alreadyFriends")}
       </Badge>
     );
@@ -84,10 +123,10 @@ function FriendAction({ profileId }: { profileId: string }) {
     <Button
       variant={status === "sent" ? "secondary" : "primary"}
       size="sm"
-      disabled={status === "sent" || isSending}
-      isLoading={isSending}
-      onClick={send}
-      className="shrink-0"
+      disabled={isProcessing}
+      isLoading={isProcessing}
+      onClick={status === "sent" ? cancel : send}
+      className="w-full sm:w-auto"
     >
       <IconUserPlus className="h-4 w-4" />
       {status === "sent" ? t("requests.requestSentLabel") : t("sendFriendRequest")}

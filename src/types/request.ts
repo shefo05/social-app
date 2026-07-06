@@ -29,3 +29,9 @@ export interface RequestAcceptedEvent {
   _id: string;
   accepter: PostAuthor;
 }
+
+/** Sent to the original receiver so their client can drop it from the
+ * incoming list - confirmed contract, backend commit daf3b2fc. */
+export interface RequestCancelledEvent {
+  _id: string;
+}
