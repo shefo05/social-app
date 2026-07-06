@@ -81,7 +81,12 @@ export const authApi = {
 
   logout: () => apiClient.post<void>("/auth/logout"),
 
-  deleteAccount: () => apiClient.delete<void>("/auth/"),
+  // Was calling DELETE /auth/ (no such route - only /auth/delete-account
+  // is registered), so every attempt 404'd against Express's default HTML
+  // handler. That has no JSON body to parse, so the generic ApiError
+  // fallback message showed instead of anything real - not the backend
+  // hiding an error, the frontend was never reaching the backend at all.
+  deleteAccount: () => apiClient.delete<void>("/auth/delete-account"),
 
   getMe: () =>
     apiClient.get<{

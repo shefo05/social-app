@@ -12,6 +12,7 @@ import { DropdownMenu, DropdownItem } from "@/components/ui/DropdownMenu";
 import { Logo } from "@/components/ui/Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { SearchButton } from "./SearchButton";
 import {
   IconHome,
   IconUsers,
@@ -68,6 +69,7 @@ export function Navbar({ className }: { className?: string }) {
       </nav>
 
       <div className="flex shrink-0 items-center gap-1">
+        <SearchButton />
         <LanguageSwitcher />
         <ThemeToggle />
 

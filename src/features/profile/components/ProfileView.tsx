@@ -8,12 +8,16 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { ErrorState } from "@/components/feedback/ErrorState";
-import { IconHome } from "@/components/ui/icons";
+import { IconHome, IconUserPlus } from "@/components/ui/icons";
 import { PostCard } from "@/features/feed/components/PostCard";
 import { FeedSkeleton } from "@/features/feed/components/FeedSkeleton";
 import { feedApi } from "@/features/feed/api";
+import { authApi } from "@/features/auth/api";
+import { friendsApi } from "@/features/friends/api";
+import { useUiStore } from "@/stores/ui.store";
+import { ApiError } from "@/types/api";
 import { profileApi } from "../api";
-import { Gender, type Post, type PublicProfile } from "@/types";
+import { Gender, type Post, type PublicProfile, type UserFriend } from "@/types";
 
 interface ProfileViewProps {
   profile: PublicProfile;
@@ -21,6 +25,74 @@ interface ProfileViewProps {
   /** Only known/shown for the account owner - never present on a public profile. */
   email?: string;
   gender?: Gender;
+}
+
+/**
+ * There's no "relationship status with user X" endpoint, so this checks
+ * the current user's own friends list for a match - the same source
+ * FriendList/FriendsSidebar already use. Only rendered for someone
+ * else's profile, so a match always means "friends with the viewer."
+ */
+function FriendAction({ profileId }: { profileId: string }) {
+  const t = useTranslations("friends");
+  const showToast = useUiStore((s) => s.showToast);
+  const [status, setStatus] = useState<"loading" | "friends" | "none" | "sent">("loading");
+  const [isSending, setIsSending] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    authApi
+      .getMe()
+      .then((res) => {
+        if (cancelled) return;
+        const friends = res.data.friends as UserFriend[];
+        const isFriend = friends.some(
+          (f) => f.user._id === profileId || f.friend._id === profileId,
+        );
+        setStatus(isFriend ? "friends" : "none");
+      })
+      .catch(() => {
+        if (!cancelled) setStatus("none");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [profileId]);
+
+  const send = async () => {
+    setIsSending(true);
+    try {
+      await friendsApi.send(profileId);
+      setStatus("sent");
+      showToast(t("requestSent"), "success");
+    } catch (err) {
+      showToast(err instanceof ApiError ? err.message : t("requestSentError"), "error");
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  if (status === "loading") return null;
+  if (status === "friends") {
+    return (
+      <Badge variant="neutral" className="shrink-0">
+        {t("alreadyFriends")}
+      </Badge>
+    );
+  }
+  return (
+    <Button
+      variant={status === "sent" ? "secondary" : "primary"}
+      size="sm"
+      disabled={status === "sent" || isSending}
+      isLoading={isSending}
+      onClick={send}
+      className="shrink-0"
+    >
+      <IconUserPlus className="h-4 w-4" />
+      {status === "sent" ? t("requests.requestSentLabel") : t("sendFriendRequest")}
+    </Button>
+  );
 }
 
 export function ProfileView({ profile, isOwnProfile, email, gender }: ProfileViewProps) {
@@ -83,12 +155,14 @@ export function ProfileView({ profile, isOwnProfile, email, gender }: ProfileVie
               {t("memberSince", { date: memberSince })}
             </p>
           </div>
-          {isOwnProfile && (
+          {isOwnProfile ? (
             <Link href="/settings" className="shrink-0">
               <Button variant="secondary" size="sm">
                 {t("editProfile")}
               </Button>
             </Link>
+          ) : (
+            <FriendAction profileId={profile._id} />
           )}
         </div>
 

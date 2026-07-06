@@ -148,8 +148,9 @@
     "remove": "Retirer",
     "removed": "Ami retiré",
     "removeError": "Impossible de retirer cet ami.",
-    "sendByIdLabel": "Ajouter un ami par ID utilisateur",
-    "sendByIdPlaceholder": "ex. 6650f1c2a1b2c3d4e5f6a7b8",
+    "findLabel": "Trouver des personnes à ajouter",
+    "sendFriendRequest": "Envoyer une demande d'ami",
+    "alreadyFriends": "Amis",
     "requestSent": "Demande d'ami envoyée",
     "requestSentError": "Impossible d'envoyer cette demande.",
     "sentSocketToast": "{name} vous a envoyé une demande d'ami",
@@ -170,6 +171,12 @@
     },
     "online": "En ligne",
     "offline": "Hors ligne"
+  },
+  "search": {
+    "open": "Rechercher",
+    "placeholder": "Rechercher des personnes...",
+    "noResults": "Aucune personne trouvée",
+    "error": "Impossible de rechercher pour le moment"
   },
   "profile": {
     "genderMale": "Homme",

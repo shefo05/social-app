@@ -183,3 +183,23 @@ export function IconChevronDown(props: IconProps) {
     </svg>
   );
 }
+
+export function IconSearch(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="11" cy="11" r="7" />
+      <line x1="21" y1="21" x2="16.2" y2="16.2" />
+    </svg>
+  );
+}
+
+export function IconUserPlus(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="9" cy="8" r="4" />
+      <path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6" />
+      <line x1="18" y1="8" x2="18" y2="14" />
+      <line x1="15" y1="11" x2="21" y2="11" />
+    </svg>
+  );
+}

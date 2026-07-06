@@ -38,6 +38,10 @@ export interface PublicProfile {
   createdAt: string;
 }
 
+/** GET /user/search?q= result - same allowlist as PublicProfile, minus
+ * createdAt (not needed for a results dropdown). */
+export type UserSearchResult = Pick<PublicProfile, "_id" | "userName" | "profilePic" | "bio">;
+
 export interface UserFriend {
   _id: string;
   /** GET /user/'s friends list always populates both sides now. */

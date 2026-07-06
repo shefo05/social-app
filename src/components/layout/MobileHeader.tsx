@@ -4,6 +4,7 @@ import { Logo } from "@/components/ui/Logo";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { SearchButton } from "./SearchButton";
 
 export function MobileHeader({ className }: { className?: string }) {
   const t = useTranslations("nav");
@@ -19,6 +20,7 @@ export function MobileHeader({ className }: { className?: string }) {
         <span className="text-h2 font-semibold text-ink">{t("brand")}</span>
       </Link>
       <div className="flex items-center gap-1">
+        <SearchButton />
         <LanguageSwitcher />
         <ThemeToggle />
       </div>

@@ -148,8 +148,9 @@
     "remove": "إزالة",
     "removed": "تمت إزالة الصديق",
     "removeError": "تعذّر إزالة هذا الصديق.",
-    "sendByIdLabel": "أضف صديقًا عبر معرّف المستخدم",
-    "sendByIdPlaceholder": "مثال: 6650f1c2a1b2c3d4e5f6a7b8",
+    "findLabel": "ابحث عن أشخاص لإضافتهم",
+    "sendFriendRequest": "إرسال طلب صداقة",
+    "alreadyFriends": "أصدقاء",
     "requestSent": "تم إرسال طلب الصداقة",
     "requestSentError": "تعذّر إرسال هذا الطلب.",
     "sentSocketToast": "أرسل لك {name} طلب صداقة",
@@ -170,6 +171,12 @@
     },
     "online": "متصل",
     "offline": "غير متصل"
+  },
+  "search": {
+    "open": "بحث",
+    "placeholder": "ابحث عن أشخاص...",
+    "noResults": "لم يتم العثور على أشخاص",
+    "error": "تعذّر البحث الآن"
   },
   "profile": {
     "genderMale": "ذكر",

@@ -148,8 +148,9 @@
     "remove": "Remove",
     "removed": "Friend removed",
     "removeError": "Couldn't remove that friend.",
-    "sendByIdLabel": "Add a friend by user ID",
-    "sendByIdPlaceholder": "e.g. 6650f1c2a1b2c3d4e5f6a7b8",
+    "findLabel": "Find people to add",
+    "sendFriendRequest": "Send friend request",
+    "alreadyFriends": "Friends",
     "requestSent": "Friend request sent",
     "requestSentError": "Couldn't send that request.",
     "sentSocketToast": "{name} sent you a friend request",
@@ -170,6 +171,12 @@
     },
     "online": "Online",
     "offline": "Offline"
+  },
+  "search": {
+    "open": "Search",
+    "placeholder": "Search people...",
+    "noResults": "No people found",
+    "error": "Couldn't search right now"
   },
   "profile": {
     "genderMale": "Male",
