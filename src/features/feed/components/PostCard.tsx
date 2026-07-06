@@ -7,11 +7,10 @@ import { useTranslations } from "next-intl";
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { IconMessageCircle } from "@/components/ui/icons";
-import { cn, profileHref } from "@/lib/utils";
+import { cn, getErrorMessage, profileHref } from "@/lib/utils";
 import { useRelativeTime } from "@/lib/hooks/useRelativeTime";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
-import { ApiError } from "@/types/api";
 import type { Post, PostAuthor } from "@/types";
 import { feedApi } from "../api";
 import { ReactionButton } from "./ReactionButton";
@@ -61,7 +60,7 @@ export function PostCard({
       setIsEditing(false);
       showToast(t("updated"), "success");
     } catch (err) {
-      showToast(err instanceof ApiError ? err.message : t("updateError"), "error");
+      showToast(getErrorMessage(err, t("updateError")), "error");
     } finally {
       setIsSaving(false);
     }
@@ -76,7 +75,7 @@ export function PostCard({
       if (onDeleted) onDeleted(post._id);
       else router.replace("/feed");
     } catch (err) {
-      showToast(err instanceof ApiError ? err.message : t("deleteError"), "error");
+      showToast(getErrorMessage(err, t("deleteError")), "error");
       setIsDeleting(false);
     }
   };

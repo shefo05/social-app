@@ -8,12 +8,11 @@ import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/feedback/EmptyState";
 import { ErrorState } from "@/components/feedback/ErrorState";
 import { IconHeart, IconMessageCircle } from "@/components/ui/icons";
-import { cn, profileHref } from "@/lib/utils";
+import { cn, getErrorMessage, profileHref } from "@/lib/utils";
 import { useRelativeTime } from "@/lib/hooks/useRelativeTime";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
 import { getSocket } from "@/lib/socket";
-import { ApiError } from "@/types/api";
 import { Reaction, type Comment, type PostAuthor, type ReactionEvent } from "@/types";
 import { commentsApi } from "../api";
 import { CommentForm } from "./CommentForm";
@@ -59,7 +58,7 @@ function CommentReactionButton({ commentId, count }: { commentId: string; count:
     } catch (err) {
       setReacted(!next);
       setLocalCount((c) => c + (next ? -1 : 1));
-      showToast(err instanceof ApiError ? err.message : t("reactError"), "error");
+      showToast(getErrorMessage(err, t("reactError")), "error");
     } finally {
       setPending(false);
     }
@@ -121,7 +120,7 @@ function CommentItem({
       setIsEditing(false);
       showToast(t("updated"), "success");
     } catch (err) {
-      showToast(err instanceof ApiError ? err.message : t("updateError"), "error");
+      showToast(getErrorMessage(err, t("updateError")), "error");
     } finally {
       setIsSaving(false);
     }
@@ -135,7 +134,7 @@ function CommentItem({
       showToast(t("deleted"), "success");
       onDeleted(comment._id);
     } catch (err) {
-      showToast(err instanceof ApiError ? err.message : t("deleteError"), "error");
+      showToast(getErrorMessage(err, t("deleteError")), "error");
       setIsDeleting(false);
     }
   };

@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
-import { ApiError } from "@/types/api";
+import { getErrorMessage } from "@/lib/utils";
 import { authApi } from "@/features/auth/api";
 import { createAuthSchemas } from "@/features/auth/schemas";
 
@@ -55,7 +55,7 @@ export function ProfileSettingsForm() {
       setUser(res.date.updatedUser);
       showToast(t("updated"), "success");
     } catch (err) {
-      setFormError(err instanceof ApiError ? err.message : t("updateError"));
+      setFormError(getErrorMessage(err, t("updateError")));
     }
   };
 

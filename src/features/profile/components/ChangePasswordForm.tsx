@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
-import { ApiError } from "@/types/api";
+import { getErrorMessage } from "@/lib/utils";
 import { authApi } from "@/features/auth/api";
 
 export function ChangePasswordForm() {
@@ -29,7 +29,7 @@ export function ChangePasswordForm() {
       setCodeSent(true);
       showToast(t("codeSent"), "success");
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : t("sendError"));
+      setError(getErrorMessage(err, t("sendError")));
     } finally {
       setIsSendingCode(false);
     }
@@ -46,7 +46,7 @@ export function ChangePasswordForm() {
       setOtp("");
       setNewPassword("");
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : t("updateError"));
+      setError(getErrorMessage(err, t("updateError")));
     } finally {
       setIsSubmitting(false);
     }

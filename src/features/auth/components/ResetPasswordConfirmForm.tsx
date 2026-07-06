@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useUiStore } from "@/stores/ui.store";
-import { ApiError } from "@/types/api";
+import { getErrorMessage } from "@/lib/utils";
 import { authApi } from "../api";
 import {
   createAuthSchemas,
@@ -40,7 +40,7 @@ export function ResetPasswordConfirmForm({ email }: { email: string }) {
       showToast(t("success"), "success");
       router.push("/login");
     } catch (err) {
-      setFormError(err instanceof ApiError ? err.message : tCommon("unexpectedError"));
+      setFormError(getErrorMessage(err, tCommon("unexpectedError")));
     }
   };
 
@@ -50,7 +50,7 @@ export function ResetPasswordConfirmForm({ email }: { email: string }) {
       await authApi.forgotPassword({ email });
       setResent(true);
     } catch (err) {
-      setFormError(err instanceof ApiError ? err.message : tCommon("unexpectedError"));
+      setFormError(getErrorMessage(err, tCommon("unexpectedError")));
     }
   };
 

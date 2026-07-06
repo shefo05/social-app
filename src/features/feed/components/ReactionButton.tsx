@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { cn } from "@/lib/utils";
+import { cn, getErrorMessage } from "@/lib/utils";
 import { IconHeart } from "@/components/ui/icons";
 import { getSocket } from "@/lib/socket";
 import { Reaction, type ReactionEvent } from "@/types";
-import { ApiError } from "@/types/api";
 import { useUiStore } from "@/stores/ui.store";
 import { feedApi } from "../api";
 
@@ -53,7 +52,7 @@ export function ReactionButton({
     } catch (err) {
       setReacted(!next);
       setLocalCount((c) => c + (next ? -1 : 1));
-      showToast(err instanceof ApiError ? err.message : t("reactError"), "error");
+      showToast(getErrorMessage(err, t("reactError")), "error");
     } finally {
       setPending(false);
     }

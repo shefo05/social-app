@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { ApiError } from "@/types/api";
 import { useUiStore } from "@/stores/ui.store";
+import { getErrorMessage } from "@/lib/utils";
 import { loadGoogleIdentityScript } from "@/lib/google-identity";
 import { authApi } from "../api";
 import { useCompleteAuth } from "../hooks/useCompleteAuth";
@@ -44,7 +44,7 @@ export function GoogleButton() {
               const res = await authApi.googleAuth({ idToken: response.credential });
               await completeAuth(res.data);
             } catch (err) {
-              showToast(err instanceof ApiError ? err.message : t("error"), "error");
+              showToast(getErrorMessage(err, t("error")), "error");
             }
           },
         });

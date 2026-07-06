@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/Button";
 import { Avatar } from "@/components/ui/Avatar";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
-import { ApiError } from "@/types/api";
 import type { FriendRequest } from "@/types";
-import { profileHref } from "@/lib/utils";
+import { getErrorMessage, profileHref } from "@/lib/utils";
 import { friendsApi } from "../api";
 
 export function FriendRequestCard({
@@ -35,7 +34,7 @@ export function FriendRequestCard({
       onResolved(request._id);
       showToast(action === "accept" ? t("accepted") : t("declined"), "success");
     } catch (err) {
-      showToast(err instanceof ApiError ? err.message : t("respondError"), "error");
+      showToast(getErrorMessage(err, t("respondError")), "error");
     } finally {
       setPending(false);
     }

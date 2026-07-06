@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
-import { ApiError } from "@/types/api";
+import { getErrorMessage } from "@/lib/utils";
 import { authApi } from "../../auth/api";
 
 const CONFIRM_PHRASE = "DELETE";
@@ -38,7 +38,7 @@ export function DeleteAccountForm() {
       showToast(t("deleted"), "success");
       router.replace("/login");
     } catch (err) {
-      showToast(err instanceof ApiError ? err.message : t("deleteError"), "error");
+      showToast(getErrorMessage(err, t("deleteError")), "error");
       setIsDeleting(false);
     }
   };

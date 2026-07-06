@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { ApiError } from "@/types/api";
+import { getErrorMessage } from "@/lib/utils";
 import { authApi } from "../api";
 import { createAuthSchemas, type VerifyFormValues } from "../schemas";
 
@@ -32,7 +32,7 @@ export function OtpForm({ email }: { email: string }) {
       await authApi.verifyAccount({ email, otp: values.otp });
       router.push("/login?verified=1");
     } catch (err) {
-      setFormError(err instanceof ApiError ? err.message : tCommon("unexpectedError"));
+      setFormError(getErrorMessage(err, tCommon("unexpectedError")));
     }
   };
 
@@ -42,7 +42,7 @@ export function OtpForm({ email }: { email: string }) {
       await authApi.sendOtp({ email });
       setResent(true);
     } catch (err) {
-      setFormError(err instanceof ApiError ? err.message : tCommon("unexpectedError"));
+      setFormError(getErrorMessage(err, tCommon("unexpectedError")));
     }
   };
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { useUiStore } from "@/stores/ui.store";
-import { ApiError } from "@/types/api";
+import { getErrorMessage } from "@/lib/utils";
 import type { Comment } from "@/types";
 import { commentsApi } from "../api";
 
@@ -34,7 +34,7 @@ export function CommentForm({
       onCreated(res.data.createdComment);
       setContent("");
     } catch (err) {
-      showToast(err instanceof ApiError ? err.message : t("commentError"), "error");
+      showToast(getErrorMessage(err, t("commentError")), "error");
     } finally {
       setIsSubmitting(false);
     }

@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { ApiError } from "@/types/api";
+import { getErrorMessage } from "@/lib/utils";
 import { authApi } from "../api";
 import { createAuthSchemas, type LoginFormValues } from "../schemas";
 import { useCompleteAuth } from "../hooks/useCompleteAuth";
@@ -34,7 +34,7 @@ export function LoginForm() {
       const loginRes = await authApi.login(values);
       await completeAuth(loginRes.data);
     } catch (err) {
-      setFormError(err instanceof ApiError ? err.message : tCommon("unexpectedError"));
+      setFormError(getErrorMessage(err, tCommon("unexpectedError")));
     }
   };
 

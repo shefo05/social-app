@@ -6,11 +6,10 @@ import { useTranslations } from "next-intl";
 import { Avatar } from "@/components/ui/Avatar";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { IconSearch, IconUserPlus } from "@/components/ui/icons";
-import { cn, profileHref } from "@/lib/utils";
+import { cn, getErrorMessage, profileHref } from "@/lib/utils";
 import { useDebouncedValue } from "@/lib/hooks/useDebouncedValue";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
-import { ApiError } from "@/types/api";
 import type { UserSearchResult } from "@/types";
 import { searchApi } from "../api";
 import { friendsApi } from "@/features/friends/api";
@@ -75,7 +74,7 @@ export function UserSearch({ showQuickAdd, onNavigate, autoFocus, className }: U
       setSentIds((prev) => new Set(prev).add(id));
       showToast(tFriends("requestSent"), "success");
     } catch (err) {
-      showToast(err instanceof ApiError ? err.message : tFriends("requestSentError"), "error");
+      showToast(getErrorMessage(err, tFriends("requestSentError")), "error");
     } finally {
       setSendingId(null);
     }

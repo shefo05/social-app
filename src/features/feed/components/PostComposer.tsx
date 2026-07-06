@@ -8,7 +8,7 @@ import { IconImage, IconX } from "@/components/ui/icons";
 import { useAuthStore } from "@/stores/auth.store";
 import { useFeedStore } from "@/stores/feed.store";
 import { useUiStore } from "@/stores/ui.store";
-import { ApiError } from "@/types/api";
+import { getErrorMessage } from "@/lib/utils";
 import { feedApi } from "../api";
 
 const MAX_ATTACHMENTS = 4;
@@ -68,7 +68,7 @@ export function PostComposer() {
       setFiles([]);
       showToast(t("posted"), "success");
     } catch (err) {
-      showToast(err instanceof ApiError ? err.message : t("postError"), "error");
+      showToast(getErrorMessage(err, t("postError")), "error");
     } finally {
       setIsSubmitting(false);
     }

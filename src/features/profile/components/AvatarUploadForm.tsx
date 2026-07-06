@@ -6,7 +6,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
-import { ApiError } from "@/types/api";
+import { getErrorMessage } from "@/lib/utils";
 import { authApi } from "../../auth/api";
 
 export function AvatarUploadForm() {
@@ -34,7 +34,7 @@ export function AvatarUploadForm() {
       setUser(res.date.updatedUser);
       showToast(t("updated"), "success");
     } catch (err) {
-      showToast(err instanceof ApiError ? err.message : t("updateError"), "error");
+      showToast(getErrorMessage(err, t("updateError")), "error");
     } finally {
       setIsUploading(false);
       setPreview(null);

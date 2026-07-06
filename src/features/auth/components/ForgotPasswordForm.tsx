@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { ApiError } from "@/types/api";
+import { getErrorMessage } from "@/lib/utils";
 import { authApi } from "../api";
 import {
   createAuthSchemas,
@@ -37,7 +37,7 @@ export function ForgotPasswordForm() {
       await authApi.forgotPassword(values);
       router.push(`/reset-password?email=${encodeURIComponent(values.email)}`);
     } catch (err) {
-      setFormError(err instanceof ApiError ? err.message : tCommon("unexpectedError"));
+      setFormError(getErrorMessage(err, tCommon("unexpectedError")));
     }
   };
 

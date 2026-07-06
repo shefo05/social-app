@@ -15,7 +15,7 @@ import { feedApi } from "@/features/feed/api";
 import { authApi } from "@/features/auth/api";
 import { friendsApi } from "@/features/friends/api";
 import { useUiStore } from "@/stores/ui.store";
-import { ApiError } from "@/types/api";
+import { getErrorMessage } from "@/lib/utils";
 import { profileApi } from "../api";
 import { Gender, type Post, type PublicProfile, type UserFriend } from "@/types";
 
@@ -66,7 +66,7 @@ function FriendAction({ profileId }: { profileId: string }) {
       setStatus("sent");
       showToast(t("requestSent"), "success");
     } catch (err) {
-      showToast(err instanceof ApiError ? err.message : t("requestSentError"), "error");
+      showToast(getErrorMessage(err, t("requestSentError")), "error");
     } finally {
       setIsSending(false);
     }

@@ -11,10 +11,9 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { IconUsers } from "@/components/ui/icons";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUiStore } from "@/stores/ui.store";
-import { ApiError } from "@/types/api";
 import type { UserFriend } from "@/types";
 import { authApi } from "@/features/auth/api";
-import { profileHref } from "@/lib/utils";
+import { getErrorMessage, profileHref } from "@/lib/utils";
 import { friendsApi } from "../api";
 
 export function FriendList() {
@@ -45,7 +44,7 @@ export function FriendList() {
       );
       showToast(t("removed"), "success");
     } catch (err) {
-      showToast(err instanceof ApiError ? err.message : t("removeError"), "error");
+      showToast(getErrorMessage(err, t("removeError")), "error");
     }
   };
 
