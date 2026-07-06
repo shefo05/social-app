@@ -35,10 +35,10 @@ interface ProfileViewProps {
  *
  * "sent" is a toggle, not a dead end: clicking again cancels the
  * request via DELETE /request/cancel/:requestId, which needs the
- * request's own _id - POST /request/:receiverId (send) doesn't return
- * one (still a 204/no body), so it's looked up via getDashboard()'s
- * outgoingRecent instead, both on mount (a pending request from an
- * earlier visit) and right after sending (to capture the new one).
+ * request's own _id - send() returns it directly (backend commit
+ * 0a8404d9). A pending request from an earlier visit (no send() call
+ * this mount to read an _id from) is still detected via
+ * getDashboard()'s outgoingRecent.
  */
 function FriendAction({ profileId }: { profileId: string }) {
   const t = useTranslations("friends");
@@ -81,12 +81,8 @@ function FriendAction({ profileId }: { profileId: string }) {
   const send = async () => {
     setIsProcessing(true);
     try {
-      await friendsApi.send(profileId);
-      const dashRes = await friendsApi.getDashboard(50);
-      const created = dashRes.data.outgoingRecent.find(
-        (r) => r.receiver._id === profileId,
-      );
-      setRequestId(created?._id ?? null);
+      const res = await friendsApi.send(profileId);
+      setRequestId(res.data._id);
       setStatus("sent");
       showToast(t("requestSent"), "success");
     } catch (err) {

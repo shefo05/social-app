@@ -71,14 +71,8 @@ export function UserSearch({ showQuickAdd, onNavigate, autoFocus, className }: U
   const sendRequest = async (id: string) => {
     setSendingId(id);
     try {
-      await friendsApi.send(id);
-      // send() returns no body, so the new request's _id (needed later to
-      // cancel) is looked up via the dashboard's outgoingRecent.
-      const dashRes = await friendsApi.getDashboard(50);
-      const created = dashRes.data.outgoingRecent.find((r) => r.receiver._id === id);
-      if (created) {
-        setSentRequestIds((prev) => new Map(prev).set(id, created._id));
-      }
+      const res = await friendsApi.send(id);
+      setSentRequestIds((prev) => new Map(prev).set(id, res.data._id));
       showToast(tFriends("requestSent"), "success");
     } catch (err) {
       showToast(getErrorMessage(err, tFriends("requestSentError")), "error");
